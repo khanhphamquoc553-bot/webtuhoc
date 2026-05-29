@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hướng dẫn lắp mạch trong PhET</title>
+    <style>
+      :root {
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: #073754;
+        background: #eef7ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        margin: 0;
+        padding: 24px;
+        background:
+          radial-gradient(circle at 12% 14%, rgba(56, 189, 248, 0.22), transparent 28%),
+          radial-gradient(circle at 88% 18%, rgba(168, 85, 247, 0.18), transparent 30%),
+          linear-gradient(135deg, #f8fdff 0%, #eef7ff 54%, #f7f3ff 100%);
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .guide-card {
+        width: min(1120px, 100%);
+        overflow: hidden;
+        border: 1px solid rgba(14, 165, 233, 0.22);
+        border-radius: 34px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 28px 80px rgba(8, 47, 73, 0.16);
+        animation: cardIn 560ms ease both;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 20px;
+        align-items: center;
+        padding: clamp(24px, 4vw, 44px);
+        background:
+          radial-gradient(circle at 88% 16%, rgba(139, 92, 246, 0.16), transparent 30%),
+          linear-gradient(135deg, #ffffff, #e9fbff);
+      }
+
+      .badge {
+        width: fit-content;
+        border-radius: 999px;
+        padding: 8px 13px;
+        color: #087f8f;
+        background: #e6fbff;
+        font-size: 13px;
+        font-weight: 950;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 820px;
+        margin: 14px 0 12px;
+        color: #073754;
+        font-size: clamp(30px, 5vw, 58px);
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+
+      .hero p {
+        max-width: 760px;
+        margin: 0;
+        color: #547086;
+        font-size: clamp(16px, 2vw, 19px);
+        line-height: 1.6;
+      }
+
+      .lab-orb {
+        width: clamp(120px, 16vw, 190px);
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+        border-radius: 44px;
+        color: #ffffff;
+        background: linear-gradient(135deg, #0891b2, #7c3aed);
+        box-shadow: 0 24px 58px rgba(14, 165, 233, 0.28);
+        animation: floatSoft 4.2s ease-in-out infinite;
+      }
+
+      .lab-orb svg {
+        width: 56%;
+        height: 56%;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 0 clamp(24px, 4vw, 44px) 24px;
+        background: #ffffff;
+      }
+
+      .mode-btn {
+        min-height: 50px;
+        border: 0;
+        border-radius: 999px;
+        padding: 0 22px;
+        color: #075985;
+        background: #e6fbff;
+        font-size: 16px;
+        font-weight: 950;
+        cursor: pointer;
+        transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, color 180ms ease;
+      }
+
+      .mode-btn:hover,
+      .mode-btn:focus-visible {
+        outline: 0;
+        transform: translateY(-2px);
+        box-shadow: 0 16px 34px rgba(14, 165, 233, 0.22);
+      }
+
+      .mode-btn.active {
+        color: #ffffff;
+        background: linear-gradient(135deg, #0891b2, #7c3aed);
+        box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.11), 0 18px 38px rgba(124, 58, 237, 0.24);
+      }
+
+      .content {
+        padding: 0 clamp(20px, 4vw, 44px) clamp(24px, 4vw, 44px);
+        background: #ffffff;
+      }
+
+      .panel {
+        display: none;
+        border: 1px solid rgba(14, 165, 233, 0.18);
+        border-radius: 30px;
+        padding: clamp(18px, 3vw, 30px);
+        background:
+          radial-gradient(circle at 92% 6%, rgba(168, 85, 247, 0.08), transparent 28%),
+          linear-gradient(135deg, #f9feff, #f2fbff);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.72);
+      }
+
+      .panel.active {
+        display: grid;
+        gap: 24px;
+        animation: panelIn 420ms ease both;
+      }
+
+      .section-title {
+        margin: 0 0 14px;
+        color: #073754;
+        font-size: clamp(22px, 3vw, 34px);
+      }
+
+      .parts-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .part-card {
+        min-height: 162px;
+        display: grid;
+        align-content: start;
+        gap: 10px;
+        border: 1px solid rgba(14, 165, 233, 0.16);
+        border-radius: 24px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 12px 28px rgba(8, 93, 129, 0.08);
+        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+      }
+
+      .part-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(124, 58, 237, 0.34);
+        box-shadow: 0 18px 40px rgba(8, 93, 129, 0.14);
+      }
+
+      .part-icon {
+        width: 58px;
+        height: 58px;
+        display: grid;
+        place-items: center;
+        border-radius: 18px;
+        color: #ffffff;
+        background: linear-gradient(135deg, #0891b2, #22c7b8);
+      }
+
+      .part-icon svg {
+        width: 32px;
+        height: 32px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .part-card strong {
+        color: #073754;
+        font-size: 18px;
+      }
+
+      .part-card span {
+        color: #5c7788;
+        line-height: 1.45;
+      }
+
+      .timeline {
+        position: relative;
+        display: grid;
+        gap: 12px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 14px;
+        align-items: center;
+        border: 1px solid rgba(14, 165, 233, 0.14);
+        border-radius: 24px;
+        padding: 14px;
+        background: #ffffff;
+        box-shadow: 0 12px 28px rgba(8, 93, 129, 0.07);
+        opacity: 0;
+        transform: translateY(14px);
+        animation: slideUp 480ms ease forwards;
+        animation-delay: calc(var(--i) * 120ms);
+      }
+
+      .step b {
+        width: 50px;
+        height: 50px;
+        display: grid;
+        place-items: center;
+        border-radius: 16px;
+        color: #ffffff;
+        background: linear-gradient(135deg, #0891b2, #7c3aed);
+        font-size: 20px;
+      }
+
+      .step p {
+        margin: 0;
+        color: #123d5a;
+        font-size: clamp(17px, 2vw, 21px);
+        font-weight: 850;
+        line-height: 1.45;
+      }
+
+      .note-box {
+        border-radius: 24px;
+        padding: 18px;
+        color: #075985;
+        background: #e6fbff;
+      }
+
+      .note-box strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 20px;
+      }
+
+      .note-box ul {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+        padding-left: 22px;
+        color: #47697f;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      .answer-view {
+        display: grid;
+        gap: 16px;
+        justify-items: center;
+      }
+
+      .answer-frame {
+        width: min(760px, 100%);
+        overflow: hidden;
+        border: 1px solid rgba(14, 165, 233, 0.2);
+        border-radius: 28px;
+        background: #e6fbff;
+        box-shadow: 0 20px 48px rgba(8, 93, 129, 0.14);
+        animation: zoomSoft 420ms ease both;
+      }
+
+      .answer-frame img {
+        width: 100%;
+        min-height: 320px;
+        display: block;
+        object-fit: contain;
+        background: #f8feff;
+      }
+
+      .placeholder {
+        min-height: 320px;
+        display: none;
+        place-items: center;
+        padding: 30px;
+        color: #6b8798;
+        text-align: center;
+        font-size: 22px;
+        font-weight: 950;
+      }
+
+      .caption {
+        margin: 0;
+        color: #5c7788;
+        font-size: 17px;
+        font-weight: 850;
+      }
+
+      @keyframes cardIn {
+        from { opacity: 0; transform: translateY(18px) scale(0.985); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+
+      @keyframes panelIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes slideUp {
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes zoomSoft {
+        from { opacity: 0; transform: scale(0.965); }
+        to { opacity: 1; transform: scale(1); }
+      }
+
+      @keyframes floatSoft {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      @media (max-width: 900px) {
+        body {
+          padding: 12px;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .lab-orb {
+          justify-self: start;
+        }
+
+        .controls {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .mode-btn {
+          width: 100%;
+        }
+
+        .parts-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        .guide-card {
+          border-radius: 24px;
+        }
+
+        .parts-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .step {
+          grid-template-columns: 48px minmax(0, 1fr);
+        }
+
+        .step b {
+          width: 44px;
+          height: 44px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="guide-card">
+      <section class="hero">
+        <div>
+          <span class="badge">STEM physics lab</span>
+          <h1>Hướng dẫn lắp mạch đo suất điện động và điện trở trong của pin</h1>
+          <p>Mục tiêu: lắp được mạch điện để đo U và I khi thay đổi điện trở ngoài.</p>
+        </div>
+        <div class="lab-orb" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <path d="M12 30h24M16 18h16M18 18v-8h12v8M15 30l-4 9h26l-4-9" />
+            <path d="M19 24h10M33 24h3M12 24h3" />
+            <circle cx="24" cy="24" r="3" />
+          </svg>
+        </div>
+      </section>
+
+      <div class="controls" role="tablist" aria-label="Chọn chế độ hướng dẫn">
+        <button class="mode-btn active" type="button" data-mode="hint">Gợi ý lắp mạch</button>
+        <button class="mode-btn" type="button" data-mode="answer">Hiện đáp án</button>
+      </div>
+
+      <section class="content">
+        <article class="panel active" id="hint-panel">
+          <div>
+            <h2 class="section-title">Linh kiện cần dùng</h2>
+            <div class="parts-grid">
+              <div class="part-card">
+                <span class="part-icon">
+                  <svg viewBox="0 0 24 24"><path d="M7 7h9a3 3 0 0 1 0 6H7a3 3 0 0 1 0-6zM18 9h3v2h-3M8 7v6" /></svg>
+                </span>
+                <strong>1 pin điện</strong>
+                <span>Nguồn điện cần khảo sát.</span>
+              </div>
+              <div class="part-card">
+                <span class="part-icon">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /><path d="M9 15l3-7 3 7M10 13h4" /></svg>
+                </span>
+                <strong>1 ampe kế</strong>
+                <span>Đo cường độ dòng điện I.</span>
+              </div>
+              <div class="part-card">
+                <span class="part-icon">
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /><path d="m8 9 4 7 4-7" /></svg>
+                </span>
+                <strong>1 vôn kế</strong>
+                <span>Đo hiệu điện thế U.</span>
+              </div>
+              <div class="part-card">
+                <span class="part-icon">
+                  <svg viewBox="0 0 24 24"><path d="M4 12h3l2-4 4 8 2-4h5" /></svg>
+                </span>
+                <strong>1 điện trở</strong>
+                <span>Thay đổi điện trở ngoài.</span>
+              </div>
+              <div class="part-card">
+                <span class="part-icon">
+                  <svg viewBox="0 0 24 24"><path d="M4 8c5 0 5 8 10 8s5-8 6-8" /><circle cx="4" cy="8" r="2" /><circle cx="20" cy="8" r="2" /></svg>
+                </span>
+                <strong>Dây nối</strong>
+                <span>Tạo thành mạch kín.</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="section-title">Các bước lắp</h2>
+            <div class="timeline">
+              <div class="step" style="--i: 1"><b>1</b><p>Kéo pin vào vùng làm việc.</p></div>
+              <div class="step" style="--i: 2"><b>2</b><p>Mắc ampe kế nối tiếp với mạch.</p></div>
+              <div class="step" style="--i: 3"><b>3</b><p>Mắc điện trở nối tiếp với ampe kế.</p></div>
+              <div class="step" style="--i: 4"><b>4</b><p>Mắc vôn kế song song hai đầu nguồn.</p></div>
+              <div class="step" style="--i: 5"><b>5</b><p>Nối dây để tạo thành mạch kín.</p></div>
+            </div>
+          </div>
+
+          <aside class="note-box">
+            <strong>Lưu ý</strong>
+            <ul>
+              <li>Ampe kế mắc nối tiếp.</li>
+              <li>Vôn kế mắc song song.</li>
+              <li>Đóng công tắc sau khi kiểm tra mạch.</li>
+            </ul>
+          </aside>
+        </article>
+
+        <article class="panel" id="answer-panel">
+          <div class="answer-view">
+            <h2 class="section-title">Sơ đồ mạch hoàn chỉnh</h2>
+            <figure class="answer-frame">
+              <img src="images/mach-pin.png" alt="Sơ đồ mạch tham khảo" id="answer-image" />
+              <div class="placeholder" id="image-placeholder">Thêm ảnh sơ đồ mạch tại đây</div>
+            </figure>
+            <p class="caption">Sơ đồ mạch tham khảo.</p>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script>
+      const buttons = document.querySelectorAll(".mode-btn");
+      const hintPanel = document.getElementById("hint-panel");
+      const answerPanel = document.getElementById("answer-panel");
+      const answerImage = document.getElementById("answer-image");
+      const placeholder = document.getElementById("image-placeholder");
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const mode = button.dataset.mode;
+
+          buttons.forEach((item) => item.classList.toggle("active", item === button));
+          hintPanel.classList.toggle("active", mode === "hint");
+          answerPanel.classList.toggle("active", mode === "answer");
+        });
+      });
+
+      answerImage.addEventListener("error", () => {
+        answerImage.style.display = "none";
+        placeholder.style.display = "grid";
+      });
+    </script>
+  </body>
+</html>
