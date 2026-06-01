@@ -14,6 +14,7 @@ import sidebarCircuitImage from './assets/sidebar-circuit-render.png'
 import vonKeImage from './assets/vonke.png'
 import ntcThermistorImage from './assets/ntc-thermistor.png'
 import ptcThermistorImage from './assets/ptc-thermistor.png'
+import physicsBank from '../physics-bank.json'
 import './App.css'
 
 const STORAGE_KEY = 'vat-ly-11-self-learning-ai'
@@ -158,6 +159,100 @@ const topics = [
       'Nhận xét và đánh giá kết quả',
     ],
   },
+]
+
+const lessonBlueprints = [
+  {
+    topicId: 'cuong-do-dong-dien',
+    duration: '35 phút',
+    difficulty: 'Dễ - vừa',
+    goal: 'Nhìn độ sáng bóng đèn để đoán dòng điện mạnh hay yếu.',
+    formula: 'I = Δq/Δt, I = nSev',
+    steps: [
+      'Khởi động: bóng đèn sáng mạnh/yếu nói gì về dòng điện?',
+      'Khám phá: electron đi ngược chiều dòng điện quy ước.',
+      'Hình thành: đọc ý nghĩa Δq và Δt trong I = Δq/Δt.',
+      'Mô phỏng: thay số electron, tiết diện, vận tốc để thấy I đổi.',
+      'Luyện tập: tính I từ điện lượng đi qua dây.',
+      'Tóm tắt: ampe cho biết mức độ mạnh yếu của dòng điện.',
+    ],
+  },
+  {
+    topicId: 'dien-tro-dinh-luat-om',
+    duration: '40 phút',
+    difficulty: 'Vừa',
+    goal: 'Tự phát hiện vật dẫn cản dòng điện và rút ra định luật Ôm.',
+    formula: 'R = U/I, I = U/R, R = ρl/S',
+    steps: [
+      'Khởi động: vì sao cùng pin nhưng đèn có thể sáng khác nhau?',
+      'Khám phá: hạt tải điện va chạm trong vật dẫn.',
+      'Hình thành: điện trở đặc trưng cho mức cản trở dòng điện.',
+      'Thí nghiệm số liệu: tăng U và quan sát I tăng tỉ lệ.',
+      'Mô phỏng dây dẫn: đổi l, S, vật liệu để thấy R thay đổi.',
+      'Tình huống: NTC, PTC trong cảm biến và bảo vệ mạch.',
+    ],
+  },
+  {
+    topicId: 'nguon-dien',
+    duration: '40 phút',
+    difficulty: 'Vừa',
+    goal: 'Hiểu vì sao pin duy trì dòng điện và vì sao pin yếu làm đèn mờ.',
+    formula: 'ξ = A/q, I = ξ/(R+r), U = ξ - Ir',
+    steps: [
+      'Khởi động: mạch kín cần gì để dòng điện không tắt?',
+      'Khám phá: lực lạ đưa điện tích về cực nguồn.',
+      'Hình thành: suất điện động đo công của nguồn trên một đơn vị điện tích.',
+      'Mô phỏng: tăng điện trở trong r để thấy U mạch ngoài giảm.',
+      'Luyện tập: tính U = ξ - Ir từ số liệu.',
+      'Tóm tắt: toàn mạch gồm R ngoài và r trong nguồn.',
+    ],
+  },
+  {
+    topicId: 'nang-luong-cong-suat-dien',
+    duration: '45 phút',
+    difficulty: 'Vừa',
+    goal: 'Tính được điện năng, công suất và đọc tình huống hóa đơn điện.',
+    formula: 'W = UIt, P = UI, Q = RI²t',
+    steps: [
+      'Khởi động: thiết bị nào làm hóa đơn điện tăng nhanh?',
+      'Khám phá: công suất cho biết tốc độ tiêu thụ điện năng.',
+      'Hình thành: W = UIt và P = W/t = UI.',
+      'So sánh: LED sáng tương đương nhưng tiêu thụ ít hơn đèn sợi đốt.',
+      'Vận dụng: tính tiền điện từ kW.h.',
+      'Tóm tắt: chọn thiết bị và thời gian dùng quyết định chi phí.',
+    ],
+  },
+  {
+    topicId: 'thuc-hanh-pin-dien-hoa',
+    duration: '50 phút',
+    difficulty: 'Thực hành',
+    goal: 'Kéo thả dụng cụ, lấy số liệu, vẽ đồ thị để tìm ξ và r.',
+    formula: 'U = ξ - Ir',
+    steps: [
+      'Khởi động: pin mới và pin cũ khác nhau ở đâu?',
+      'Khám phá: mắc vôn kế song song, ampe kế nối tiếp.',
+      'Thực hành ảo: kéo thả pin, biến trở, khóa K, đồng hồ đo.',
+      'Thu thập: ghi cặp giá trị U và I.',
+      'Đồ thị: kéo đường U-I, giao trục tung là ξ.',
+      'Tóm tắt: độ dốc âm của đồ thị liên quan đến r.',
+    ],
+  },
+]
+
+const formulaCards = [
+  { icon: 'bolt', formula: 'I = Δq/Δt', meaning: 'Cường độ dòng điện bằng điện lượng qua tiết diện trong một đơn vị thời gian.', units: 'I: A, q: C, t: s', example: '10 C đi qua trong 5 s thì I = 2 A.' },
+  { icon: 'bolt', formula: 'I = nSev', meaning: 'Dòng điện trong kim loại phụ thuộc mật độ electron, tiết diện và vận tốc trôi.', units: 'n: m⁻³, S: m², e: C, v: m/s', example: 'Dây to hơn hoặc electron trôi nhanh hơn thì I lớn hơn.' },
+  { icon: 'ohm', formula: 'R = U/I', meaning: 'Điện trở đo mức cản trở dòng điện của vật dẫn.', units: 'R: Ω, U: V, I: A', example: 'U = 12 V, I = 3 A thì R = 4 Ω.' },
+  { icon: 'ohm', formula: 'I = U/R', meaning: 'Định luật Ôm cho đoạn mạch chỉ có điện trở.', units: 'I: A, U: V, R: Ω', example: 'U = 9 V, R = 3 Ω thì I = 3 A.' },
+  { icon: 'ohm', formula: 'R = ρl/S', meaning: 'Điện trở dây dẫn tăng theo chiều dài, giảm khi tiết diện lớn.', units: 'ρ: Ωm, l: m, S: m²', example: 'Dây dài hơn thì đèn thường sáng yếu hơn.' },
+  { icon: 'battery', formula: 'ξ = A/q', meaning: 'Suất điện động là công của nguồn trên một đơn vị điện tích.', units: 'ξ: V, A: J, q: C', example: 'Nguồn làm công 18 J cho 3 C thì ξ = 6 V.' },
+  { icon: 'battery', formula: 'I = ξ/(R+r)', meaning: 'Dòng điện toàn mạch phụ thuộc điện trở ngoài và điện trở trong.', units: 'ξ: V, R,r: Ω, I: A', example: 'ξ = 12 V, R+r = 6 Ω thì I = 2 A.' },
+  { icon: 'battery', formula: 'U = ξ − Ir', meaning: 'Hiệu điện thế mạch ngoài giảm khi dòng điện và điện trở trong tăng.', units: 'U,ξ: V, I: A, r: Ω', example: 'ξ = 10 V, I = 2 A, r = 1 Ω thì U = 8 V.' },
+  { icon: 'bulb', formula: 'W = UIt', meaning: 'Điện năng tiêu thụ phụ thuộc hiệu điện thế, dòng điện và thời gian dùng.', units: 'W: J, U: V, I: A, t: s', example: 'Dùng càng lâu thì điện năng càng lớn.' },
+  { icon: 'bulb', formula: 'Q = RI²t', meaning: 'Nhiệt lượng tỏa ra trên điện trở theo định luật Jun-Len-xơ.', units: 'Q: J, R: Ω, I: A, t: s', example: 'Dòng điện tăng gấp đôi thì Q tăng 4 lần.' },
+  { icon: 'bulb', formula: 'P = UI', meaning: 'Công suất điện cho biết thiết bị tiêu thụ điện nhanh hay chậm.', units: 'P: W, U: V, I: A', example: '220 V và 0,5 A thì P = 110 W.' },
+  { icon: 'bulb', formula: 'P = I²R', meaning: 'Công suất tỏa nhiệt trên điện trở khi biết dòng điện.', units: 'P: W, I: A, R: Ω', example: 'I = 2 A, R = 5 Ω thì P = 20 W.' },
+  { icon: 'bulb', formula: 'P = U²/R', meaning: 'Công suất trên điện trở khi biết hiệu điện thế hai đầu.', units: 'P: W, U: V, R: Ω', example: 'U = 12 V, R = 6 Ω thì P = 24 W.' },
 ]
 
 const mindmapCards = [
@@ -408,7 +503,7 @@ const featureContent = {
   progress: {
     title: 'Tiến trình học tập',
     body: 'Bạn đang học Chương IV với 5 bài: Bài 22, Bài 23, Bài 24, Bài 25 và Bài 26 thực hành.',
-    actions: ['Luyện phần yếu', 'Xem lộ trình'],
+    actions: [],
   },
   achievements: {
     title: 'Thành tích của bạn',
@@ -440,12 +535,9 @@ const featureContent = {
 const navItems = [
   { key: 'overview', label: 'Tổng quan chương', icon: 'home' },
   { key: 'lessons', label: 'Bài học', icon: 'document' },
-  { key: 'games', label: 'Trò chơi tổng hợp', icon: 'game' },
-  { key: 'review', label: 'Ôn tập - Kiểm tra', icon: 'clipboard' },
+  { key: 'review', label: 'Ôn tập cuối chương', icon: 'clipboard' },
   { key: 'profile', label: 'Hồ sơ học tập', icon: 'users' },
   { key: 'formulas', label: 'Sổ tay công thức', icon: 'notebook' },
-  { key: 'ai', label: 'Trợ lí ảo (AI)', icon: 'bot' },
-  { key: 'guide', label: 'Hướng dẫn sử dụng', icon: 'help' },
 ]
 
 const normalizeText = (value) =>
@@ -1646,7 +1738,7 @@ const lesson22VideoInteractions = [
   {
     id: 'brighter-case',
     type: 'question',
-    time: 5,
+    time: 3.6,
     question: 'Sau khi quan sát video, trong trường hợp nào bóng đèn sáng hơn?',
     options: ['Trường hợp 1', 'Trường hợp 2'],
     answer: 0,
@@ -1666,7 +1758,9 @@ const lesson22VideoInteractions = [
     question: 'Các electron chuyển động ngược chiều dòng điện.',
     options: ['Đúng', 'Sai'],
     answer: 0,
-    wrongHint: 'Electron mang điện âm. Trong dây kim loại, chiều chuyển động của electron ngược với chiều dòng điện quy ước.',
+    correctFeedback: 'Đúng. Chiều chuyển động của các electron ngược với chiều dòng điện vì chiều dòng điện là chiều từ cực dương sang cực âm.',
+    wrongFeedback: 'Sai. Chiều quy ước của dòng điện là chiều từ cực dương sang cực âm.',
+    wrongHint: 'Sai. Chiều quy ước của dòng điện là chiều từ cực dương sang cực âm.',
   },
   {
     id: 'metal-wire-fill',
@@ -6287,6 +6381,8 @@ const lesson25ReviewQuestions = [
   },
 ]
 
+// Kept as the older lesson 25 opener for quick rollback/reference.
+// eslint-disable-next-line no-unused-vars
 function Lesson25InteractiveOpener({ onComplete }) {
   const [step, setStep] = useState(0)
   const [causes, setCauses] = useState({})
@@ -6463,6 +6559,8 @@ function Lesson25InteractiveOpener({ onComplete }) {
   )
 }
 
+// Kept as the older lesson 25 journey for quick rollback/reference.
+// eslint-disable-next-line no-unused-vars
 function Lesson25ElectricJourneyOld() {
   const [revealedBlocks, setRevealedBlocks] = useState({
     worksheet: false,
@@ -7055,15 +7153,7 @@ function Lesson25InteractiveVideo({ src }) {
   const [selectedDragItem, setSelectedDragItem] = useState('')
   const [result, setResult] = useState(null)
 
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      syncVideoPrompt()
-    }, 120)
-
-    return () => window.clearInterval(timer)
-  })
-
-  const openPrompt = (prompt) => {
+  function openPrompt(prompt) {
     videoRef.current?.pause()
     setActivePrompt(prompt)
     setMultiAnswers({})
@@ -7073,12 +7163,20 @@ function Lesson25InteractiveVideo({ src }) {
     setResult(null)
   }
 
-  const syncVideoPrompt = () => {
+  function syncVideoPrompt() {
     const video = videoRef.current
     if (!video || activePrompt) return
     const prompt = lesson25VideoPrompts.find((item) => video.currentTime >= item.time - 1 && !answeredPrompts[item.id])
     if (prompt) openPrompt(prompt)
   }
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      syncVideoPrompt()
+    }, 120)
+
+    return () => window.clearInterval(timer)
+  })
 
   const placeGroupItem = (item, groupId) => {
     if (!item) return
@@ -7483,7 +7581,7 @@ function Lesson25ElectricJourney() {
 
             {maxStep >= 8 && <section className="lesson25-unlock-card">
               <header><b>9</b><h3>Ghép đơn vị</h3></header>
-              <div className="lesson25-match-grid">{lesson25UnitPairs.map(([unit, meaning]) => <label key={meaning}><strong>{meaning}</strong><select value={answers.units?.[meaning] || ''} onChange={(event) => updateAnswer('units', { ...(answers.units || {}), [meaning]: event.target.value })}><option value="">Chọn đơn vị</option>{lesson25UnitPairs.map(([item]) => <option value={item} key={item}>{item}</option>)}</select></label>)}</div>
+              <div className="lesson25-match-grid">{lesson25UnitPairs.map(([, meaning]) => <label key={meaning}><strong>{meaning}</strong><select value={answers.units?.[meaning] || ''} onChange={(event) => updateAnswer('units', { ...(answers.units || {}), [meaning]: event.target.value })}><option value="">Chọn đơn vị</option>{lesson25UnitPairs.map(([item]) => <option value={item} key={item}>{item}</option>)}</select></label>)}</div>
               <button className="primary-soft-btn" type="button" onClick={checkUnits}>Kiểm tra đơn vị</button>
               {feedbacks.units && <p className={`inline-feedback inline-feedback--${feedbacks.units.type}`}>{feedbacks.units.message}</p>}
             </section>}
@@ -8350,19 +8448,1098 @@ function Lesson26BatteryLab() {
   )
 }
 
-function FeatureDialog({ content, onClose, onAction }) {
-  const isRestoredLesson = content.lessonId === 'cuong-do-dong-dien' || content.lessonId === 'dien-tro-dinh-luat-om' || content.lessonId === 'nguon-dien' || content.lessonId === 'nang-luong-cong-suat-dien' || content.lessonId === 'thuc-hanh-pin-dien-hoa'
+const REVIEW_STORAGE_KEY = `${STORAGE_KEY}:electric-repair-game`
+
+const formulaHintsByTopic = [
+  ['nhiệt lượng', 'Q = mcΔt'],
+  ['công suất', 'P = A/t = UI'],
+  ['định luật ohm', 'I = U/R'],
+  ['điện năng', 'A = UIt'],
+  ['điện trở tương đương', 'Rnt = R1 + R2; 1/Rss = 1/R1 + 1/R2'],
+  ['suất điện động', 'ξ = A/q hoặc ξ = U + Ir'],
+]
+
+const classifyPhysicsExercise = (exercise) => {
+  const stepCount = (exercise.method?.length || 0) + (exercise.solution?.length || 0)
+  const difficulty = Number(exercise.difficulty || 1)
+
+  if (difficulty >= 5 || stepCount >= 10) return 'advanced'
+  if (difficulty >= 4 || stepCount >= 8) return 'strong'
+  if (difficulty >= 3 || stepCount >= 5) return 'medium'
+  return 'basic'
+}
+
+const reviewLevelLabel = {
+  basic: 'Cơ bản',
+  medium: 'Trung bình',
+  strong: 'Khá',
+  advanced: 'Nâng cao',
+}
+
+const repairStationBlueprints = [
+  {
+    id: 'boot',
+    name: 'Khởi động hệ thống',
+    tagline: 'Bảng điều khiển vừa mất tín hiệu. Khôi phục các phép đo nền để cấp nguồn trở lại.',
+    success: 'Đèn báo nguồn đã sáng trở lại.',
+    failure: 'Đồng hồ đo vẫn chưa hoạt động. Có lẽ bạn nên kiểm tra lại quan hệ giữa các đại lượng.',
+    icon: 'bolt',
+  },
+  {
+    id: 'heat',
+    name: 'Trạm gia nhiệt',
+    tagline: 'Một bình nước trong phòng thí nghiệm cần được đun nóng để kích hoạt hệ thống.',
+    success: 'Buồng gia nhiệt đã đạt ngưỡng kích hoạt.',
+    failure: 'Thanh nhiệt vẫn nguội. Hãy rà lại nhiệt lượng, công suất và thời gian.',
+    icon: 'bulb',
+  },
+  {
+    id: 'resistor',
+    name: 'Trạm điện trở',
+    tagline: 'Kỹ sư trưởng làm mất nhãn điện trở. Bạn cần suy luận từ cách mắc mạch.',
+    success: 'Cụm điện trở đã được định danh.',
+    failure: 'Cầu chì vẫn chưa hoạt động. Thiếu một bước suy luận về mạch nối tiếp hoặc song song.',
+    icon: 'ohm',
+  },
+  {
+    id: 'source',
+    name: 'Nguồn điện bí ẩn',
+    tagline: 'Nguồn cấp chính dao động bất thường. Hãy tìm suất điện động, điện trở trong hoặc hiệu suất.',
+    success: 'Nguồn điện đã ổn định trở lại.',
+    failure: 'Bộ nguồn vẫn báo lỗi. Hãy kiểm tra lại quan hệ giữa U, I, r và ξ.',
+    icon: 'battery',
+  },
+  {
+    id: 'lab',
+    name: 'Phòng thí nghiệm mạch điện',
+    tagline: 'Khu đo đạc yêu cầu quan sát dữ kiện trước khi kết luận đại lượng cần tìm.',
+    success: 'Thiết bị đo đã ghi nhận tín hiệu hợp lệ.',
+    failure: 'Mẫu đo chưa khớp. Bạn đang đi đúng hướng, nhưng cần đọc lại dữ kiện.',
+    icon: 'flask',
+  },
+  {
+    id: 'engineer',
+    name: 'Thử thách kỹ sư',
+    tagline: 'Các lỗi cuối cùng cần lập phương trình và phối hợp nhiều công thức.',
+    success: 'Trạm điện đã được khôi phục.',
+    failure: 'Mạch chính chưa thông. Hãy mở thêm gợi ý nếu cần lập hệ phương trình.',
+    icon: 'trophy',
+  },
+]
+
+const stationPriorityIds = {
+  heat: ['IV.20'],
+  resistor: ['IV.5', 'IV.6', 'IV.7', 'IV.8', 'IV.21'],
+  source: ['IV.9', 'IV.10', 'IV.11', 'IV.12', 'IV.13', 'IV.22', 'IV.23'],
+  lab: ['IV.17', 'IV.18'],
+  engineer: ['IV.24', 'IV.25', 'IV.26'],
+}
+
+const shuffleItems = (items) => [...items].sort(() => Math.random() - 0.5)
+
+const getExerciseById = (id) => physicsBank.find((exercise) => exercise.id === id)
+
+const compactQuestion = (question) =>
+  question
+    .split('\n')
+    .filter((line) => !/^[A-D]\./.test(line.trim()))
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+const getQuestionParts = (question) => {
+  const source = compactQuestion(question)
+  const markers = [...source.matchAll(/(?:^|\s)([a-d])\)\s*/gi)]
+
+  if (markers.length < 2) {
+    return {
+      stem: source,
+      parts: [],
+    }
+  }
+
+  return {
+    stem: source.slice(0, markers[0].index).trim(),
+    parts: markers.map((marker, index) => {
+      const start = marker.index + marker[0].length
+      const end = markers[index + 1]?.index ?? source.length
+
+      return {
+        key: marker[1].toUpperCase(),
+        prompt: source.slice(start, end).trim(),
+      }
+    }),
+  }
+}
+
+const getQuestionOptions = (question) =>
+  question
+    .split('\n')
+    .map((line) => line.trim().match(/^([A-D])\.\s*(.+)$/))
+    .filter(Boolean)
+    .map((match) => ({
+      key: match[1],
+      text: match[2].trim(),
+    }))
+
+const graphChoiceOptions = [
+  { id: 'origin-line', label: 'Đường thẳng đi qua gốc tọa độ' },
+  { id: 'decreasing-line', label: 'Đường thẳng giảm dần' },
+  { id: 'horizontal-line', label: 'Đường nằm ngang' },
+  { id: 'curved-line', label: 'Đường cong' },
+]
+
+const isGraphExercise = (exercise) =>
+  normalizeText(`${exercise.topic} ${exercise.question}`).includes('ve do thi') ||
+  normalizeText(`${exercise.topic} ${exercise.question}`).includes('do thi')
+
+const getGraphAnswer = (exercise) => {
+  const source = normalizeText(`${exercise.final_answer || ''} ${(exercise.solution || []).join(' ')}`)
+
+  if (source.includes('di qua goc')) return 'origin-line'
+  if (source.includes('giam') || source.includes('doc am')) return 'decreasing-line'
+  if (source.includes('khong doi') || source.includes('nam ngang')) return 'horizontal-line'
+  return 'origin-line'
+}
+
+const isGraphAnswerCorrect = (exercise, value) =>
+  isGraphExercise(exercise) && value === getGraphAnswer(exercise)
+
+const getExerciseImage = (exercise) => exercise.imageUrl || exercise.image || exercise.mediaUrl || ''
+
+const getImportantData = (exercise) => {
+  const numbers = compactQuestion(exercise.question).match(/(?:\d+[,.]?\d*|\d+\.\d+)(?:\s*\.?\s*10\^?-?\d+)?\s*(?:A|V|Ω|C|J|W|mJ|s|phút|kg|mL|mm\^2|m\/s|kg\/m\^3)?/g)
+
+  return numbers?.slice(0, 5).join('; ') || 'Đọc kỹ các số liệu xuất hiện trong bảng điều khiển.'
+}
+
+const getFormulaHint = (exercise) => {
+  const source = normalizeText(`${exercise.topic} ${exercise.question} ${(exercise.method || []).join(' ')}`)
+  const matched = formulaHintsByTopic.find(([keyword]) => source.includes(normalizeText(keyword)))
+
+  if (matched) return matched[1]
+
+  const formulaLine = (exercise.method || []).find((line) => /[=ξΔ]/.test(line))
+  return formulaLine || 'Xác định đại lượng cần tìm rồi chọn công thức liên hệ trực tiếp.'
+}
+
+const getAcceptedAnswersFromText = (text) => {
+  const optionMatch = text.match(/Chọn\s+([A-D])/i)
+  const answers = new Set()
+  const cleanAnswer = text
+    .replace(/Chọn\s+[A-D]\.?/gi, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+  if (optionMatch) answers.add(optionMatch[1].toLowerCase())
+
+  if (cleanAnswer) answers.add(normalizeText(cleanAnswer).replace(/[.。]+$/g, '').trim())
+
+  ;[...cleanAnswer.matchAll(/-?\d+(?:[,.]\d+)?(?:\.\d+)?(?:\s*(?:A|V|C|J|W|Ω|ohm|m\/s|mm\/s|mJ))?/g)]
+    .filter((match) => {
+      const previousCharacter = cleanAnswer[match.index - 1] || ''
+      return !/[A-Za-z]/.test(previousCharacter)
+    })
+    .forEach((match) => answers.add(normalizeText(match[0]).replace(/\s+/g, ' ').trim()))
+
+  cleanAnswer
+    .split(/[;]/)
+    .map((part) => normalizeText(part).replace(/\s+/g, ' ').trim())
+    .filter(Boolean)
+    .forEach((part) => answers.add(part))
+
+  return [...answers]
+}
+
+const getAcceptedAnswers = (exercise) => getAcceptedAnswersFromText(exercise.final_answer || '')
+
+const normalizeAnswerValue = (value) =>
+  normalizeText(String(value))
+    .replace(/ohm/g, 'ω')
+    .replace(/[=≈~]/g, ' ')
+    .replace(/,/g, '.')
+    .replace(/\s+/g, ' ')
+    .trim()
+
+const compactAnswerValue = (value) => normalizeAnswerValue(value).replace(/\s+/g, '')
+
+const repairAnswerMatches = (value, answer) => {
+  const normalizedValue = normalizeAnswerValue(value)
+  const normalizedAnswer = normalizeAnswerValue(answer)
+  const compactValue = compactAnswerValue(value)
+  const compactAnswer = compactAnswerValue(answer)
 
   return (
-    <section className={isRestoredLesson ? 'feature-dialog feature-dialog--lesson' : 'feature-dialog'} aria-live="polite" aria-label={content.title}>
+    normalizedValue === normalizedAnswer ||
+    normalizedValue.includes(normalizedAnswer) ||
+    normalizedAnswer.includes(normalizedValue) ||
+    compactValue === compactAnswer ||
+    compactValue.includes(compactAnswer) ||
+    compactAnswer.includes(compactValue)
+  )
+}
+
+const isAnswerCorrect = (exercise, value) => {
+  const normalizedValue = normalizeAnswerValue(value)
+
+  if (!normalizedValue) return false
+
+  return getAcceptedAnswers(exercise).some((answer) => repairAnswerMatches(value, answer))
+}
+
+const getPartAcceptedAnswers = (exercise, partIndex, partCount) => {
+  const finalSegments = (exercise.final_answer || '')
+    .split(';')
+    .map((segment) => segment.trim())
+    .filter(Boolean)
+
+  if (finalSegments.length >= partCount) {
+    return getAcceptedAnswersFromText(finalSegments[partIndex])
+  }
+
+  return getAcceptedAnswers(exercise)
+}
+
+const arePartAnswersCorrect = (exercise, parts, answerMap) =>
+  parts.every((part, index) => {
+    const normalizedValue = normalizeAnswerValue(answerMap?.[part.key] || '')
+
+    if (!normalizedValue) return false
+
+    return getPartAcceptedAnswers(exercise, index, parts.length).some((answer) => repairAnswerMatches(answerMap?.[part.key] || '', answer))
+  })
+
+const getStationForExercise = (exercise) => {
+  const text = normalizeText(`${exercise.id} ${exercise.topic} ${exercise.question}`)
+
+  if (stationPriorityIds.engineer.includes(exercise.id)) return 'engineer'
+  if (stationPriorityIds.heat.includes(exercise.id) || text.includes('nhiet') || text.includes('toa nhiet')) return 'heat'
+  if (stationPriorityIds.lab.includes(exercise.id) || getExerciseImage(exercise)) return 'lab'
+  if (stationPriorityIds.source.includes(exercise.id) || text.includes('nguon') || text.includes('suat dien dong') || text.includes('acquy')) return 'source'
+  if (stationPriorityIds.resistor.includes(exercise.id) || text.includes('noi tiep') || text.includes('song song') || text.includes('dien tro tuong duong')) return 'resistor'
+  return 'boot'
+}
+
+const createRepairStations = () => {
+  const grouped = repairStationBlueprints.reduce((result, station) => ({ ...result, [station.id]: [] }), {})
+
+  physicsBank.forEach((exercise) => {
+    grouped[getStationForExercise(exercise)].push(exercise.id)
+  })
+
+  return repairStationBlueprints
+    .map((station) => ({
+      id: station.id,
+      missionIds: shuffleItems(grouped[station.id] || []),
+    }))
+    .filter((station) => station.missionIds.length > 0)
+}
+
+const createRepairGameState = () => ({
+  runId: Date.now(),
+  stations: createRepairStations(),
+  stationIndex: 0,
+  missionIndex: 0,
+  score: 0,
+  completedMissionIds: [],
+  failedMissionIds: [],
+  answers: {},
+  hintsUsedByMission: {},
+  wrongAttemptByMission: {},
+  solutionOpenByMission: {},
+  imageViewedByMission: {},
+  finished: false,
+  feedback: 'Hệ thống đang chờ kỹ sư điện tập sự khởi động lại các trạm.',
+})
+
+const readRepairGameState = () => {
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(REVIEW_STORAGE_KEY) || 'null')
+    const savedIds = new Set(saved?.stations?.flatMap((station) => station.missionIds) || [])
+    const bankIds = new Set(physicsBank.map((exercise) => exercise.id))
+    const isUsable = saved?.stations?.length && [...bankIds].every((id) => savedIds.has(id))
+
+    return isUsable ? saved : createRepairGameState()
+  } catch {
+    return createRepairGameState()
+  }
+}
+
+const getMissionBrief = (station, exercise) => {
+  const briefs = {
+    boot: `Bảng điều khiển báo lỗi ở cụm "${exercise.topic}". Nhập giá trị cần khôi phục để bật lại nguồn phụ.`,
+    heat: 'Bình nước trong phòng thí nghiệm cần đạt mức nhiệt kích hoạt. Hãy xử lý số liệu để đưa thanh nhiệt về đúng công suất.',
+    resistor: 'Nhãn điện trở bị cháy mất. Hãy suy luận từ cách mắc mạch để hệ thống nhận diện lại linh kiện.',
+    source: 'Nguồn cấp đang dao động. Hãy xác định đại lượng còn thiếu để bộ ổn áp ngừng cảnh báo.',
+    lab: 'Khu đo đạc chỉ chấp nhận kết quả sau khi bạn quan sát dữ kiện và xác định đúng đại lượng cần tìm.',
+    engineer: 'Lỗi cuối cùng nằm trong mạch chính. Hãy lập luận đủ bước để mở khóa rơ-le an toàn.',
+  }
+
+  return briefs[station.id]
+}
+
+const getHintDeck = (stationId, exercise) => {
+  const method = exercise.method || []
+  const dataHint = `Dữ kiện quan trọng: ${getImportantData(exercise)}.`
+  const formulaHint = `Công thức liên quan: ${getFormulaHint(exercise)}.`
+
+  if (stationId === 'heat') {
+    return [dataHint, formulaHint]
+  }
+
+  if (stationId === 'engineer') {
+    return [
+      method[0] || 'Hãy xác định đại lượng mạch ngoài trước.',
+      method[1] || 'Hãy áp dụng định luật Ôm cho toàn mạch.',
+      method.find((step) => normalizeText(step).includes('phuong trinh')) || method[2] || 'Hãy lập hệ phương trình từ các trạng thái của mạch.',
+    ]
+  }
+
+  if (stationId === 'resistor') {
+    return [
+      method[0] || 'Hãy phân biệt trạng thái mắc nối tiếp và mắc song song.',
+      method[1] || formulaHint,
+    ]
+  }
+
+  return [
+    dataHint,
+    method[0] || formulaHint,
+  ]
+}
+
+const getMissionScore = (hintsUsed, hadWrongAttempt) => {
+  if (hadWrongAttempt) return 0
+  if (hintsUsed === 0) return 100
+  if (hintsUsed === 1) return 70
+  return 50
+}
+
+const getEngineerRank = (score, total) => {
+  const ratio = total ? score / total : 0
+  if (ratio >= 0.85) return 'Chuyên gia mạch điện'
+  if (ratio >= 0.65) return 'Kỹ sư'
+  if (ratio >= 0.4) return 'Kỹ thuật viên'
+  return 'Người mới'
+}
+
+function SourceStationGraph({ visible }) {
+  if (!visible) return null
+
+  return (
+    <div className="source-graph" aria-label="Minh họa nguồn điện">
+      <svg viewBox="0 0 420 220" role="img">
+        <path className="source-graph-axis" d="M55 175H375M55 175V35" />
+        <path className="source-graph-grid" d="M55 140H375M55 105H375M55 70H375M130 175V35M205 175V35M280 175V35" />
+        <path className="source-graph-line" d="M70 55L345 160" />
+        <circle cx="70" cy="55" r="7" />
+        <circle cx="345" cy="160" r="7" />
+        <text x="48" y="28">U</text>
+        <text x="378" y="190">I</text>
+        <text x="82" y="50">ξ</text>
+      </svg>
+      <p>Khi dòng điện tăng, hiệu điện thế mạch ngoài giảm do độ giảm thế bên trong nguồn.</p>
+    </div>
+  )
+}
+
+function LabCircuitPreview() {
+  return (
+    <div className="lab-circuit-preview" aria-hidden="true">
+      <span className="lab-node lab-node--battery">ξ</span>
+      <span className="lab-wire lab-wire--top" />
+      <span className="lab-node lab-node--resistor">R</span>
+      <span className="lab-wire lab-wire--bottom" />
+      <span className="lab-node lab-node--meter">V</span>
+    </div>
+  )
+}
+
+function ChapterReviewContent() {
+  const [gameState, setGameState] = useState(readRepairGameState)
+
+  useEffect(() => {
+    window.localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(gameState))
+  }, [gameState])
+
+  const stations = gameState.stations
+  const activeStation = stations[gameState.stationIndex] || stations[0]
+  const stationMeta = repairStationBlueprints.find((station) => station.id === activeStation?.id) || repairStationBlueprints[0]
+  const activeMissionId = activeStation?.missionIds?.[gameState.missionIndex]
+  const activeExercise = getExerciseById(activeMissionId) || getExerciseById(stations[0]?.missionIds?.[0])
+  const completedCount = gameState.completedMissionIds.length
+  const totalMissions = stations.reduce((total, station) => total + station.missionIds.length, 0)
+  const progressValue = totalMissions ? Math.round((completedCount / totalMissions) * 100) : 0
+  const missionHintsUsed = gameState.hintsUsedByMission[activeExercise?.id] || 0
+  const hintDeck = activeExercise ? getHintDeck(stationMeta.id, activeExercise) : []
+  const isMissionComplete = gameState.completedMissionIds.includes(activeExercise?.id)
+  const needsImageObservation = Boolean(activeExercise && getExerciseImage(activeExercise) && !gameState.imageViewedByMission[activeExercise.id])
+  const stationCompleted = activeStation?.missionIds?.every((id) => gameState.completedMissionIds.includes(id))
+  const maxScore = totalMissions * 100
+  const rank = getEngineerRank(gameState.score, maxScore)
+  const questionOptions = getQuestionOptions(activeExercise.question)
+  const questionParts = getQuestionParts(activeExercise.question)
+  const isGraphMission = isGraphExercise(activeExercise)
+  const storedAnswer = gameState.answers[activeExercise.id]
+  const selectedAnswer = typeof storedAnswer === 'string' ? storedAnswer : ''
+  const partAnswers = storedAnswer && typeof storedAnswer === 'object' ? storedAnswer : {}
+
+  const updateGame = (updater) => {
+    setGameState((current) => {
+      const next = typeof updater === 'function' ? updater(current) : updater
+      return next
+    })
+  }
+
+  const resetGame = () => setGameState(createRepairGameState())
+
+  const setAnswer = (value) => {
+    updateGame((current) => ({
+      ...current,
+      answers: {
+        ...current.answers,
+        [activeExercise.id]: value,
+      },
+    }))
+  }
+
+  const setPartAnswer = (partKey, value) => {
+    updateGame((current) => {
+      const currentAnswer = current.answers[activeExercise.id]
+      const nextAnswer = currentAnswer && typeof currentAnswer === 'object' ? currentAnswer : {}
+
+      return {
+        ...current,
+        answers: {
+          ...current.answers,
+          [activeExercise.id]: {
+            ...nextAnswer,
+            [partKey]: value,
+          },
+        },
+      }
+    })
+  }
+
+  const revealImage = () => {
+    updateGame((current) => ({
+      ...current,
+      imageViewedByMission: {
+        ...current.imageViewedByMission,
+        [activeExercise.id]: true,
+      },
+      feedback: 'Bạn đã quan sát sơ đồ. Bây giờ hãy dự đoán đại lượng cần khôi phục.',
+    }))
+  }
+
+  const requestHint = () => {
+    updateGame((current) => {
+      const currentHints = current.hintsUsedByMission[activeExercise.id] || 0
+      const nextHints = Math.min(hintDeck.length, currentHints + 1)
+
+      return {
+        ...current,
+        hintsUsedByMission: {
+          ...current.hintsUsedByMission,
+          [activeExercise.id]: nextHints,
+        },
+        feedback: nextHints >= 3 ? 'Gợi ý cuối đã mở. Hãy ghép các dữ kiện thành phương trình.' : 'Bạn đang đi đúng hướng.',
+      }
+    })
+  }
+
+  const submitAnswer = () => {
+    if (!activeExercise || isMissionComplete) return
+
+    const answer = gameState.answers[activeExercise.id] || ''
+    const isCorrect = isGraphMission
+      ? isGraphAnswerCorrect(activeExercise, answer)
+      : questionParts.parts.length
+      ? arePartAnswersCorrect(activeExercise, questionParts.parts, answer)
+      : isAnswerCorrect(activeExercise, answer)
+
+    updateGame((current) => {
+      if (!isCorrect) {
+        return {
+          ...current,
+          failedMissionIds: current.failedMissionIds.includes(activeExercise.id)
+            ? current.failedMissionIds
+            : [...current.failedMissionIds, activeExercise.id],
+          wrongAttemptByMission: {
+            ...current.wrongAttemptByMission,
+            [activeExercise.id]: true,
+          },
+          feedback: stationMeta.failure,
+        }
+      }
+
+      const earnedScore = getMissionScore(
+        current.hintsUsedByMission[activeExercise.id] || 0,
+        Boolean(current.wrongAttemptByMission[activeExercise.id]),
+      )
+
+      return {
+        ...current,
+        score: current.score + earnedScore,
+        completedMissionIds: [...current.completedMissionIds, activeExercise.id],
+        feedback: `${stationMeta.success} Điểm khôi phục: +${earnedScore}.`,
+      }
+    })
+  }
+
+  const toggleSolution = () => {
+    updateGame((current) => ({
+      ...current,
+      solutionOpenByMission: {
+        ...current.solutionOpenByMission,
+        [activeExercise.id]: !current.solutionOpenByMission[activeExercise.id],
+      },
+    }))
+  }
+
+  const goNext = () => {
+    updateGame((current) => {
+      const currentStation = current.stations[current.stationIndex]
+      const hasNextMission = current.missionIndex < currentStation.missionIds.length - 1
+      const hasNextStation = current.stationIndex < current.stations.length - 1
+
+      if (hasNextMission) {
+        return {
+          ...current,
+          missionIndex: current.missionIndex + 1,
+          feedback: 'Một tín hiệu mới vừa xuất hiện trên bảng điều khiển.',
+        }
+      }
+
+      if (hasNextStation) {
+        return {
+          ...current,
+          stationIndex: current.stationIndex + 1,
+          missionIndex: 0,
+          feedback: 'Trạm tiếp theo đã được mở khóa.',
+        }
+      }
+
+      return {
+        ...current,
+        finished: true,
+        feedback: 'Hệ thống điện đã hoạt động trở lại. Nhật ký sửa chữa đã hoàn tất.',
+      }
+    })
+  }
+
+  const jumpToUnlockedStation = (index) => {
+    if (index > gameState.stationIndex) return
+
+    updateGame((current) => ({
+      ...current,
+      stationIndex: index,
+      missionIndex: 0,
+      feedback: 'Đang kiểm tra lại trạm đã mở khóa.',
+    }))
+  }
+
+  if (!activeExercise) {
+    return (
+      <div className="repair-game">
+        <p>Chưa tìm thấy dữ liệu nhiệm vụ trong ngân hàng bài tập.</p>
+      </div>
+    )
+  }
+
+  if (gameState.finished) {
+    return (
+      <div className="repair-game repair-game--summary">
+        <section className="repair-summary">
+          <span>Nhật ký sửa chữa hoàn tất</span>
+          <h2>{rank}</h2>
+          <p>Điểm hệ thống: {gameState.score}/{maxScore}. Bạn đã khôi phục {completedCount}/{totalMissions} trạm thử thách trong ngân hàng dữ liệu.</p>
+          <div className="repair-summary-grid">
+            <article><strong>{completedCount}</strong><span>Tín hiệu đã sửa</span></article>
+            <article><strong>{gameState.failedMissionIds.length}</strong><span>Lần cảnh báo lỗi</span></article>
+            <article><strong>{progressValue}%</strong><span>Tiến độ</span></article>
+          </div>
+          <button className="repair-primary" type="button" onClick={resetGame}>Khởi động lượt chơi mới</button>
+        </section>
+      </div>
+    )
+  }
+
+  return (
+    <div className="repair-game">
+      <header className="repair-hero">
+        <div>
+          <span>Kỹ sư điện tập sự</span>
+          <h2>Sửa chữa hệ thống điện Chương IV</h2>
+          <p>Vượt qua các trạm bằng chính dữ liệu từ ngân hàng bài tập. Công thức và lời giải chỉ mở khi bạn chủ động yêu cầu.</p>
+        </div>
+        <div className="repair-score">
+          <strong>{gameState.score}</strong>
+          <span>điểm</span>
+        </div>
+      </header>
+
+      <div className="repair-progress" aria-label="Tiến độ sửa chữa">
+        <i><b style={{ width: `${progressValue}%` }} /></i>
+        <span>{completedCount}/{totalMissions} tín hiệu</span>
+      </div>
+
+      <nav className="repair-station-rail" aria-label="Các trạm thử thách">
+        {stations.map((station, index) => {
+          const meta = repairStationBlueprints.find((item) => item.id === station.id)
+          const completedStationCount = station.missionIds.filter((id) => gameState.completedMissionIds.includes(id)).length
+          const locked = index > gameState.stationIndex
+
+          return (
+            <button
+              className={index === gameState.stationIndex ? 'is-active' : locked ? 'is-locked' : ''}
+              disabled={locked}
+              key={station.id}
+              type="button"
+              onClick={() => jumpToUnlockedStation(index)}
+            >
+              <Icon name={meta.icon} />
+              <strong>{meta.name}</strong>
+              <span>{completedStationCount}/{station.missionIds.length}</span>
+            </button>
+          )
+        })}
+      </nav>
+
+      <main className="repair-stage">
+        <aside className="repair-briefing">
+          <div className="repair-station-icon"><Icon name={stationMeta.icon} /></div>
+          <span>{reviewLevelLabel[classifyPhysicsExercise(activeExercise)]}</span>
+          <h3>{stationMeta.name}</h3>
+          <p>{stationMeta.tagline}</p>
+          <div className="repair-feedback">{gameState.feedback}</div>
+          {stationMeta.id === 'lab' && !getExerciseImage(activeExercise) && <LabCircuitPreview />}
+          <SourceStationGraph visible={stationMeta.id === 'source' && isMissionComplete} />
+        </aside>
+
+        <section className="repair-console">
+          {needsImageObservation ? (
+            <article className="repair-observation">
+              <span>Quan sát sơ đồ</span>
+              <h3>Hãy quan sát hình trước khi thao tác.</h3>
+              <img src={getExerciseImage(activeExercise)} alt="Sơ đồ nhiệm vụ" />
+              <button className="repair-primary" type="button" onClick={revealImage}>Tôi đã quan sát</button>
+            </article>
+          ) : (
+            <>
+              <div className="repair-mission-head">
+                <span>{activeExercise.topic}</span>
+                <h3>{getMissionBrief(stationMeta, activeExercise)}</h3>
+              </div>
+
+              <div className="repair-question-panel">
+                <p>{questionParts.stem}</p>
+              </div>
+
+              {isGraphMission && (
+                <div className="repair-graph-task">
+                  <div className="repair-graph-canvas" aria-label="Khung phác thảo đồ thị">
+                    <svg viewBox="0 0 420 220" role="img">
+                      <path className="source-graph-axis" d="M55 175H375M55 175V35" />
+                      <path className="source-graph-grid" d="M55 140H375M55 105H375M55 70H375M130 175V35M205 175V35M280 175V35" />
+                      {isMissionComplete && getGraphAnswer(activeExercise) === 'origin-line' && <path className="source-graph-line" d="M60 170L350 48" />}
+                      {isMissionComplete && getGraphAnswer(activeExercise) === 'decreasing-line' && <path className="source-graph-line" d="M60 52L350 160" />}
+                      {isMissionComplete && getGraphAnswer(activeExercise) === 'horizontal-line' && <path className="source-graph-line" d="M60 96L350 96" />}
+                      {isMissionComplete && getGraphAnswer(activeExercise) === 'curved-line' && <path className="source-graph-line" d="M60 165C140 80 245 55 350 45" />}
+                      <text x="42" y="32">H</text>
+                      <text x="378" y="192">I</text>
+                    </svg>
+                    <p>{isMissionComplete ? 'Đồ thị minh họa đã được dựng sau khi trạm xác nhận đáp án.' : 'Chọn dạng đồ thị cần dựng cho hệ thống.'}</p>
+                  </div>
+                  <div className="repair-graph-options">
+                    {graphChoiceOptions.map((option) => (
+                      <button
+                        className={selectedAnswer === option.id ? 'is-selected' : ''}
+                        disabled={isMissionComplete}
+                        key={option.id}
+                        type="button"
+                        onClick={() => setAnswer(option.id)}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {!isGraphMission && questionOptions.length > 0 && (
+                <div className="repair-option-grid" aria-label="Các phương án khôi phục">
+                  {questionOptions.map((option) => (
+                    <button
+                      className={selectedAnswer.toUpperCase() === option.key ? 'is-selected' : ''}
+                      disabled={isMissionComplete}
+                      key={option.key}
+                      type="button"
+                      onClick={() => setAnswer(option.key)}
+                    >
+                      <b>{option.key}</b>
+                      <span>{option.text}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {!isGraphMission && questionParts.parts.length > 0 && (
+                <div className="repair-part-grid">
+                  {questionParts.parts.map((part) => (
+                    <label className="repair-answer-box repair-answer-box--part" key={part.key}>
+                      <span>{`Ý ${part.key}: ${part.prompt}`}</span>
+                      <input
+                        value={partAnswers[part.key] || ''}
+                        disabled={isMissionComplete}
+                        onChange={(event) => setPartAnswer(part.key, event.target.value)}
+                        placeholder={part.key === 'A' ? 'Nhập kết quả ý A kèm đơn vị' : `Nhập kết quả ý ${part.key} kèm đơn vị`}
+                      />
+                    </label>
+                  ))}
+                </div>
+              )}
+
+              {!isGraphMission && questionOptions.length === 0 && questionParts.parts.length === 0 && (
+                <label className="repair-answer-box">
+                  <span>Nhập kết quả khôi phục</span>
+                  <input
+                    value={selectedAnswer}
+                    disabled={isMissionComplete}
+                    onChange={(event) => setAnswer(event.target.value)}
+                    placeholder="VD: 2,5 A hoặc r = 1 Ω; ξ = 4,5 V"
+                  />
+                </label>
+              )}
+
+              <div className="repair-action-row">
+                <button className="repair-primary" type="button" disabled={isMissionComplete} onClick={submitAnswer}>Kích hoạt trạm</button>
+                <button className="repair-secondary" type="button" disabled={missionHintsUsed >= hintDeck.length || isMissionComplete} onClick={requestHint}>
+                  Gợi ý {stationMeta.id === 'engineer' ? `${missionHintsUsed}/3` : ''}
+                </button>
+                <button className="repair-secondary" type="button" onClick={toggleSolution}>Xem lời giải</button>
+              </div>
+
+              {missionHintsUsed > 0 && (
+                <div className="repair-hint-stack">
+                  {hintDeck.slice(0, missionHintsUsed).map((hint, index) => (
+                    <article key={`${hint}-${index}`}>
+                      <strong>Tín hiệu hỗ trợ {index + 1}</strong>
+                      <p>{hint}</p>
+                    </article>
+                  ))}
+                </div>
+              )}
+
+              {gameState.solutionOpenByMission[activeExercise.id] && (
+                <div className="repair-solution">
+                  <strong>Nhật ký sửa chữa từng bước</strong>
+                  <ol>
+                    {activeExercise.method.map((step) => <li key={`method-${step}`}>{step}</li>)}
+                    {activeExercise.solution.map((step) => <li key={`solution-${step}`}>{step}</li>)}
+                  </ol>
+                  <b>{activeExercise.final_answer}</b>
+                </div>
+              )}
+
+              {isMissionComplete && (
+                <div className="repair-complete-panel">
+                  <span>{stationCompleted ? 'Trạm hiện tại đã khôi phục' : 'Tín hiệu đã ổn định'}</span>
+                  <button className="repair-primary" type="button" onClick={goNext}>
+                    {completedCount === totalMissions ? 'Xem tổng kết' : stationCompleted ? 'Sang trạm tiếp theo' : 'Tín hiệu kế tiếp'}
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </section>
+      </main>
+
+      <div className="repair-footer">
+        <button className="repair-secondary" type="button" onClick={resetGame}>Xáo trộn lượt chơi</button>
+        <span>Toàn bộ {physicsBank.length} bài trong ngân hàng đã được đưa vào các trạm.</span>
+      </div>
+    </div>
+  )
+}
+
+function SelfStudyMenuContent({ content, studyData, onOpenLesson, onStartExercise, onClose }) {
+  const [activeLessonId, setActiveLessonId] = useState(lessonBlueprints[0].topicId)
+  const [selectedGame, setSelectedGame] = useState(0)
+  const [gameFeedback, setGameFeedback] = useState('Chọn một thử thách để bắt đầu.')
+  const [gameStats, setGameStats] = useState([
+    { score: 0, progress: 20, badge: 'Chặng 1' },
+    { score: 0, progress: 0, badge: 'Sẵn sàng' },
+    { score: 0, progress: 0, badge: 'Thợ săn mới' },
+  ])
+  const activeBlueprint = lessonBlueprints.find((lesson) => lesson.topicId === activeLessonId) || lessonBlueprints[0]
+  const activeTopic = topics.find((topic) => topic.id === activeBlueprint.topicId) || topics[0]
+
+  const playGameRound = (index, isCorrect) => {
+    setSelectedGame(index)
+    setGameStats((current) =>
+      current.map((game, gameIndex) =>
+        gameIndex === index
+          ? {
+              score: game.score + (isCorrect ? 10 : 0),
+              progress: Math.min(100, game.progress + (isCorrect ? 20 : 10)),
+              badge: game.progress + (isCorrect ? 20 : 10) >= 100 ? 'Hoàn thành' : game.badge,
+            }
+          : game,
+      ),
+    )
+    setGameFeedback(isCorrect ? 'Chính xác. Bạn vừa mở thêm một mảnh kiến thức mới.' : 'Chưa đúng. Xem gợi ý rồi thử lại nhé.')
+  }
+
+  if (content.featureKey === 'overview') {
+    return (
+      <div className="self-menu self-menu--overview">
+        <header className="self-menu-hero">
+          <span>Chương IV</span>
+          <h2>Dòng điện. Mạch điện</h2>
+          <p>Khám phá dòng điện bằng quan sát, kéo thả, câu hỏi nhanh và bài tập ngắn. Mục tiêu là hiểu cách mạch hoạt động, không học thuộc dài dòng.</p>
+        </header>
+        <section className="chapter-map" aria-label="Sơ đồ tư duy toàn chương">
+          {lessonBlueprints.map((lesson, index) => {
+            const topic = topics.find((item) => item.id === lesson.topicId)
+            return (
+              <button
+                className={lesson.topicId === activeLessonId ? 'chapter-node is-active' : 'chapter-node'}
+                key={lesson.topicId}
+                style={{ '--node-color': topic.color }}
+                type="button"
+                onClick={() => setActiveLessonId(lesson.topicId)}
+              >
+                <Icon name={topic.icon} />
+                <span>{`Bài ${topic.number}`}</span>
+                <strong>{topic.shortLabel}</strong>
+                <i>{index + 1}</i>
+              </button>
+            )
+          })}
+        </section>
+        <section className="overview-lesson-grid">
+          {lessonBlueprints.map((lesson) => {
+            const topic = topics.find((item) => item.id === lesson.topicId)
+            return (
+              <article className="overview-lesson-card" key={lesson.topicId}>
+                <div className="overview-lesson-head">
+                  <Icon name={topic.icon} />
+                  <div>
+                    <span>{`Bài ${topic.number}`}</span>
+                    <h3>{topic.shortLabel}</h3>
+                  </div>
+                </div>
+                <p>{lesson.goal}</p>
+                <div className="lesson-meta-grid">
+                  <span><b>Công thức</b>{lesson.formula}</span>
+                  <span><b>Thời gian</b>{lesson.duration}</span>
+                  <span><b>Độ khó</b>{lesson.difficulty}</span>
+                </div>
+                <button type="button" onClick={() => onOpenLesson(topic.id)}>Bắt đầu học</button>
+              </article>
+            )
+          })}
+        </section>
+      </div>
+    )
+  }
+
+  if (content.featureKey === 'lessons') {
+    return (
+      <div className="self-menu">
+        <header className="self-menu-hero">
+          <span>Bài học tương tác</span>
+          <h2>Học theo 6 bước ngắn</h2>
+          <p>Mỗi bài đi từ tình huống quen thuộc đến mô phỏng, phiếu học tập, bài luyện và tóm tắt.</p>
+        </header>
+        <div className="lesson-workspace">
+          <nav className="lesson-tabs" aria-label="Chọn bài học">
+            {lessonBlueprints.map((lesson) => {
+              const topic = topics.find((item) => item.id === lesson.topicId)
+              return (
+                <button className={lesson.topicId === activeLessonId ? 'is-active' : ''} key={lesson.topicId} type="button" onClick={() => setActiveLessonId(lesson.topicId)}>
+                  <span>{`Bài ${topic.number}`}</span>
+                  <strong>{topic.shortLabel}</strong>
+                </button>
+              )
+            })}
+          </nav>
+          <article className="lesson-path-card">
+            <div className="lesson-path-head">
+              <Icon name={activeTopic.icon} />
+              <div>
+                <span>{`Bài ${activeTopic.number}`}</span>
+                <h3>{activeTopic.shortLabel}</h3>
+                <p>{activeBlueprint.goal}</p>
+              </div>
+            </div>
+            <div className="learning-steps">
+              {['Khởi động', 'Khám phá', 'Hình thành kiến thức', 'Luyện tập', 'Vận dụng', 'Tóm tắt'].map((step, index) => (
+                <article key={step}>
+                  <b>{index + 1}</b>
+                  <div>
+                    <strong>{step}</strong>
+                    <span>{activeBlueprint.steps[index]}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="lesson-path-actions">
+              <button type="button" onClick={() => onOpenLesson(activeTopic.id)}>Mở bài tương tác</button>
+              <button type="button" onClick={() => onStartExercise(activeTopic.id)}>Làm bài luyện</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    )
+  }
+
+  if (content.featureKey === 'games') {
+    const games = [
+      ['Nhà thám hiểm điện học', 'Vượt 5 chặng tương ứng 5 bài. Mỗi chặng mở một mảnh bản đồ kiến thức.', 'Dòng điện mạnh hơn thường làm bóng đèn thế nào?', 'Sáng mạnh hơn'],
+      ['Đấu trường Vật lí', 'Câu hỏi ngẫu nhiên toàn chương, phản hồi đúng/sai ngay sau mỗi lượt.', 'Công thức định luật Ôm cho đoạn mạch là gì?', 'I = U/R'],
+      ['Săn kho báu công thức', 'Ghép đại lượng với công thức để mở khóa huy hiệu công thức.', 'Công thức tính công suất khi biết U và I?', 'P = UI'],
+    ]
+
+    return (
+      <div className="self-menu">
+        <header className="self-menu-hero">
+          <span>Trò chơi tổng hợp</span>
+          <h2>Luyện nhanh, phản hồi ngay</h2>
+          <p>Chơi từng lượt ngắn để kiểm tra hiểu bài. Sai thì nhận gợi ý, đúng thì tăng điểm và tiến trình.</p>
+        </header>
+        <section className="game-menu-grid">
+          {games.map(([title, body, prompt, answer], index) => (
+            <article className={selectedGame === index ? 'menu-game-card is-active' : 'menu-game-card'} key={title}>
+              <div className="menu-game-head">
+                <Icon name={index === 0 ? 'trophy' : index === 1 ? 'bolt' : 'notebook'} />
+                <div><h3>{title}</h3><p>{body}</p></div>
+              </div>
+              <div className="menu-game-progress"><span style={{ width: `${gameStats[index].progress}%` }} /></div>
+              <div className="menu-game-stats">
+                <span>Điểm: <b>{gameStats[index].score}</b></span>
+                <span>Huy hiệu: <b>{gameStats[index].badge}</b></span>
+              </div>
+              <div className="menu-game-question">
+                <strong>{prompt}</strong>
+                <div>
+                  <button type="button" onClick={() => playGameRound(index, true)}>{answer}</button>
+                  <button type="button" onClick={() => playGameRound(index, false)}>Đáp án khác</button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </section>
+        <p className="menu-feedback">{gameFeedback}</p>
+      </div>
+    )
+  }
+
+  if (content.featureKey === 'review') {
+    return <ChapterReviewContent onClose={onClose} />
+  }
+
+  if (content.featureKey === 'profile') {
+    return (
+      <div className="self-menu">
+        <header className="self-menu-hero">
+          <span>Hồ sơ học tập</span>
+          <h2>Theo dõi đúng thứ cần cải thiện</h2>
+          <p>Chỉ giữ các chỉ số giúp bạn biết đã học đến đâu, học có ổn không và cần quay lại bài nào.</p>
+        </header>
+        <section className="profile-metric-grid">
+          <article><span>% hoàn thành</span><strong>{studyData.averageLessonProgress}%</strong></article>
+          <article><span>Số bài đã học</span><strong>{studyData.completedLessons}/{topics.length}</strong></article>
+          <article><span>Điểm trung bình</span><strong>{studyData.averageQuizScore}/10</strong></article>
+          <article><span>Thời gian học</span><strong>{studyData.studyTimeLabel}</strong></article>
+        </section>
+        <section className="profile-progress-chart" aria-label="Biểu đồ tiến bộ học tập">
+          {studyData.progressDetails.map((item) => (
+            <div key={item.id}>
+              <span>{item.title.replace('Bài ', '')}</span>
+              <i><b style={{ width: `${item.progress}%` }} /></i>
+              <strong>{item.progress}%</strong>
+            </div>
+          ))}
+        </section>
+        <section className="profile-badges">
+          <h3>Thành tích đã mở khóa</h3>
+          <div>
+            {studyData.earnedBadges.map((badge) => (
+              <span className={badge.unlocked ? 'is-unlocked' : ''} key={badge.key}>{badge.icon} {badge.title}</span>
+            ))}
+          </div>
+        </section>
+      </div>
+    )
+  }
+
+  if (content.featureKey === 'formulas') {
+    return (
+      <div className="self-menu">
+        <header className="self-menu-hero">
+          <span>Sổ tay công thức</span>
+          <h2>Công thức đi kèm cách dùng</h2>
+          <p>Mỗi thẻ chỉ giữ ý nghĩa, đơn vị và một ví dụ nhanh để tra cứu khi làm bài.</p>
+        </header>
+        <section className="formula-card-grid">
+          {formulaCards.map((item) => (
+            <article className="formula-study-card" key={item.formula}>
+              <Icon name={item.icon} />
+              <h3>{item.formula}</h3>
+              <p>{item.meaning}</p>
+              <span><b>Đơn vị:</b> {item.units}</span>
+              <small>{item.example}</small>
+            </article>
+          ))}
+        </section>
+      </div>
+    )
+  }
+
+  return null
+}
+
+function FeatureDialog({ content, onClose, onAction, onOpenLesson, onStartExercise, studyData }) {
+  const isRestoredLesson = content.lessonId === 'cuong-do-dong-dien' || content.lessonId === 'dien-tro-dinh-luat-om' || content.lessonId === 'nguon-dien' || content.lessonId === 'nang-luong-cong-suat-dien' || content.lessonId === 'thuc-hanh-pin-dien-hoa'
+  const isSelfStudyMenu = ['overview', 'lessons', 'games', 'review', 'profile', 'formulas'].includes(content.featureKey)
+
+  return (
+    <section className={isRestoredLesson ? 'feature-dialog feature-dialog--lesson' : isSelfStudyMenu ? 'feature-dialog feature-dialog--self-menu' : 'feature-dialog'} aria-live="polite" aria-label={content.title}>
       <button className="dialog-close" type="button" aria-label="Đóng" onClick={onClose}>
         ×
       </button>
-      {!isRestoredLesson && (
+      {isSelfStudyMenu && (
+        <SelfStudyMenuContent
+          content={content}
+          studyData={studyData}
+          onOpenLesson={onOpenLesson}
+          onStartExercise={onStartExercise}
+          onClose={onClose}
+        />
+      )}
+      {!isRestoredLesson && !isSelfStudyMenu && (
         <>
           <p>Chức năng</p>
           <h2>{content.title}</h2>
           <span>{content.body}</span>
+          {content.details?.length > 0 && (
+            <div className="progress-detail-list">
+              {content.details.map((item) => (
+                <article className="progress-detail-item" key={item.id}>
+                  <div>
+                    <strong>{item.title}</strong>
+                    <span>{item.status}</span>
+                  </div>
+                  <div className="progress-detail-score">
+                    <b>{item.quizScore}/10</b>
+                    <span>{item.progress}%</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </>
       )}
       {content.lessonId === 'cuong-do-dong-dien' && <Lesson22InteractiveWorksheet onAction={onAction} />}
@@ -8370,7 +9547,7 @@ function FeatureDialog({ content, onClose, onAction }) {
       {content.lessonId === 'nguon-dien' && <Lesson24StructuredLessonV2 />}
       {content.lessonId === 'nang-luong-cong-suat-dien' && <Lesson25ElectricJourney />}
       {content.lessonId === 'thuc-hanh-pin-dien-hoa' && <Lesson26BatteryLab />}
-      {content.lessonId !== 'nguon-dien' && content.lessonId !== 'dien-tro-dinh-luat-om' && content.lessonId !== 'nang-luong-cong-suat-dien' && content.lessonId !== 'thuc-hanh-pin-dien-hoa' && content.branches?.length > 0 && (
+      {!isSelfStudyMenu && content.lessonId !== 'nguon-dien' && content.lessonId !== 'dien-tro-dinh-luat-om' && content.lessonId !== 'nang-luong-cong-suat-dien' && content.lessonId !== 'thuc-hanh-pin-dien-hoa' && content.branches?.length > 0 && (
         <div className="lesson-branches">
           <strong>Nhánh học tập của bài</strong>
           <div>
@@ -8382,7 +9559,7 @@ function FeatureDialog({ content, onClose, onAction }) {
           </div>
         </div>
       )}
-      {content.lessonId !== 'nguon-dien' && content.lessonId !== 'dien-tro-dinh-luat-om' && content.lessonId !== 'nang-luong-cong-suat-dien' && content.lessonId !== 'thuc-hanh-pin-dien-hoa' && (
+      {!isSelfStudyMenu && content.lessonId !== 'nguon-dien' && content.lessonId !== 'dien-tro-dinh-luat-om' && content.lessonId !== 'nang-luong-cong-suat-dien' && content.lessonId !== 'thuc-hanh-pin-dien-hoa' && content.actions?.length > 0 && (
         <div className="dialog-actions">
           {content.actions.map((action) => (
             <button key={action} type="button" onClick={() => onAction(action)}>
@@ -8716,6 +9893,13 @@ function App() {
   }
 
   const openFeature = (key) => {
+    if (key === 'lessons') {
+      setActiveFeature(null)
+      document.querySelector('.lessons-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      showToast('Đã chuyển đến danh sách bài học')
+      return
+    }
+
     if (key === 'ai') {
       document.querySelector('.ai-question-input')?.focus()
     }
@@ -8974,7 +10158,7 @@ function App() {
         actions: ['Tạo bài tập theo bài này', 'Hỏi AI về bài này', 'Đánh dấu đã học'],
       }
     : activeFeature
-      ? featureContent[activeFeature]
+      ? { ...featureContent[activeFeature], featureKey: activeFeature }
       : null
   const topicProgressList = topics.map((topic) => getTopicProgress(memory, topic.id))
   const completedLessons = topicProgressList.filter((progress) => progress >= 100).length
@@ -8983,8 +10167,65 @@ function App() {
   const averageLessonProgress = Math.round(
     topicProgressList.reduce((total, progress) => total + progress, 0) / topics.length,
   )
+  const averageQuizScore = (topicProgressList.reduce((total, progress) => total + progress / 10, 0) / topics.length).toFixed(1)
   const studyHours = Math.floor((memory.studyMinutes || 0) / 60)
   const studyMinutes = (memory.studyMinutes || 0) % 60
+  const studyTimeLabel = studyHours > 0 ? `${studyHours} giờ ${studyMinutes} phút` : `${studyMinutes} phút`
+  const weeklyGoal = 5
+  const nextTopic =
+    topics.find((topic) => getTopicProgress(memory, topic.id) > 0 && getTopicProgress(memory, topic.id) < 100) ||
+    topics.find((topic) => getTopicProgress(memory, topic.id) < 100) ||
+    topics[0]
+  const progressDetails = topics.map((topic) => {
+    const progress = getTopicProgress(memory, topic.id)
+    return {
+      id: topic.id,
+      title: `Bài ${topic.number}: ${topic.shortLabel}`,
+      status: getTopicStatus(progress),
+      progress,
+      quizScore: (progress / 10).toFixed(1),
+    }
+  })
+  const earnedBadges = [
+    {
+      key: 'explore',
+      icon: '🥉',
+      title: 'Khám phá',
+      description: 'Hoàn thành bài học đầu tiên',
+      unlocked: completedLessons >= 1,
+      unlockHint: 'Hoàn thành 1 bài học để mở khóa',
+    },
+    {
+      key: 'consistent',
+      icon: '🥈',
+      title: 'Kiên trì',
+      description: 'Hoàn thành nhiều bài liên tiếp',
+      unlocked: completedLessons >= 2 || (memory.streak || 0) >= 2,
+      unlockHint: 'Hoàn thành 2 bài hoặc trả lời đúng liên tiếp',
+    },
+    {
+      key: 'self-study',
+      icon: '🥇',
+      title: 'Tự học tốt',
+      description: 'Đạt điểm quiz cao',
+      unlocked: Number(averageQuizScore) >= 8.5,
+      unlockHint: 'Đạt quiz trung bình từ 8.5/10',
+    },
+  ]
+  const autoAssessment =
+    averageLessonProgress >= 100
+      ? `Bạn đã hoàn thành toàn bộ chương học và đạt điểm quiz trung bình ${averageQuizScore}/10. Hãy ôn lại các bài có điểm thấp để giữ phong độ.`
+      : `Bạn đã hoàn thành ${averageLessonProgress}% chương học và đạt điểm quiz trung bình ${averageQuizScore}/10. Hãy tiếp tục hoàn thành bài còn lại để mở khóa huy hiệu cao nhất.`
+  const studyData = {
+    averageLessonProgress,
+    completedLessons,
+    inProgressLessons,
+    notStartedLessons,
+    averageQuizScore,
+    studyTimeLabel,
+    progressDetails,
+    earnedBadges,
+  }
   const dialogContent =
     activeFeature === 'account'
       ? {
@@ -8996,13 +10237,21 @@ function App() {
       : activeFeature === 'achievements'
         ? {
             ...activeContent,
-            body: `Điểm kinh nghiệm: ${memory.experience || 0}. Chuỗi học hiện tại: ${memory.streak || 0}. Huy hiệu đã đạt: ${memory.badges || 0}.`,
+            body: `Điểm Quiz trung bình: ${averageQuizScore}/10. Mục tiêu tuần: ${Math.min(completedLessons, weeklyGoal)}/${weeklyGoal} bài. Bài đã hoàn thành: ${completedLessons} bài.`,
           }
         : activeFeature === 'badges'
           ? {
               ...activeContent,
-              body: `Bạn đang có ${memory.badges || 0} huy hiệu. Học và trả lời đúng để mở thêm huy hiệu mới trong ngày.`,
+              body: earnedBadges
+                .map((badge) => `${badge.title}: ${badge.unlocked ? badge.description : badge.unlockHint}`)
+                .join('. '),
           }
+          : activeFeature === 'progress'
+            ? {
+                ...activeContent,
+                body: `Hoàn thành ${averageLessonProgress}% chương. Đã hoàn thành ${completedLessons}/${topics.length} bài, đang học ${inProgressLessons} bài, chưa học ${notStartedLessons} bài. Điểm Quiz trung bình: ${averageQuizScore}/10.`,
+                details: progressDetails,
+              }
           : activeContent
 
   if (!currentStudent) {
@@ -9283,16 +10532,17 @@ function App() {
             <section className="panel progress-panel">
               <h2>TIẾN TRÌNH HỌC TẬP</h2>
               <div className="progress-body">
-                <div className="progress-ring">
+                <div className="progress-ring" style={{ '--progress': `${averageLessonProgress}%` }}>
                   <span>{`${averageLessonProgress}%`}</span>
+                  <small>Hoàn thành</small>
                 </div>
                 <div className="progress-legend">
-                  <span><i className="dot dot-green" />Đã hoàn thành: {completedLessons} bài</span>
+                  <span><i className="dot dot-green" />Đã hoàn thành: {completedLessons}/{topics.length} bài</span>
                   <span><i className="dot dot-orange" />Đang học: {inProgressLessons} bài</span>
                   <span><i className="dot dot-purple" />Chưa học: {notStartedLessons} bài</span>
                 </div>
               </div>
-              <p className="study-time">Thời gian học: {studyHours} giờ {studyMinutes} phút</p>
+              <p className="quiz-average">Điểm Quiz trung bình: <strong>{averageQuizScore}/10</strong></p>
               <button className="primary-button" type="button" onClick={() => openFeature('progress')}>
                 <Icon name="bar" />
                 Xem chi tiết tiến trình
@@ -9304,38 +10554,55 @@ function App() {
               <div className="stat-row">
                 <button type="button" onClick={() => openFeature('achievements')}>
                   <Icon name="star" />
-                  <strong>{memory.experience || 0}</strong>
-                  <span>Điểm kinh nghiệm</span>
+                  <strong>{averageQuizScore} / 10</strong>
+                  <span>Điểm Quiz trung bình</span>
                 </button>
                 <button type="button" onClick={() => openFeature('achievements')}>
-                  <Icon name="flame" />
-                  <strong>{memory.streak || 0}</strong>
-                  <span>Ngày học liên tục</span>
+                  <Icon name="target" />
+                  <strong>{Math.min(completedLessons, weeklyGoal)} / {weeklyGoal} bài</strong>
+                  <span>Mục tiêu tuần</span>
                 </button>
                 <button type="button" onClick={() => openFeature('badges')}>
-                  <Icon name="shield" />
-                  <strong>{memory.badges || 0}</strong>
-                  <span>Huy hiệu</span>
+                  <Icon name="trophy" />
+                  <strong>{completedLessons} bài</strong>
+                  <span>Bài đã hoàn thành</span>
                 </button>
               </div>
               <div className="badge-heading">
                 <h3>Huy hiệu</h3>
-                <button type="button" onClick={() => openFeature('badges')}>Xem tất cả</button>
               </div>
               <div className="badge-row">
-                <button className="badge badge-bronze" type="button" onClick={() => openFeature('badges')}>
-                  <Icon name="shield" />
-                  <span>Khám phá</span>
-                </button>
-                <button className="badge badge-silver" type="button" onClick={() => openFeature('badges')}>
-                  <Icon name="star" />
-                  <span>Kiên trì</span>
-                </button>
-                <button className="badge badge-purple" type="button" onClick={() => openFeature('badges')}>
-                  <Icon name="bolt" />
-                  <span>Tự học tốt</span>
-                </button>
+                {earnedBadges.map((badge) => (
+                  <button
+                    className={`badge ${badge.unlocked ? 'badge--unlocked' : 'badge--locked'}`}
+                    key={badge.key}
+                    title={badge.unlocked ? badge.description : badge.unlockHint}
+                    type="button"
+                    onClick={() => openFeature('badges')}
+                  >
+                    <span className="badge-icon" aria-hidden="true">{badge.icon}</span>
+                    <strong>{badge.title}</strong>
+                    <small>{badge.unlocked ? badge.description : badge.unlockHint}</small>
+                  </button>
+                ))}
               </div>
+            </section>
+
+            <section className="panel next-study-panel">
+              <div className="next-study-icon" aria-hidden="true">📌</div>
+              <div>
+                <h2>GỢI Ý TIẾP THEO</h2>
+                <p>{`Bài ${nextTopic.number}: ${nextTopic.shortLabel} đang chờ bạn khám phá.`}</p>
+              </div>
+              <button type="button" onClick={() => openLesson(nextTopic.id)}>
+                <Icon name="play" />
+                Học tiếp
+              </button>
+            </section>
+
+            <section className="panel auto-assessment-panel">
+              <h2>NHẬN XÉT TỰ ĐỘNG</h2>
+              <p>{autoAssessment}</p>
             </section>
 
             <section className="panel ai-panel">
@@ -9389,8 +10656,11 @@ function App() {
       {activeContent && (
         <FeatureDialog
           content={dialogContent}
+          studyData={studyData}
           onAction={handleDialogAction}
           onClose={() => setActiveFeature(null)}
+          onOpenLesson={openLesson}
+          onStartExercise={startAiExercise}
         />
       )}
       {isMindmapOpen && (

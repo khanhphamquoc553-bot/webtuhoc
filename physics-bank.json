@@ -1,0 +1,466 @@
+[
+  {
+    "id": "IV.1",
+    "chapter": "Chương IV",
+    "topic": "Cường độ dòng điện và số electron dịch chuyển",
+    "difficulty": 1,
+    "question": "Số electron dịch chuyển qua tiết diện thẳng của dây trong thời gian 2 s là 6,25.10^18. Khi đó dòng điện qua dây dẫn có cường độ là\nA. 1 A\nB. 2 A\nC. 1,25 A\nD. 0,5 A",
+    "method": [
+      "Dùng công thức liên hệ giữa số electron, cường độ dòng điện và thời gian: N = It/|e|.",
+      "Suy ra I = N|e|/t.",
+      "Thay số với |e| = 1,6.10^-19 C."
+    ],
+    "solution": [
+      "Ta có N = 6,25.10^18 electron, t = 2 s.",
+      "Cường độ dòng điện: I = N|e|/t.",
+      "I = 6,25.10^18 . 1,6.10^-19 / 2 = 0,5 A."
+    ],
+    "final_answer": "0,5 A. Chọn D."
+  },
+  {
+    "id": "IV.2",
+    "chapter": "Chương IV",
+    "topic": "Điện lượng và cường độ dòng điện",
+    "difficulty": 2,
+    "question": "Số electron đi qua tiết diện thẳng của một dây dẫn kim loại trong 1 s là 1,25.10^19. Biết rằng dòng điện không đổi, điện lượng đi qua tiết diện đó trong 15 giây là\nA. 10 C\nB. 20 C\nC. 30 C\nD. 40 C",
+    "method": [
+      "Tính cường độ dòng điện từ số electron đi qua trong 1 s: I = N|e|/t.",
+      "Tính điện lượng trong 15 s bằng q = It."
+    ],
+    "solution": [
+      "Với N = 1,25.10^19, t = 1 s, ta có I = 1,25.10^19 . 1,6.10^-19 / 1 = 2 A.",
+      "Điện lượng đi qua tiết diện trong 15 s là q = It = 2 . 15 = 30 C."
+    ],
+    "final_answer": "30 C. Chọn C."
+  },
+  {
+    "id": "IV.3",
+    "chapter": "Chương IV",
+    "topic": "Điện lượng và cường độ dòng điện",
+    "difficulty": 1,
+    "question": "Cường độ dòng điện chạy qua tiết diện thẳng của dây dẫn là 1,5 A. Trong khoảng thời gian 3 s thì điện lượng chuyển qua tiết diện dây là\nA. 0,5 C\nB. 2,0 C\nC. 4,5 C\nD. 5,4 C",
+    "method": [
+      "Áp dụng công thức q = It.",
+      "Thay I = 1,5 A và t = 3 s."
+    ],
+    "solution": [
+      "Điện lượng chuyển qua tiết diện dây trong 3 s là q = It.",
+      "q = 1,5 . 3 = 4,5 C."
+    ],
+    "final_answer": "4,5 C. Chọn C."
+  },
+  {
+    "id": "IV.4",
+    "chapter": "Chương IV",
+    "topic": "Điện lượng trong dòng điện không đổi",
+    "difficulty": 2,
+    "question": "Cho một dòng điện không đổi chạy qua một dây dẫn, trong 10 s, điện lượng chuyển qua tiết diện thẳng của dây dẫn là 2 C. Sau 60 s điện lượng chuyển qua tiết diện thẳng đó là\nA. 6 C\nB. 12 C\nC. 60 C\nD. 20 C",
+    "method": [
+      "Tính cường độ dòng điện từ q = It.",
+      "Dòng điện không đổi nên dùng cùng cường độ để tính điện lượng sau 60 s."
+    ],
+    "solution": [
+      "Cường độ dòng điện là I = q/t = 2/10 = 0,2 A.",
+      "Sau 60 s, điện lượng chuyển qua tiết diện là q = It = 0,2 . 60 = 12 C."
+    ],
+    "final_answer": "12 C. Chọn B."
+  },
+  {
+    "id": "IV.5",
+    "chapter": "Chương IV",
+    "topic": "Định luật Ohm cho điện trở",
+    "difficulty": 1,
+    "question": "Cường độ dòng điện chạy qua điện trở R = 5 Ω là 0,5 A. Hiệu điện thế giữa hai đầu điện trở là\nA. 2,5 V\nB. 25 V\nC. 0,5 V\nD. 10 V",
+    "method": [
+      "Dùng định luật Ohm: I = U/R.",
+      "Suy ra U = IR."
+    ],
+    "solution": [
+      "Hiệu điện thế giữa hai đầu điện trở là U = IR.",
+      "U = 0,5 . 5 = 2,5 V."
+    ],
+    "final_answer": "2,5 V. Chọn A."
+  },
+  {
+    "id": "IV.6",
+    "chapter": "Chương IV",
+    "topic": "Định luật Ohm và sự phụ thuộc I vào U",
+    "difficulty": 2,
+    "question": "Đặt một hiệu điện thế U = 12 V vào hai đầu một điện trở, cường độ dòng điện chạy qua điện trở là 2 A. Nếu tăng hiệu điện thế lên hai lần thì cường độ dòng điện có giá trị\nA. 4 A\nB. 2 A\nC. 12 A\nD. 0,24 A",
+    "method": [
+      "Dùng định luật Ohm để tính điện trở R = U/I.",
+      "Khi điện trở không đổi, nếu hiệu điện thế tăng hai lần thì cường độ dòng điện cũng tăng hai lần.",
+      "Hoặc tính trực tiếp I' = U'/R."
+    ],
+    "solution": [
+      "Điện trở: R = U/I = 12/2 = 6 Ω.",
+      "Hiệu điện thế mới U' = 2U = 24 V.",
+      "Cường độ dòng điện mới: I' = U'/R = 24/6 = 4 A."
+    ],
+    "final_answer": "4 A. Chọn A."
+  },
+  {
+    "id": "IV.7",
+    "chapter": "Chương IV",
+    "topic": "Định luật Ohm và thay đổi điện trở",
+    "difficulty": 3,
+    "question": "Đặt vào hai đầu một điện trở R một hiệu điện thế U = 12 V, cường độ dòng điện chạy qua điện trở là 1,5 A. Nếu giữ nguyên hiệu điện thế nhưng muốn cường độ dòng điện chạy qua điện trở giảm đi 0,5 A thì ta phải tăng giá trị điện trở thêm một lượng là\nA. 5,0 Ω\nB. 4,5 Ω\nC. 4,0 Ω\nD. 5,5 Ω",
+    "method": [
+      "Tính điện trở ban đầu bằng R = U/I.",
+      "Tính cường độ dòng điện mới I' = I - 0,5.",
+      "Tính điện trở mới R' = U/I'.",
+      "Độ tăng điện trở là ΔR = R' - R."
+    ],
+    "solution": [
+      "Điện trở ban đầu: R = 12/1,5 = 8 Ω.",
+      "Cường độ dòng điện mới: I' = 1,5 - 0,5 = 1,0 A.",
+      "Điện trở mới: R' = 12/1,0 = 12 Ω.",
+      "Phải tăng thêm: ΔR = 12 - 8 = 4 Ω."
+    ],
+    "final_answer": "4,0 Ω. Chọn C."
+  },
+  {
+    "id": "IV.8",
+    "chapter": "Chương IV",
+    "topic": "Định luật Ohm và thay đổi hiệu điện thế",
+    "difficulty": 2,
+    "question": "Khi đặt hiệu điện thế U = 8 V vào hai đầu một dây dẫn thì dòng điện chạy qua dây có cường độ I = 0,2 A. Nếu tăng hiệu điện thế thêm 4 V thì dòng điện chạy qua dây dẫn khi đó có cường độ là\nA. 0,2 A\nB. 0,3 A\nC. 0,4 A\nD. 0,8 A",
+    "method": [
+      "Tính điện trở dây dẫn bằng R = U/I.",
+      "Tính hiệu điện thế mới U' = U + 4.",
+      "Tính cường độ dòng điện mới I' = U'/R."
+    ],
+    "solution": [
+      "Điện trở ban đầu: R = 8/0,2 = 40 Ω.",
+      "Hiệu điện thế mới: U' = 8 + 4 = 12 V.",
+      "Cường độ dòng điện mới: I' = U'/R = 12/40 = 0,3 A."
+    ],
+    "final_answer": "0,3 A. Chọn B."
+  },
+  {
+    "id": "IV.9",
+    "chapter": "Chương IV",
+    "topic": "Suất điện động của nguồn điện",
+    "difficulty": 1,
+    "question": "Công của lực lạ làm di chuyển điện tích 4 C từ cực âm đến cực dương bên trong nguồn điện là 24 J. Suất điện động của nguồn là\nA. 0,16 V\nB. 6 V\nC. 96 V\nD. 0,6 V",
+    "method": [
+      "Dùng công thức suất điện động: ξ = A/q.",
+      "Thay A = 24 J và q = 4 C."
+    ],
+    "solution": [
+      "Suất điện động của nguồn là ξ = A/q.",
+      "ξ = 24/4 = 6 V."
+    ],
+    "final_answer": "6 V. Chọn B."
+  },
+  {
+    "id": "IV.10",
+    "chapter": "Chương IV",
+    "topic": "Suất điện động và điện lượng",
+    "difficulty": 2,
+    "question": "Suất điện động của một nguồn điện là 1,5 V, lực lạ làm di chuyển điện tích thực hiện một công 6 mJ. Lượng điện tích dịch chuyển khi đó là\nA. 15.10^-3 C\nB. 4.10^-3 C\nC. 0,5.10^-3 C\nD. 1,5.10^-3 C",
+    "method": [
+      "Dùng công thức ξ = A/q.",
+      "Suy ra q = A/ξ.",
+      "Đổi 6 mJ = 6.10^-3 J."
+    ],
+    "solution": [
+      "Điện tích dịch chuyển là q = A/ξ.",
+      "q = 6.10^-3 / 1,5 = 4.10^-3 C."
+    ],
+    "final_answer": "4.10^-3 C. Chọn B."
+  },
+  {
+    "id": "IV.11",
+    "chapter": "Chương IV",
+    "topic": "Công của nguồn điện",
+    "difficulty": 1,
+    "question": "Một nguồn điện có suất điện động 24 V. Để chuyển một điện lượng 10 C qua nguồn thì lực lạ phải sinh một công là\nA. 100 J\nB. 2,4 J\nC. 24 J\nD. 240 J",
+    "method": [
+      "Dùng công thức ξ = A/q.",
+      "Suy ra A = qξ."
+    ],
+    "solution": [
+      "Công của lực lạ là A = qξ.",
+      "A = 10 . 24 = 240 J."
+    ],
+    "final_answer": "240 J. Chọn D."
+  },
+  {
+    "id": "IV.12",
+    "chapter": "Chương IV",
+    "topic": "Suất điện động và công của nguồn",
+    "difficulty": 2,
+    "question": "Một nguồn điện có suất điện động không đổi, để chuyển một điện lượng 5 C thì lực lạ phải sinh một công là 20 mJ. Để chuyển một điện lượng 10 C qua nguồn thì lực lạ phải sinh một công là\nA. 10 mJ\nB. 15 mJ\nC. 20 mJ\nD. 40 mJ",
+    "method": [
+      "Tính suất điện động từ ξ = A/q.",
+      "Vì suất điện động không đổi, tính công mới bằng A' = q'ξ."
+    ],
+    "solution": [
+      "Đổi 20 mJ = 20.10^-3 J.",
+      "Suất điện động: ξ = A/q = 20.10^-3 / 5 = 4.10^-3 V.",
+      "Với q' = 10 C, công cần có là A' = q'ξ = 10 . 4.10^-3 = 40.10^-3 J = 40 mJ."
+    ],
+    "final_answer": "40 mJ. Chọn D."
+  },
+  {
+    "id": "IV.13",
+    "chapter": "Chương IV",
+    "topic": "Thông số acquy và điện lượng",
+    "difficulty": 2,
+    "question": "Một acquy có ghi thông số 12 V - 20 Ah. Thông số này cho biết\nA. điện lượng cực đại của acquy là 7 200 C\nB. điện trở trong của acquy là 0,16 Ω\nC. dòng điện lớn nhất mà acquy có thể cung cấp là 20 A\nD. năng lượng dự trữ của acquy là 12.10^6 J",
+    "method": [
+      "Hiểu ý nghĩa thông số Ah là dung lượng điện tích của acquy.",
+      "Đổi Ah sang C theo 1 Ah = 3600 C.",
+      "Đối chiếu với các phương án."
+    ],
+    "solution": [
+      "Dung lượng điện tích của acquy là 20 Ah.",
+      "Đổi ra coulomb: 20 Ah = 20 . 3600 = 72 000 C.",
+      "Các phương án cho sẵn không khớp chính xác với giá trị này; nội dung đúng là thông số 20 Ah cho biết điện lượng cực đại khoảng 72 000 C."
+    ],
+    "final_answer": "Điện lượng cực đại là 72 000 C; trong các lựa chọn ảnh chụp không có đáp án đúng chính xác."
+  },
+  {
+    "id": "IV.14",
+    "chapter": "Chương IV",
+    "topic": "Ý nghĩa công suất điện",
+    "difficulty": 1,
+    "question": "Công suất điện cho biết\nA. khả năng thực hiện công của dòng điện\nB. năng lượng của dòng điện\nC. lượng điện năng sử dụng trong một đơn vị thời gian\nD. mức độ mạnh - yếu của dòng điện",
+    "method": [
+      "Dùng định nghĩa công suất điện.",
+      "Công suất là điện năng tiêu thụ hoặc công thực hiện trong một đơn vị thời gian."
+    ],
+    "solution": [
+      "Công suất điện cho biết lượng điện năng sử dụng trong một đơn vị thời gian."
+    ],
+    "final_answer": "Lượng điện năng sử dụng trong một đơn vị thời gian. Chọn C."
+  },
+  {
+    "id": "IV.15",
+    "chapter": "Chương IV",
+    "topic": "Ý nghĩa số oát ghi trên thiết bị điện",
+    "difficulty": 1,
+    "question": "Trên các thiết bị điện gia dụng thường có ghi 220 V và số oát (W). Số oát này có ý nghĩa gì?\nA. Công suất tiêu thụ điện của dụng cụ khi nó được sử dụng với những hiệu điện thế nhỏ hơn 220 V\nB. Công suất tiêu thụ điện của dụng cụ khi nó được sử dụng với đúng hiệu điện thế 220 V\nC. Công mà dòng điện thực hiện trong một phút khi dụng cụ này được sử dụng với đúng hiệu điện thế 220 V\nD. Điện năng mà dụng cụ tiêu thụ trong một giờ khi nó được sử dụng với đúng hiệu điện thế 220 V",
+    "method": [
+      "Dựa vào ý nghĩa thông số định mức ghi trên thiết bị điện.",
+      "Số oát là công suất tiêu thụ định mức khi thiết bị hoạt động đúng hiệu điện thế định mức."
+    ],
+    "solution": [
+      "Khi thiết bị ghi 220 V và một số oát, số oát đó là công suất tiêu thụ điện của dụng cụ khi được dùng đúng hiệu điện thế 220 V."
+    ],
+    "final_answer": "Công suất tiêu thụ điện khi dùng đúng hiệu điện thế 220 V. Chọn B."
+  },
+  {
+    "id": "IV.16",
+    "chapter": "Chương IV",
+    "topic": "Công suất định mức",
+    "difficulty": 1,
+    "question": "Công suất định mức của các dụng cụ điện là\nA. công suất lớn nhất mà dụng cụ đó có thể đạt được\nB. công suất tối thiểu mà dụng cụ đó có thể đạt được\nC. công suất đạt được khi nó hoạt động bình thường\nD. công suất trung bình của dụng cụ đó",
+    "method": [
+      "Dùng khái niệm công suất định mức.",
+      "Công suất định mức là công suất khi thiết bị hoạt động bình thường đúng điều kiện định mức."
+    ],
+    "solution": [
+      "Công suất định mức của dụng cụ điện là công suất đạt được khi nó hoạt động bình thường."
+    ],
+    "final_answer": "Công suất đạt được khi hoạt động bình thường. Chọn C."
+  },
+  {
+    "id": "IV.17",
+    "chapter": "Chương IV",
+    "topic": "Tốc độ trôi của electron trong kim loại",
+    "difficulty": 5,
+    "question": "Tính tốc độ dịch chuyển có hướng của electron trong một dây đồng tiết diện thẳng 1 mm^2 có dòng điện 1 A chạy qua. Cho biết khối lượng riêng của đồng ρ = 9.10^3 kg/m^3 và mỗi nguyên tử đồng cho một electron tự do.",
+    "method": [
+      "Xác định số electron tự do trong 1 mol đồng: Ne = NA = 6,023.10^23.",
+      "Dùng khối lượng mol của đồng M = 64.10^-3 kg/mol.",
+      "Tính thể tích của 1 mol đồng: V = M/ρ.",
+      "Tính mật độ electron tự do: n = Ne/V.",
+      "Dùng công thức cường độ dòng điện trong kim loại: I = Snve.",
+      "Suy ra tốc độ trôi: v = I/(Sne)."
+    ],
+    "solution": [
+      "Với 1 mol đồng, số electron tự do là Ne = NA = 6,023.10^23.",
+      "Khối lượng mol của đồng: M = 64.10^-3 kg/mol.",
+      "Thể tích của 1 mol đồng: V = M/ρ = 64.10^-3 / (9.10^3) ≈ 7,1.10^-6 m^3/mol.",
+      "Mật độ electron tự do: n = Ne/V = 6,023.10^23 / 7,1.10^-6 ≈ 8,48.10^28 m^-3.",
+      "Tiết diện dây: S = 1 mm^2 = 1.10^-6 m^2.",
+      "Tốc độ trôi: v = I/(Sne) = 1/(8,48.10^28 . 1.10^-6 . 1,6.10^-19) ≈ 7,3.10^-5 m/s.",
+      "Đổi đơn vị: 7,3.10^-5 m/s = 0,073 mm/s."
+    ],
+    "final_answer": "v ≈ 7,3.10^-5 m/s = 0,073 mm/s."
+  },
+  {
+    "id": "IV.18",
+    "chapter": "Chương IV",
+    "topic": "Mật độ electron tự do và tiết diện dây dẫn",
+    "difficulty": 5,
+    "question": "Bạc có khối lượng riêng 10,5 g/cm^3 và mỗi nguyên tử cho một electron tự do. Dây bạc hình trụ có đường kính bằng bao nhiêu nếu dòng điện chạy trong dây bạc có cường độ I = 1 A, tốc độ dịch chuyển có hướng của các electron tự do là 3,4.10^-5 m/s.",
+    "method": [
+      "Đổi khối lượng riêng: 10,5 g/cm^3 = 10,5.10^6 g/m^3 hoặc 10,5.10^3 kg/m^3.",
+      "Dùng số Avogadro NA = 6,023.10^23 và khối lượng mol bạc M = 108 g/mol.",
+      "Tính mật độ electron tự do n = NAρ/M.",
+      "Dùng I = Snve để tính tiết diện S = I/(nve).",
+      "Với dây hình trụ, S = π(d/2)^2 nên d = 2√(S/π)."
+    ],
+    "solution": [
+      "Vì mỗi nguyên tử bạc góp một electron tự do nên trong 1 mol bạc có Ne = NA = 6,023.10^23 electron.",
+      "Mật độ electron tự do: n = NAρ/M = (6,023.10^23/108) . 10,5.10^6 ≈ 5,86.10^28 electron/m^3.",
+      "Tiết diện dây: S = I/(nve) = 1/(5,86.10^28 . 3,4.10^-5 . 1,6.10^-19) ≈ 3.10^-6 m^2.",
+      "Đường kính dây: d = 2√(S/π) = 2√(3.10^-6/π) ≈ 0,002 m = 2 mm."
+    ],
+    "final_answer": "d ≈ 2 mm."
+  },
+  {
+    "id": "IV.20",
+    "chapter": "Chương IV",
+    "topic": "Công suất tỏa nhiệt và dòng điện",
+    "difficulty": 4,
+    "question": "Một dây điện trở có thể làm 500 mL nước tăng nhiệt độ thêm 60° trong 5 phút khi hoạt động ở hiệu điện thế 220 V. Biết nhiệt dung riêng của nước là 4180 J/kg.K.\na) Tính công suất tỏa nhiệt của điện trở.\nb) Cường độ dòng điện qua điện trở là bao nhiêu?",
+    "method": [
+      "Đổi 500 mL nước thành khối lượng m = 0,5 kg.",
+      "Tính nhiệt lượng cần cung cấp: Q = mcΔt.",
+      "Đổi thời gian 5 phút = 300 s.",
+      "Tính công suất P = Q/t.",
+      "Tính cường độ dòng điện từ P = UI, suy ra I = P/U."
+    ],
+    "solution": [
+      "Khối lượng nước: m = 500 mL = 0,5 kg.",
+      "Nhiệt lượng cần để nước tăng thêm 60°: Q = mcΔt = 0,5 . 4180 . 60 = 125400 J.",
+      "Thời gian: t = 5 phút = 300 s.",
+      "Công suất tỏa nhiệt: P = Q/t = 125400/300 = 418 W.",
+      "Cường độ dòng điện: I = P/U = 418/220 ≈ 1,9 A."
+    ],
+    "final_answer": "P = 418 W; I ≈ 1,9 A."
+  },
+  {
+    "id": "IV.21",
+    "chapter": "Chương IV",
+    "topic": "Điện trở tương đương nối tiếp và song song",
+    "difficulty": 5,
+    "question": "Hai điện trở R1 và R2 mắc nối tiếp thì điện trở tương đương lớn gấp 6,25 lần điện trở tương đương khi mắc song song. Tính tỉ số hai điện trở R1/R2.",
+    "method": [
+      "Viết điện trở tương đương nối tiếp: Rnt = R1 + R2.",
+      "Viết điện trở tương đương song song: Rss = R1R2/(R1 + R2).",
+      "Theo đề: Rnt = 6,25Rss.",
+      "Đặt x = R1/R2 để lập phương trình theo x."
+    ],
+    "solution": [
+      "Ta có R1 + R2 = 6,25 . R1R2/(R1 + R2).",
+      "Suy ra (R1 + R2)^2 = 6,25R1R2.",
+      "Đặt x = R1/R2, ta được (x + 1)^2 = 6,25x.",
+      "Khai triển: x^2 + 2x + 1 = 6,25x, hay x^2 - 4,25x + 1 = 0.",
+      "Giải phương trình được x = 4 hoặc x = 0,25."
+    ],
+    "final_answer": "R1/R2 = 4 hoặc R1/R2 = 0,25."
+  },
+  {
+    "id": "IV.22",
+    "chapter": "Chương IV",
+    "topic": "Hiệu suất nguồn điện và dòng điện",
+    "difficulty": 3,
+    "question": "Cho một nguồn điện có suất điện động ξ và điện trở trong r. Nguồn điện được mắc với một điện trở R tạo thành mạch kín. Vẽ đồ thị phụ thuộc của hiệu suất nguồn điện vào cường độ dòng điện.",
+    "method": [
+      "Dùng hiệu suất nguồn điện H = Aích/Ang.",
+      "Biểu diễn công có ích qua mạch ngoài và công toàn phần của nguồn.",
+      "Tìm quan hệ H theo I."
+    ],
+    "solution": [
+      "Hiệu suất nguồn điện: H = Aích/Ang = UIt/(ξIt) = U/ξ.",
+      "Với mạch ngoài là điện trở R, U = RI.",
+      "Suy ra H = RI/ξ.",
+      "Vì R và ξ không đổi, H tỉ lệ thuận với I.",
+      "Đồ thị H phụ thuộc vào I là một đường thẳng đi qua gốc tọa độ."
+    ],
+    "final_answer": "H = RI/ξ; đồ thị H theo I là đường thẳng đi qua gốc tọa độ."
+  },
+  {
+    "id": "IV.23",
+    "chapter": "Chương IV",
+    "topic": "Mạch kín có điện trở trong",
+    "difficulty": 3,
+    "question": "Một nguồn điện có điện trở trong 0,1 Ω được mắc nối tiếp với điện trở R = 4,8 Ω tạo thành mạch kín. Khi đó hiệu điện thế giữa hai cực của nguồn điện là 12 V. Tính suất điện động của nguồn và cường độ dòng điện chạy trong mạch.",
+    "method": [
+      "Hiệu điện thế hai cực nguồn khi phát điện bằng hiệu điện thế mạch ngoài: U = IR.",
+      "Tính dòng điện I = U/R.",
+      "Tính suất điện động bằng ξ = U + Ir."
+    ],
+    "solution": [
+      "Cường độ dòng điện trong mạch: I = U/R = 12/4,8 = 2,5 A.",
+      "Suất điện động của nguồn: ξ = U + Ir = 12 + 2,5 . 0,1 = 12,25 V."
+    ],
+    "final_answer": "I = 2,5 A; ξ = 12,25 V."
+  },
+  {
+    "id": "IV.24",
+    "chapter": "Chương IV",
+    "topic": "Mạch kín có vôn kế mắc song song",
+    "difficulty": 5,
+    "question": "Mạch kín gồm nguồn điện có suất điện động ξ = 24 V, điện trở trong r = 0,5 Ω và hai điện trở R1 = 10 Ω, R2 = 50 Ω mắc nối tiếp. Một vôn kế mắc song song với điện trở R2 chỉ giá trị 16 V. Tìm điện trở của vôn kế.",
+    "method": [
+      "Gọi Rv là điện trở của vôn kế.",
+      "Vôn kế mắc song song R2 nên U2 = Uv = 16 V.",
+      "Dùng phương trình mạch kín: UN = ξ - Ir.",
+      "Mạch ngoài có UN = IR1 + U2.",
+      "Từ đó tính dòng mạch chính I.",
+      "Dòng qua R2 là I2 = U2/R2; dòng qua vôn kế là Iv = I - I2.",
+      "Tính Rv = Uv/Iv."
+    ],
+    "solution": [
+      "Ta có UN = ξ - Ir.",
+      "Mặt khác UN = IR1 + U2.",
+      "Suy ra IR1 + U2 = ξ - Ir, nên I(R1 + r) = ξ - U2.",
+      "I = (ξ - U2)/(R1 + r) = (24 - 16)/(10 + 0,5) ≈ 0,76 A.",
+      "Dòng qua R2: I2 = U2/R2 = 16/50 = 0,32 A.",
+      "Dòng qua vôn kế: Iv = I - I2 = 0,76 - 0,32 = 0,44 A.",
+      "Điện trở vôn kế: Rv = Uv/Iv = 16/0,44 ≈ 36,36 Ω."
+    ],
+    "final_answer": "Rv ≈ 36,36 Ω."
+  },
+  {
+    "id": "IV.25",
+    "chapter": "Chương IV",
+    "topic": "Mạch kín với điện trở mắc nối tiếp và song song",
+    "difficulty": 5,
+    "question": "Hai điện trở R1 = 2 Ω, R2 = 6 Ω mắc vào nguồn điện có suất điện động ξ và điện trở trong r. Khi R1, R2 mắc nối tiếp, cường độ dòng điện trong mạch chính I = 0,5 A. Khi R1, R2 mắc song song, cường độ dòng điện trong mạch chính I' = 1,8 A. Tìm giá trị của suất điện động ξ và điện trở trong r.",
+    "method": [
+      "Khi mắc nối tiếp, điện trở mạch ngoài RN = R1 + R2.",
+      "Khi mắc song song, điện trở mạch ngoài RS = R1R2/(R1 + R2).",
+      "Dùng công thức mạch kín I = ξ/(Rngoài + r) cho hai trường hợp.",
+      "Lập hệ phương trình và giải r, ξ."
+    ],
+    "solution": [
+      "Khi R1 nối tiếp R2: RN = 2 + 6 = 8 Ω.",
+      "I = ξ/(RN + r) = 0,5 nên ξ = 0,5(8 + r) = 4 + 0,5r.",
+      "Khi R1 song song R2: RS = (2 . 6)/(2 + 6) = 1,5 Ω.",
+      "I' = ξ/(RS + r) = 1,8 nên ξ = 1,8(1,5 + r) = 2,7 + 1,8r.",
+      "Giải hệ: 4 + 0,5r = 2,7 + 1,8r.",
+      "Suy ra 1,3 = 1,3r nên r = 1 Ω.",
+      "Thay vào ξ = 4 + 0,5r = 4,5 V."
+    ],
+    "final_answer": "r = 1 Ω; ξ = 4,5 V."
+  },
+  {
+    "id": "IV.26",
+    "chapter": "Chương IV",
+    "topic": "Công suất trên điện trở trong mạch nối tiếp",
+    "difficulty": 5,
+    "question": "Hai điện trở R1 = 20 Ω và điện trở R2 chưa biết giá trị được mắc nối tiếp với nhau và mắc vào hiệu điện thế U = 220 V thì điện trở R2 tiêu thụ một công suất P2 = 600 W. Tính giá trị điện trở R2 biết rằng dòng điện chạy qua điện trở R2 có giá trị không lớn hơn 5 A.",
+    "method": [
+      "Trong mạch nối tiếp, dòng điện qua hai điện trở như nhau: I = U/(R1 + R2).",
+      "Công suất trên R2 là P2 = R2I^2.",
+      "Thay I vào công thức công suất để lập phương trình theo R2.",
+      "Chọn nghiệm thỏa điều kiện I không lớn hơn 5 A."
+    ],
+    "solution": [
+      "Ta có I = U/(R1 + R2) = 220/(20 + R2).",
+      "P2 = R2I^2 = 600.",
+      "Suy ra R2 . 220^2/(20 + R2)^2 = 600.",
+      "Giải phương trình thu được R2 = 24 Ω hoặc R2 = 50/3 Ω.",
+      "Kiểm tra điều kiện dòng điện: với R2 = 24 Ω, I = 220/(20 + 24) = 5 A.",
+      "Với R2 = 50/3 Ω, I = 220/(20 + 50/3) = 6 A, không thỏa điều kiện I ≤ 5 A."
+    ],
+    "final_answer": "R2 = 24 Ω."
+  }
+]
