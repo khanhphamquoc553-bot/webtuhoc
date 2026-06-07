@@ -537,7 +537,6 @@ const navItems = [
   { key: 'overview', label: 'Tổng quan chương', icon: 'home' },
   { key: 'lessons', label: 'Bài học', icon: 'document' },
   { key: 'review', label: 'Ôn tập cuối chương', icon: 'clipboard' },
-  { key: 'profile', label: 'Hồ sơ học tập', icon: 'users' },
   { key: 'formulas', label: 'Sổ tay công thức', icon: 'notebook' },
 ]
 
@@ -954,7 +953,18 @@ const isLikelyNewQuestion = (question) => {
     'tai sao',
     'nhu the nao',
     'nhu nao',
+    'cong thuc',
     'cong thuc nao',
+    'cach lam',
+    'lam sao',
+    'phuong phap',
+    'ki hieu',
+    'ky hieu',
+    'don vi',
+    'dinh nghia',
+    'khai niem',
+    'cach mac',
+    'mac dung cu',
     'em hoi',
     'toi hoi',
   ].some((cue) => normalizedQuestion.includes(cue))
@@ -974,6 +984,19 @@ const getQuestionKind = (question) => {
   const normalizedQuestion = normalizeText(question)
 
   if (
+    normalizedQuestion.includes('em chon') ||
+    normalizedQuestion.includes('em tinh duoc') ||
+    normalizedQuestion.includes('em ra') ||
+    normalizedQuestion.includes('dap an cua em') ||
+    normalizedQuestion.includes('ket qua cua em') ||
+    normalizedQuestion.startsWith('chon ') ||
+    normalizedQuestion.startsWith('dap an la') ||
+    normalizedQuestion.startsWith('ket qua la')
+  ) {
+    return 'student-answer'
+  }
+
+  if (
     normalizedQuestion.includes('cong thuc') ||
     normalizedQuestion.includes('dinh luat') ||
     normalizedQuestion.includes('he thuc') ||
@@ -983,16 +1006,58 @@ const getQuestionKind = (question) => {
   }
 
   if (
-    normalizedQuestion.includes('la gi') ||
+    normalizedQuestion.includes('ki hieu') ||
+    normalizedQuestion.includes('ky hieu') ||
+    normalizedQuestion.includes('don vi') ||
+    normalizedQuestion.includes('dinh nghia') ||
     normalizedQuestion.includes('khai niem') ||
+    normalizedQuestion.includes('chuc nang') ||
+    normalizedQuestion.includes('la gi') ||
+    normalizedQuestion.includes('mac dung cu') ||
+    normalizedQuestion.includes('mac ampe ke') ||
+    normalizedQuestion.includes('mac von ke') ||
+    normalizedQuestion.includes('cach mac')
+  ) {
+    return 'direct'
+  }
+
+  if (
+    normalizedQuestion.includes('cach lam') ||
+    normalizedQuestion.includes('lam sao') ||
+    normalizedQuestion.includes('lam the nao') ||
+    normalizedQuestion.includes('nhu the nao') ||
+    normalizedQuestion.includes('phuong phap') ||
+    normalizedQuestion.includes('quy trinh') ||
+    normalizedQuestion.includes('cac buoc')
+  ) {
+    return 'method'
+  }
+
+  if (
+    normalizedQuestion.includes('chua hieu') ||
+    normalizedQuestion.includes('khong hieu') ||
+    normalizedQuestion.includes('chua ro') ||
+    normalizedQuestion.includes('mo ho') ||
+    normalizedQuestion.includes('ban chat')
+  ) {
+    return 'stuck'
+  }
+
+  if (
     normalizedQuestion.includes('vi sao') ||
     normalizedQuestion.includes('tai sao') ||
-    normalizedQuestion.includes('giai thich')
+    normalizedQuestion.includes('giai thich') ||
+    normalizedQuestion.includes('hien tuong')
   ) {
     return 'concept'
   }
 
   if (
+    normalizedQuestion.includes('giai giup') ||
+    normalizedQuestion.includes('giai bai') ||
+    normalizedQuestion.includes('bai nay') ||
+    normalizedQuestion.includes('cau nay') ||
+    normalizedQuestion.includes('khong biet lam') ||
     normalizedQuestion.includes('tinh') ||
     normalizedQuestion.includes('cho biet') ||
     normalizedQuestion.includes('dat ') ||
@@ -1022,27 +1087,127 @@ const isMoreGuidanceRequest = (question) => {
   ].some((cue) => normalizedQuestion.includes(cue))
 }
 
-const buildFirstHintFallback = (question, topic) => {
-  const questionKind = getQuestionKind(question)
+const buildDirectAnswerFallback = (question, topic) => {
+  const normalizedQuestion = normalizeText(question)
 
-  if (questionKind === 'formula') {
+  if (normalizedQuestion.includes('ampe ke') || normalizedQuestion.includes('am pe ke')) {
+    return 'Ampe kế dùng để đo cường độ dòng điện.\n\nNó được mắc nối tiếp với dụng cụ hoặc đoạn mạch cần đo dòng điện.\n\nLưu ý: ampe kế đo I, không đo hiệu điện thế U.'
+  }
+
+  if (normalizedQuestion.includes('von ke') || normalizedQuestion.includes('volt ke')) {
+    return 'Vôn kế dùng để đo hiệu điện thế.\n\nNó được mắc song song với hai đầu dụng cụ hoặc nguồn cần đo.\n\nLưu ý: vôn kế đo U, không đo cường độ dòng điện I.'
+  }
+
+  if (normalizedQuestion.includes('cong thuc') || normalizedQuestion.includes('dinh luat') || normalizedQuestion.includes('bieu thuc') || normalizedQuestion.includes('he thuc')) {
     if (topic.id === 'cuong-do-dong-dien') {
-      return 'Gợi ý dễ nhé: cường độ dòng điện cho biết trong một khoảng thời gian có bao nhiêu điện lượng đi qua dây. Nếu gọi điện lượng là Δq và thời gian là Δt, em thử đoán I bằng Δq chia Δt hay Δt chia Δq?'
+      return 'Công thức cường độ dòng điện: I = Δq / Δt.\n\nTrong đó I là cường độ dòng điện, Δq là điện lượng đi qua tiết diện dây dẫn, Δt là thời gian.\n\nLưu ý: I càng lớn khi Δq càng lớn hoặc Δt càng nhỏ.'
     }
 
     if (topic.id === 'dien-tro-dinh-luat-om') {
-      return 'Gợi ý dễ nhé: định luật Ôm liên hệ 3 đại lượng U, I, R. Dòng điện I sẽ lớn hơn khi U lớn hơn, và nhỏ hơn khi R lớn hơn. Vậy em thử đoán I = U / R hay I = R / U?'
+      return 'Định luật Ôm cho đoạn mạch chỉ có điện trở: I = U / R.\n\nSuy ra U = I.R và R = U / I.\n\nLưu ý: R là điện trở của vật dẫn, không phải điện trở suất ρ của vật liệu.'
     }
 
     if (topic.id === 'nguon-dien') {
-      return 'Gợi ý dễ nhé: với nguồn điện trong mạch kín, hiệu điện thế mạch ngoài U thường nhỏ hơn suất điện động ξ vì bị mất một phần trên điện trở trong r. Phần bị mất đó có dạng I.r, vậy em thử viết U theo ξ và I.r xem?'
+      return 'Với nguồn điện: ξ = A / q; I = ξ / (R + r); U = ξ - Ir.\n\nξ là suất điện động, r là điện trở trong, U là hiệu điện thế mạch ngoài.\n\nLưu ý: khi có dòng điện, U thường nhỏ hơn ξ do có độ giảm thế Ir trong nguồn.'
     }
 
     if (topic.id === 'nang-luong-cong-suat-dien') {
-      return 'Gợi ý dễ nhé: công suất điện phụ thuộc vào hiệu điện thế U và cường độ dòng điện I. Nếu U hoặc I tăng thì công suất cũng tăng. Em thử đoán P bằng U nhân I hay U chia I?'
+      return 'Công suất điện: P = A / t = UI.\n\nĐiện năng tiêu thụ: W = A = UIt. Với điện trở thuần có thể dùng P = I²R = U² / R.\n\nLưu ý: công suất P khác điện năng W; P cho biết tốc độ tiêu thụ điện năng.'
     }
 
-    return `Gợi ý dễ nhé: câu này hỏi công thức của ${topic.label}. Em thử nhớ các chữ cái chính trong bài này trước, rồi đoán chúng được nhân hay chia với nhau như thế nào?`
+    return 'Bài thực hành dùng hệ thức U = ξ - Ir.\n\nTừ đồ thị U theo I, giao điểm với trục U khi I = 0 cho ξ; độ dốc âm liên hệ với điện trở trong r.\n\nLưu ý: không xác định r chỉ bằng một lần đo U.'
+  }
+
+  if (normalizedQuestion.includes('don vi')) {
+    if (normalizedQuestion.includes('cuong do') || normalizedQuestion.includes('dong dien') || normalizedQuestion.includes(' i')) return 'Đơn vị của cường độ dòng điện là ampe, kí hiệu A.\n\n1 A = 1 C/s, nghĩa là trong 1 giây có 1 C điện lượng đi qua tiết diện dây dẫn.\n\nLưu ý: A ở đây là ampe, không phải công A.'
+    if (normalizedQuestion.includes('dien tro suat') || normalizedQuestion.includes('rho')) return 'Đơn vị của điện trở suất là ôm mét, kí hiệu Ω.m.\n\nĐiện trở suất đặc trưng cho khả năng cản trở dòng điện của vật liệu.\n\nLưu ý: điện trở suất ρ khác điện trở R.'
+    if (normalizedQuestion.includes('dien tro') || normalizedQuestion.includes(' r')) return 'Đơn vị của điện trở là ôm, kí hiệu Ω.\n\n1 Ω = 1 V/A.\n\nLưu ý: điện trở R khác điện trở suất ρ.'
+    if (normalizedQuestion.includes('hieu dien the') || normalizedQuestion.includes('suat dien dong') || normalizedQuestion.includes(' u') || normalizedQuestion.includes('ξ')) return 'Đơn vị của hiệu điện thế và suất điện động là vôn, kí hiệu V.\n\nHiệu điện thế U gắn với hai điểm trong mạch; suất điện động ξ gắn với nguồn điện.\n\nLưu ý: U của nguồn khi có dòng điện thường nhỏ hơn ξ.'
+    if (normalizedQuestion.includes('cong suat') || normalizedQuestion.includes(' p')) return 'Đơn vị của công suất điện là oát, kí hiệu W.\n\nCông suất cho biết thiết bị tiêu thụ điện năng nhanh hay chậm.\n\nLưu ý: W có thể là oát trong công suất, nhưng W cũng có thể được dùng làm kí hiệu điện năng trong một số bài.'
+    return 'Một số đơn vị chính: I đo bằng A, q đo bằng C, t đo bằng s, U và ξ đo bằng V, R và r đo bằng Ω, P đo bằng W, điện năng hoặc công đo bằng J.\n\nLưu ý: cần nhìn đúng đại lượng trước khi chọn đơn vị.'
+  }
+
+  if (normalizedQuestion.includes('ki hieu') || normalizedQuestion.includes('ky hieu')) {
+    if (normalizedQuestion.includes('dien tro suat')) return 'Điện trở suất được kí hiệu là ρ (rho).\n\nĐây là đại lượng đặc trưng cho khả năng cản trở dòng điện của vật liệu.\n\nLưu ý: điện trở suất ρ khác điện trở R của một dây dẫn cụ thể.'
+    return 'Kí hiệu chính trong chương: I là cường độ dòng điện, q là điện lượng, t là thời gian, U là hiệu điện thế, R là điện trở, ρ là điện trở suất, ξ là suất điện động, r là điện trở trong, P là công suất điện.\n\nLưu ý: R và r đều là điện trở nhưng R thường là điện trở mạch ngoài, r là điện trở trong của nguồn.'
+  }
+
+  if (topic.id === 'cuong-do-dong-dien') {
+    return 'Cường độ dòng điện là đại lượng đặc trưng cho tác dụng mạnh, yếu của dòng điện.\n\nNó cho biết điện lượng đi qua tiết diện dây dẫn trong một đơn vị thời gian.\n\nLưu ý: dòng điện mạnh hơn nghĩa là I lớn hơn, không nhất thiết là hiệu điện thế lớn hơn trong mọi trường hợp.'
+  }
+
+  if (topic.id === 'dien-tro-dinh-luat-om') {
+    return 'Điện trở là đại lượng đặc trưng cho mức độ cản trở dòng điện của vật dẫn.\n\nKí hiệu R, đơn vị ôm (Ω).\n\nLưu ý: điện trở R khác điện trở suất ρ; R phụ thuộc cả vật liệu, chiều dài và tiết diện dây.'
+  }
+
+  if (topic.id === 'nguon-dien') {
+    return 'Nguồn điện là thiết bị tạo ra và duy trì hiệu điện thế giữa hai cực để tạo dòng điện trong mạch kín.\n\nVí dụ: pin, acquy, máy phát điện.\n\nLưu ý: nguồn điện không tự tạo dòng điện nếu mạch chưa kín.'
+  }
+
+  if (topic.id === 'nang-luong-cong-suat-dien') {
+    return 'Công suất điện là năng lượng điện mà mạch hoặc thiết bị tiêu thụ trong một đơn vị thời gian.\n\nKí hiệu P, đơn vị oát (W).\n\nLưu ý: công suất lớn thì tiêu thụ điện nhanh, nhưng tiền điện còn phụ thuộc thời gian sử dụng.'
+  }
+
+  return 'Suất điện động đặc trưng cho khả năng thực hiện công của nguồn điện trên một đơn vị điện tích.\n\nKí hiệu ξ, đơn vị vôn (V).\n\nLưu ý: suất điện động ξ không luôn bằng hiệu điện thế U giữa hai cực nguồn khi mạch kín.'
+}
+
+const buildMethodFallback = (question, topic) => {
+  const normalizedQuestion = normalizeText(question)
+
+  if (normalizedQuestion.includes('tien dien') || normalizedQuestion.includes('hoa don')) {
+    return 'Tính tiền điện gồm 3 bước:\n\nBước 1: Tính điện năng tiêu thụ W = P.t.\n\nBước 2: Đổi điện năng sang kWh nếu cần.\n\nBước 3: Nhân số kWh với đơn giá điện.\n\nLưu ý: phải đổi W sang kW và đổi phút/giây sang giờ nếu đơn giá tính theo kWh.'
+  }
+
+  if (normalizedQuestion.includes('dien tro trong') || normalizedQuestion.includes('suat dien dong')) {
+    return 'Xác định suất điện động và điện trở trong thường làm theo quy trình:\n\nBước 1: Đo nhiều cặp giá trị U và I.\n\nBước 2: Vẽ đồ thị U theo I.\n\nBước 3: Kéo dài đồ thị, giao điểm với trục U cho ξ; độ dốc âm liên hệ với r.\n\nLưu ý: không kết luận ξ và r chắc chắn chỉ từ một lần đo.'
+  }
+
+  if (normalizedQuestion.includes('dinh luat om') || normalizedQuestion.includes('dien tro')) {
+    return 'Cách làm dạng định luật Ôm:\n\nBước 1: Xác định đề cho U, I hay R.\n\nBước 2: Chọn công thức I = U / R, U = I.R hoặc R = U / I.\n\nBước 3: Thay số và ghi đúng đơn vị.\n\nLưu ý: R phải tính bằng Ω, U bằng V, I bằng A.'
+  }
+
+  return `Cách làm chung với phần ${topic.label}:\n\nBước 1: Xác định đại lượng đang cần tìm.\n\nBước 2: Chọn công thức hoặc mối liên hệ đúng trong bài.\n\nBước 3: Thay số, đổi đơn vị nếu cần và kết luận.\n\nLưu ý: chỉ dùng kiến thức thuộc đúng phần ${topic.shortLabel}, không nhảy sang bài khác nếu đề không yêu cầu.`
+}
+
+const buildStuckFallback = (question, topic) => {
+  const normalizedQuestion = normalizeText(question)
+
+  if (normalizedQuestion.includes('dien tro suat')) {
+    return 'Em đang vướng ở khái niệm và ý nghĩa vật lí của điện trở suất.\n\nĐiện trở suất ρ cho biết vật liệu đó cản trở dòng điện mạnh hay yếu. Cùng chiều dài và tiết diện, vật liệu có ρ lớn hơn thì dây có điện trở lớn hơn.\n\nLưu ý: ρ là tính chất của vật liệu; R là điện trở của một dây dẫn cụ thể. Em nên xem lại phần Điện trở suất.'
+  }
+
+  if (normalizedQuestion.includes('suat dien dong')) {
+    return 'Em đang vướng ở ý nghĩa vật lí của suất điện động.\n\nSuất điện động ξ cho biết nguồn điện thực hiện bao nhiêu công để dịch chuyển một đơn vị điện tích bên trong nguồn. Nó đặc trưng cho khả năng cung cấp năng lượng của nguồn.\n\nLưu ý: ξ không hoàn toàn giống U giữa hai cực nguồn khi mạch kín. Em nên xem lại phần Suất điện động của nguồn điện.'
+  }
+
+  if (normalizedQuestion.includes('cong thuc')) {
+    return `Em đang vướng ở công thức của phần ${topic.shortLabel}.\n\nTrước hết hãy xác định mỗi kí hiệu trong công thức là đại lượng nào, rồi mới thay số. Nếu chưa hiểu kí hiệu, rất dễ chọn nhầm công thức.\n\nEm nên xem lại phần công thức trọng tâm của ${topic.shortLabel}.`
+  }
+
+  if (normalizedQuestion.includes('bai tap') || normalizedQuestion.includes('lam bai')) {
+    return `Em đang vướng ở cách áp dụng kiến thức vào bài tập.\n\nHãy tách bài ra thành: dữ kiện đã cho, đại lượng cần tìm, công thức liên hệ. Với phần ${topic.shortLabel}, chỉ chọn công thức thuộc đúng bài đang học.\n\nEm nên xem lại phần bài tập vận dụng của ${topic.shortLabel}.`
+  }
+
+  return `Em có thể đang vướng ở ý nghĩa vật lí của phần ${topic.shortLabel}.\n\nNói ngắn gọn: ${topic.tip}\n\nLưu ý: nếu em nhầm kí hiệu hoặc đơn vị, hãy xem lại phần khái niệm/công thức trước khi làm bài tập.`
+}
+
+const buildFirstHintFallback = (question, topic) => {
+  const questionKind = getQuestionKind(question)
+
+  if (questionKind === 'direct') {
+    return buildDirectAnswerFallback(question, topic)
+  }
+
+  if (questionKind === 'method') {
+    return buildMethodFallback(question, topic)
+  }
+
+  if (questionKind === 'stuck') {
+    return buildStuckFallback(question, topic)
+  }
+
+  if (questionKind === 'formula') {
+    return buildDirectAnswerFallback(question, topic)
   }
 
   if (questionKind === 'concept') {
@@ -1152,6 +1317,7 @@ const buildTutorResponse = (question, memory) => {
     normalizedQuestion.includes('chua hieu') ||
     normalizedQuestion.includes('giai thich lai') ||
     normalizedQuestion.includes('don gian')
+  const questionKind = getQuestionKind(question)
 
   nextMemory = rememberTopic(nextMemory, topic.id, needsSlowExplanation ? -3 : 8)
 
@@ -1186,6 +1352,30 @@ const buildTutorResponse = (question, memory) => {
         },
       },
       text: `Câu được yêu cầu trong ${topic.label}: ${topic.exercise} Em hãy trả lời ngắn, mình sẽ đánh giá và gợi ý phần cần xem lại.`,
+    }
+  }
+
+  if (questionKind === 'method') {
+    return {
+      memory: nextMemory,
+      text: buildMethodFallback(question, topic),
+    }
+  }
+
+  if (questionKind === 'stuck') {
+    return {
+      memory: {
+        ...nextMemory,
+        level: 'Giải thích chậm',
+      },
+      text: buildStuckFallback(question, topic),
+    }
+  }
+
+  if (questionKind === 'direct' || questionKind === 'formula') {
+    return {
+      memory: nextMemory,
+      text: buildDirectAnswerFallback(question, topic),
     }
   }
 
@@ -1242,38 +1432,69 @@ const requestAiResponse = async ({
   const lessonKnowledgeContext = buildLessonKnowledgeContext()
   const questionKind = getQuestionKind(originalQuestion || question)
   const firstHintRule =
-    questionKind === 'formula'
-      ? 'Đây là câu hỏi về công thức hoặc định luật, không phải bài toán có đề cho số liệu. Gợi ý phải thật dễ: nêu rõ các kí hiệu liên quan, nói quan hệ tăng/giảm bằng lời đơn giản, rồi đưa một lựa chọn gần đáp án để học sinh đoán, ví dụ "I = U / R hay I = R / U?". Tránh gợi ý trừu tượng như "đại lượng đứng vế trái" hoặc "ghép quan hệ". Chưa chốt đáp án cuối nếu học sinh chưa trả lời.'
+    questionKind === 'direct' || questionKind === 'formula'
+      ? 'Nhóm A: khái niệm, định nghĩa, kí hiệu, đơn vị, công thức, cách mắc dụng cụ hoặc chức năng dụng cụ. Phải trả lời trực tiếp theo cấu trúc: trả lời ngắn gọn; giải thích dễ hiểu; nêu lỗi dễ nhầm. Không dẫn dắt, không hỏi ngược, không yêu cầu học sinh tự nhớ lại, không lan sang bài khác.'
+      : questionKind === 'method'
+        ? 'Nhóm B: hỏi cách làm hoặc phương pháp giải. Nếu chưa có dữ kiện cụ thể, giải thích quy trình chung theo các bước rõ ràng. Không yêu cầu học sinh phân tích đề nếu học sinh chưa đưa đề.'
+        : questionKind === 'stuck'
+          ? 'Nhóm E: học sinh chưa hiểu bản chất. Trước tiên xác định học sinh đang vướng khái niệm, ý nghĩa vật lí, công thức hay bài tập; sau đó giải thích đúng phần đang vướng.'
       : questionKind === 'concept'
-        ? 'Đây là câu hỏi khái niệm/giải thích, không phải bài toán tính. Hãy gợi ý bằng ngôn ngữ đời thường, hỏi học sinh thử nêu ý nghĩa hoặc vai trò của khái niệm đó. Không hỏi "đề cho gì, đề hỏi gì".'
+        ? 'Đây là câu hỏi giải thích hiện tượng hoặc bản chất. Có thể dẫn dắt ngắn gọn bằng ngôn ngữ đời thường, nhưng phải bám đúng hiện tượng học sinh hỏi.'
         : questionKind === 'exercise'
-          ? 'Đây là bài tính toán hoặc bài có dữ kiện. Hãy gợi ý học sinh xác định dữ kiện đã cho, đại lượng cần tìm và công thức phù hợp. Chỉ dùng mẫu "đề cho gì, hỏi gì" trong loại bài này.'
-          : 'Đây là câu hỏi học tập chung. Hãy gợi ý theo đúng nội dung học sinh hỏi, tự nhiên như gia sư đang trò chuyện, không dùng mẫu cứng.'
+          ? 'Nhóm C: bài tập cụ thể. Không đưa đáp án ngay. Gợi ý theo mức: lần 1 hướng suy nghĩ, lần 2 chi tiết hơn, lần 3 gần đáp án, sau 3 lần bắt buộc đưa đáp án đầy đủ và chỉ ra lỗi hiểu sai.'
+          : questionKind === 'student-answer'
+            ? 'Nhóm D: học sinh đưa ra đáp án. Không chỉ nói đúng hoặc sai; phải đánh giá phần đúng, chỉ ra phần sai nếu có, giải thích nguyên nhân và chốt kiến thức đúng.'
+            : 'Đây là câu hỏi học tập chung. Hãy trả lời đúng trọng tâm, ngắn gọn, tự nhiên như giáo viên đang hỗ trợ học sinh.'
   const tutorRoleRule = `VAI TRÒ:
-Bạn là AI trợ lí học tập Vật lí 11 được tích hợp trên website hỗ trợ tự học. Bạn hỗ trợ học sinh trong toàn bộ quá trình học các bài trên website, gồm Video khởi động, Phiếu học tập, Quiz và Tự đánh giá. Bạn không phải là công cụ làm bài thay học sinh. Bạn không tạo bài tập bổ trợ mới nếu học sinh không được giáo viên yêu cầu.
+Bạn là AI trợ lí học tập trên website hỗ trợ tự học Vật lí 11.
 
-Nhiệm vụ chính: gợi ý để học sinh tự hiểu vấn đề, đánh giá câu trả lời của học sinh, phân tích lỗi sai, chốt lại kiến thức đúng, đề xuất học sinh cần ôn lại phần nào trong bài học.
+Mục tiêu của bạn không phải là trả lời thật nhiều mà là giúp học sinh hiểu đúng kiến thức, phát hiện lỗi sai, biết nội dung cần ôn tập và hình thành năng lực tự học.
+
+BƯỚC 1. XÁC ĐỊNH LOẠI CÂU HỎI
+Trước khi trả lời, tự phân loại câu hỏi:
+Nhóm A: khái niệm, định nghĩa, kí hiệu, đơn vị, công thức, cách mắc dụng cụ, chức năng dụng cụ.
+Nhóm B: hỏi cách làm, hỏi phương pháp giải.
+Nhóm C: hỏi bài tập cụ thể.
+Nhóm D: học sinh đưa ra đáp án.
+Nhóm E: học sinh chưa hiểu bản chất kiến thức.
+
+BƯỚC 2. QUY TẮC TRẢ LỜI
+Nhóm A: trả lời trực tiếp; không dẫn dắt; không hỏi ngược; không yêu cầu học sinh tự nhớ lại; không lan sang bài khác. Cấu trúc gồm: 1. Trả lời ngắn gọn. 2. Giải thích dễ hiểu. 3. Nêu lỗi dễ nhầm.
+Nhóm B: nếu chưa có dữ kiện cụ thể, giải thích quy trình chung theo từng bước. Không yêu cầu học sinh phân tích đề nếu chưa có đề bài.
+Nhóm C: không đưa đáp án ngay. Lần 1 gợi ý hướng suy nghĩ; lần 2 gợi ý chi tiết hơn; lần 3 gợi ý gần đáp án; sau 3 lần bắt buộc đưa đáp án đầy đủ, giải thích từng bước và chỉ ra lỗi hiểu sai.
+Nhóm D: không chỉ nói "Đúng" hoặc "Sai". Phải đánh giá phần đúng, chỉ ra phần sai, giải thích nguyên nhân và chốt kiến thức đúng.
+Nhóm E: trước tiên xác định học sinh đang vướng khái niệm, ý nghĩa vật lí, công thức hay bài tập; sau đó giải thích đúng phần đang vướng.
+
+KIỂM TRA TRƯỚC KHI GỬI
+Trước khi gửi phản hồi, tự kiểm tra: có trả lời đúng câu hỏi không; có lạc sang bài khác không; có dùng kiến thức sai không; có đang dẫn dắt một câu hỏi cần trả lời trực tiếp không; học sinh đọc xong có hiểu ngay không. Nếu vi phạm, sửa lại trước khi gửi.
 
 PHẠM VI KIẾN THỨC:
 Chỉ hỗ trợ dựa trên kiến thức đã có trong website: Bài 22 Cường độ dòng điện; Bài 23 Điện trở và Định luật Ôm; Bài 24 Nguồn điện; Bài 25 Năng lượng và công suất điện; Bài 26 Thực hành đo suất điện động và điện trở trong của pin điện hóa.
 
 KHÔNG ĐƯỢC LÀM:
-Không tạo bài tập mới một cách chủ động. Không đưa đáp án ngay ở lần hỏi đầu tiên. Không làm thay toàn bộ nhiệm vụ của học sinh. Không trả lời lan man ngoài phạm vi bài học. Không dùng ngôn ngữ quá hàn lâm. Không khuyến khích học sinh học thuộc máy móc.
+Không tạo bài tập mới nếu học sinh không yêu cầu. Không làm thay toàn bộ nhiệm vụ của học sinh khi câu hỏi thuộc diện cần dẫn dắt. Không dẫn dắt đối với Nhóm A. Không trả lời lan man ngoài phạm vi bài học. Không dùng ngôn ngữ quá hàn lâm. Không khuyến khích học sinh học thuộc máy móc.
 
 NÊN LÀM:
-Gợi ý học sinh quay lại đúng phần bài học cần xem, ví dụ Phiếu học tập Bài 22, công thức I = Δq/Δt, ý nghĩa công suất điện trong Bài 25, hoặc cách đọc đồ thị U - I trong Bài 26. Luôn kết thúc bằng một định hướng học tập ngắn.`
+Nếu phát hiện học sinh còn yếu, chỉ gợi ý "Em nên xem lại phần..." kèm đúng nội dung như Định luật Ôm, Điện trở suất, Điện năng, Công suất điện. Không tự tạo bài tập mới nếu học sinh không yêu cầu.
+
+PHONG CÁCH:
+Ngắn gọn, dễ hiểu, chính xác, giống giáo viên đang hỗ trợ học sinh. Ưu tiên hiểu bản chất vật lí. Không trả lời dài dòng. Không dùng thuật ngữ khó nếu có thể diễn đạt đơn giản hơn.`
   const hintLevelRule =
     guidanceAttempt <= 1
       ? 'Đây là lần gợi ý 1: đưa gợi ý nhẹ, yêu cầu học sinh quan sát lại hiện tượng, dữ kiện hoặc nội dung đã học. Không đưa đáp án cuối.'
       : guidanceAttempt === 2
         ? 'Đây là lần gợi ý 2: đưa gợi ý cụ thể hơn, định hướng công thức, khái niệm hoặc mối liên hệ cần dùng. Không đưa lời giải hoàn chỉnh.'
-        : guidanceAttempt === 3
-          ? 'Đây là lần gợi ý 3: đưa gợi ý gần với lời giải, nhưng vẫn khuyến khích học sinh tự trả lời. Chưa làm thay toàn bộ.'
-          : 'Học sinh đã nhận ít nhất 3 lần gợi ý mà vẫn cần hỗ trợ. Được trình bày đáp án đầy đủ, giải thích từng bước, chỉ ra lỗi dễ nhầm và đề xuất ôn lại phần tương ứng.'
+        : 'Đây là lần gợi ý 3 hoặc hơn. Phải trình bày đáp án đầy đủ, giải thích chi tiết, chỉ ra lỗi hiểu sai hoặc lỗi dễ nhầm của học sinh, rồi đề xuất ôn lại phần tương ứng.'
   const guidanceRule =
-    mode === 'answer'
-      ? `Đây là lượt học sinh đưa ra câu trả lời sau khi đã nhận gợi ý. Câu hỏi ban đầu là: "${originalQuestion || question}". Học sinh vừa phản hồi: "${question}". Hãy chấm độ chính xác câu trả lời theo thang 0-100 cho hệ thống dùng nội bộ. Dòng đầu tiên bắt buộc viết đúng mẫu: "Điểm: NN%". Từ dòng thứ hai trở đi tuyệt đối không nhắc lại điểm, phần trăm, ngưỡng chấm hay chữ "độ chính xác". Nếu NN >= ${PASSING_ANSWER_SCORE}: xác nhận đúng, giải thích vì sao đúng, trình bày lại đáp án chuẩn đầy đủ, và gợi ý nội dung trọng tâm cần ghi nhớ. Nếu NN < ${PASSING_ANSWER_SCORE}: không phê phán; chỉ ra phần học sinh đã hiểu đúng nếu có; chỉ ra lỗi sai cụ thể; giải thích nguyên nhân sai. ${guidanceAttempt >= 3 ? 'Vì học sinh đã được gợi ý nhiều lần, hãy trình bày đáp án đúng và đề xuất phần cần xem lại.' : 'Chưa đưa lời giải hoàn chỉnh; hãy đưa thêm một gợi ý vừa sức để học sinh trả lời lại.'} Luôn kết thúc bằng một định hướng học tập ngắn.`
-      : `Đây là lượt gợi ý cho câu hỏi học tập. ${hintLevelRule} ${firstHintRule} Gợi ý phải vừa sức, cụ thể theo câu hỏi của học sinh, tối đa 2-4 câu. Nếu chưa đến lần sau 3 gợi ý, kết thúc bằng một câu hỏi nhỏ để học sinh thử trả lời tiếp. Luôn kết thúc bằng một định hướng học tập ngắn.`
+    mode === 'direct'
+      ? `Đây là Nhóm A. Câu hỏi của học sinh: "${question}". Trả lời theo đúng cấu trúc: trả lời ngắn gọn; giải thích dễ hiểu; lỗi dễ nhầm. Không dẫn dắt, không hỏi ngược, không mở rộng sang bài khác.`
+      : mode === 'method'
+        ? `Đây là Nhóm B. Câu hỏi của học sinh: "${question}". Nếu chưa có dữ kiện cụ thể, hãy nêu quy trình chung theo từng bước. Không yêu cầu học sinh phân tích đề nếu chưa có đề bài.`
+        : mode === 'stuck'
+          ? `Đây là Nhóm E. Câu hỏi của học sinh: "${question}". Trước tiên nói học sinh đang vướng ở khái niệm, ý nghĩa vật lí, công thức hay bài tập; sau đó giải thích đúng phần đó, ngắn gọn và dễ hiểu.`
+      : mode === 'answer'
+      ? `Đây là Nhóm D: học sinh đưa ra đáp án. Câu hỏi ban đầu hoặc ngữ cảnh là: "${originalQuestion || question}". Học sinh vừa phản hồi: "${question}". Hãy chấm độ chính xác câu trả lời theo thang 0-100 cho hệ thống dùng nội bộ. Dòng đầu tiên bắt buộc viết đúng mẫu: "Điểm: NN%". Từ dòng thứ hai trở đi tuyệt đối không nhắc lại điểm, phần trăm, ngưỡng chấm hay chữ "độ chính xác". Không chỉ nói đúng hoặc sai. Nếu đủ ngữ cảnh, phải đánh giá phần đúng, chỉ ra phần sai nếu có, giải thích nguyên nhân và chốt kiến thức đúng. Nếu thiếu câu hỏi gốc nên nói rõ chưa đủ dữ kiện để kết luận, nhưng vẫn nhận xét được phần nào có thể. ${guidanceAttempt >= 3 ? 'Vì học sinh đã được gợi ý nhiều lần, hãy trình bày đáp án đúng và đề xuất phần cần xem lại.' : 'Nếu câu trả lời chưa đạt và chưa đủ 3 lần gợi ý, hãy đưa thêm một gợi ý vừa sức để học sinh sửa lại.'} Luôn kết thúc bằng một định hướng học tập ngắn.`
+      : `Đây là lượt gợi ý cho câu hỏi học tập. ${hintLevelRule} ${firstHintRule} ${guidanceAttempt < 3 ? 'Gợi ý phải vừa sức, cụ thể theo câu hỏi của học sinh, tối đa 2-4 câu và kết thúc bằng một câu hỏi nhỏ để học sinh thử trả lời tiếp.' : 'Không hỏi tiếp để kéo dài gợi ý; hãy chốt đáp án đầy đủ trong lượt này.'} Luôn kết thúc bằng một định hướng học tập ngắn.`
 
   const response = await fetch('/api/ai/chat', {
     method: 'POST',
@@ -11495,7 +11716,7 @@ function App() {
     {
       role: 'assistant',
       text:
-        'Xin chào! Khi bạn đặt câu hỏi, mình sẽ gợi ý từng bước để bạn tự trả lời. Khi bạn gửi câu trả lời, mình sẽ đánh giá, phân tích lỗi sai nếu có và chốt lại kiến thức đúng.',
+        'Xin chào! Mình là trợ lí học tập Vật lí 11. Câu hỏi khái niệm, kí hiệu, đơn vị, công thức hoặc dụng cụ mình sẽ trả lời trực tiếp; câu hỏi cách làm mình sẽ nêu quy trình; bài tập và đáp án của em mình sẽ gợi ý, đánh giá và chốt kiến thức đúng.',
     },
   ])
   const chatEndRef = useRef(null)
@@ -11608,8 +11829,8 @@ function App() {
         role: 'assistant',
         text:
           savedMemory
-            ? 'Xin chào! Thành tích và tiến độ học trước đó của bạn đã được tải lại. Khi bạn đặt câu hỏi, mình sẽ gợi ý từng bước để bạn tự trả lời.'
-            : 'Xin chào! Tài khoản mới đã bắt đầu từ 0. Khi bạn đặt câu hỏi, mình sẽ gợi ý từng bước để bạn tự trả lời.',
+            ? 'Xin chào! Thành tích và tiến độ học trước đó của bạn đã được tải lại. Mình sẽ trả lời thẳng phần kiến thức cơ bản, nêu quy trình khi hỏi cách làm, và đánh giá đáp án theo phần đúng/sai cụ thể.'
+            : 'Xin chào! Tài khoản mới đã bắt đầu từ 0. Mình sẽ trả lời thẳng phần kiến thức cơ bản, nêu quy trình khi hỏi cách làm, và đánh giá đáp án theo phần đúng/sai cụ thể.',
       },
     ])
     showToast(savedMemory ? 'Đã đăng nhập và tải lại thành tích đã lưu.' : 'Đã tạo tài khoản mới.')
@@ -11709,9 +11930,20 @@ function App() {
           pendingQuiz: null,
         }
       : memory
+    const questionKind = getQuestionKind(question)
+    const needsImmediateResponse =
+      ['direct', 'formula', 'method', 'stuck'].includes(questionKind) && (!pendingGuidance || startsNewQuestion)
     const result = buildTutorResponse(question, activeMemory)
     const previousMessages = startsNewQuestion ? [] : messages
-    const responseMode = pendingGuidance && !startsNewQuestion && !wantsMoreGuidance ? 'answer' : 'hint'
+    const responseMode = needsImmediateResponse
+      ? questionKind === 'method'
+        ? 'method'
+        : questionKind === 'stuck'
+          ? 'stuck'
+          : 'direct'
+      : (pendingGuidance && !startsNewQuestion && !wantsMoreGuidance) || questionKind === 'student-answer'
+        ? 'answer'
+        : 'hint'
     const originalQuestion = pendingGuidance && !startsNewQuestion ? pendingGuidance.question || question : question
     const guidanceAttempt = wantsMoreGuidance
       ? (pendingGuidance?.attempts || 1) + 1
@@ -11746,7 +11978,8 @@ function App() {
           ? assessment.text || 'Câu trả lời của em đã được ghi nhận. Em thử viết rõ thêm bước tiếp theo nhé.'
           : cleanAiDisplayText(aiText)
       const shouldKeepGuiding =
-        responseMode === 'hint' || (responseMode === 'answer' && assessment && !assessment.passed)
+        (responseMode === 'hint' && guidanceAttempt < 3) ||
+        (responseMode === 'answer' && assessment && !assessment.passed)
 
       setMessages((currentMessages) => [
         ...currentMessages,
@@ -11779,7 +12012,9 @@ function App() {
         responseMode === 'answer' &&
         (fallbackAccuracy === null || fallbackAccuracy >= PASSING_ANSWER_SCORE)
       const fallbackText =
-        responseMode === 'hint'
+        responseMode === 'direct' || responseMode === 'method' || responseMode === 'stuck'
+          ? result.text
+          : responseMode === 'hint'
           ? buildFirstHintFallback(question, conversationTopic)
           : canShowFallbackAnswer
             ? `Mình giải tiếp theo chế độ nội bộ: ${result.text}`
@@ -11793,7 +12028,7 @@ function App() {
         },
       ])
       setPendingGuidance(
-        responseMode === 'hint' || !canShowFallbackAnswer
+        (responseMode === 'hint' && guidanceAttempt < 3) || (responseMode === 'answer' && !canShowFallbackAnswer)
           ? {
               question: originalQuestion,
               topicId: conversationTopic.id,
@@ -12370,10 +12605,10 @@ function App() {
                 <div>
                   <p>Xin chào! Mình là trợ lí học tập Vật lí 11. Mình có thể giúp bạn:</p>
                   <ul>
-                    <li>Gợi ý để tự hiểu</li>
-                    <li>Đánh giá câu trả lời</li>
-                    <li>Phân tích lỗi sai</li>
-                    <li>Chốt kiến thức đúng</li>
+                    <li>Trả lời nhanh khái niệm, kí hiệu, đơn vị</li>
+                    <li>Nhắc công thức, chức năng và cách mắc dụng cụ</li>
+                    <li>Nêu quy trình khi hỏi cách làm</li>
+                    <li>Gợi ý bài tập, đánh giá đáp án</li>
                   </ul>
                 </div>
               </div>
