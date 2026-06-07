@@ -10149,6 +10149,32 @@ button {
   text-align: right;
 }
 
+.learning-report-export-btn {
+  width: 100%;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  color: #ffffff;
+  background: #1746c7;
+  box-shadow: 0 14px 30px rgba(23, 70, 199, 0.2);
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.learning-report-export-btn:hover,
+.learning-report-export-btn:focus-visible {
+  outline: 0;
+  background: #0d3195;
+  box-shadow: 0 18px 36px rgba(13, 49, 149, 0.26);
+  transform: translateY(-2px);
+}
+
 @keyframes dashboard-fade-up {
   from {
     opacity: 0;
@@ -21200,6 +21226,31 @@ button {
   cursor: pointer;
 }
 
+.lesson26-sample-data-btn {
+  justify-self: end;
+  width: fit-content;
+  border: 1px solid rgba(8, 145, 178, 0.22);
+  border-radius: 999px;
+  padding: 7px 12px;
+  color: #075985;
+  background: #f0fbff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(8, 93, 129, 0.08);
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.lesson26-sample-data-btn:hover,
+.lesson26-sample-data-btn:focus-visible {
+  border-color: rgba(8, 145, 178, 0.42);
+  background: #e6fbff;
+  outline: 0;
+  transform: translateY(-1px);
+}
+
 .lesson26-table-graph {
   display: grid;
   align-items: stretch;
@@ -21381,6 +21432,20 @@ button {
   font-weight: 950;
 }
 
+.lesson26-chart .axis-title {
+  font-size: 18px;
+}
+
+.lesson26-chart .axis-ticks text {
+  fill: #2b6f8a;
+  font-size: 9px;
+  font-weight: 850;
+}
+
+.lesson26-chart .axis-ticks--y text {
+  fill: #3b7d92;
+}
+
 .lesson26-chart .data-dot {
   fill: #14b8a6;
   stroke: #ffffff;
@@ -21424,6 +21489,26 @@ button {
 
 .lesson26-chart .data-dot--n {
   stroke: #ffffff;
+}
+
+.lesson26-chart .point-label {
+  fill: #0b4a61;
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1.1;
+  paint-order: stroke;
+  pointer-events: none;
+  stroke: rgba(240, 253, 255, 0.94);
+  stroke-linejoin: round;
+  stroke-width: 3px;
+}
+
+.lesson26-chart .point-label--new {
+  fill: #0f766e;
+}
+
+.lesson26-chart .point-label--old {
+  fill: #5b21b6;
 }
 
 .lesson26-chart .trend-line,
@@ -21488,6 +21573,14 @@ button {
   stroke: #14b8a6;
   stroke-width: 4;
   opacity: 0.82;
+}
+
+.lesson26-chart .trend-line--live.trend-line--new {
+  stroke: #0ea5a6;
+}
+
+.lesson26-chart .trend-line--live.trend-line--old {
+  stroke: #7c3aed;
 }
 
 .lesson26-chart .chart-placeholder {

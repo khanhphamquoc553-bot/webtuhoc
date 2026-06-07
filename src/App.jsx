@@ -20,7 +20,7 @@ import './App.css'
 const STORAGE_KEY = 'vat-ly-11-self-learning-ai'
 const ACCOUNTS_KEY = `${STORAGE_KEY}:accounts`
 const SESSION_KEY = `${STORAGE_KEY}:current-student`
-const PREVIEW_ALL_LESSON_PARTS = true
+const PREVIEW_ALL_LESSON_PARTS = false
 
 const topics = [
   {
@@ -644,6 +644,172 @@ const getTopicAction = (progress) => {
   return progress > 0 ? 'Tiếp tục học' : 'Bắt đầu học'
 }
 
+const escapeReportHtml = (value) =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+
+const getLearningReportNote = (item) => {
+  if (item.selfAssessment) {
+    return item.selfAssessment
+  }
+
+  if (item.progress >= 100) {
+    return 'Hoàn thành tốt'
+  }
+
+  if (item.progress > 0) {
+    return 'Cần ôn lại'
+  }
+
+  return 'Chưa có tự đánh giá'
+}
+
+const openLearningReportWindow = ({ studentName, exportedAt, details }) => {
+  const rows = details
+    .map((item) => `
+      <tr>
+        <td>${escapeReportHtml(item.title)}</td>
+        <td>${escapeReportHtml(item.status)}</td>
+        <td>${escapeReportHtml(item.progress)}%</td>
+        <td>${escapeReportHtml(item.quizScore)}/10</td>
+        <td>${escapeReportHtml(getLearningReportNote(item))}</td>
+      </tr>
+    `)
+    .join('')
+  const reportHtml = `<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Báo cáo tiến trình học tập</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: #111827;
+      background: #f3f6fb;
+      font-family: Arial, "Helvetica Neue", sans-serif;
+      line-height: 1.5;
+    }
+    .report {
+      width: min(980px, calc(100% - 32px));
+      margin: 28px auto;
+      border: 1px solid #d7deea;
+      border-radius: 10px;
+      padding: 28px;
+      background: #ffffff;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
+    }
+    h1 {
+      margin: 0 0 18px;
+      color: #102a83;
+      font-size: 28px;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .meta {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 22px;
+      color: #26325f;
+      font-size: 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid #d8e0f0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #d8e0f0;
+      padding: 11px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: #102a83;
+      background: #eef4ff;
+      font-weight: 800;
+    }
+    tbody tr:nth-child(even) td {
+      background: #f8fbff;
+    }
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 22px;
+    }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 12px 18px;
+      color: #ffffff;
+      background: #1746c7;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    button:hover,
+    button:focus-visible {
+      outline: 0;
+      background: #0d3195;
+    }
+    @media print {
+      body { background: #ffffff; }
+      .report {
+        width: 100%;
+        margin: 0;
+        border: 0;
+        box-shadow: none;
+      }
+      .actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="report">
+    <h1>BÁO CÁO TIẾN TRÌNH HỌC TẬP</h1>
+    <section class="meta" aria-label="Thông tin báo cáo">
+      <div><strong>Họ tên học sinh:</strong> ${escapeReportHtml(studentName)}</div>
+      <div><strong>Thời gian xuất báo cáo:</strong> ${escapeReportHtml(exportedAt)}</div>
+    </section>
+    <table>
+      <thead>
+        <tr>
+          <th>Bài học</th>
+          <th>Trạng thái</th>
+          <th>Tiến độ</th>
+          <th>Điểm Quiz</th>
+          <th>Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="actions">
+      <button type="button" onclick="window.print()">In / Lưu PDF</button>
+    </div>
+  </main>
+</body>
+</html>`
+  const reportWindow = window.open('', '_blank', 'width=1100,height=800')
+
+  if (!reportWindow) {
+    return false
+  }
+
+  reportWindow.document.open()
+  reportWindow.document.write(reportHtml)
+  reportWindow.document.close()
+  reportWindow.focus()
+  return true
+}
+
 const lesson22Quiz = [
   {
     id: 'direction',
@@ -838,6 +1004,24 @@ const getQuestionKind = (question) => {
   return 'general'
 }
 
+const isMoreGuidanceRequest = (question) => {
+  const normalizedQuestion = normalizeText(question)
+
+  return [
+    'chua hieu',
+    'khong hieu',
+    'goi y',
+    'goi y tiep',
+    'them goi y',
+    'noi ro hon',
+    'giai thich lai',
+    'giup em tiep',
+    'van chua',
+    'cho dap an',
+    'dap an la gi',
+  ].some((cue) => normalizedQuestion.includes(cue))
+}
+
 const buildFirstHintFallback = (question, topic) => {
   const questionKind = getQuestionKind(question)
 
@@ -954,6 +1138,11 @@ const buildTutorResponse = (question, memory) => {
     normalizedQuestion.includes('kiem tra') ||
     normalizedQuestion.includes('hoi toi') ||
     normalizedQuestion.includes('tu luyen')
+  const hasTeacherExerciseRequest =
+    normalizedQuestion.includes('giao vien') ||
+    normalizedQuestion.includes('thay co') ||
+    normalizedQuestion.includes('duoc giao') ||
+    normalizedQuestion.includes('yeu cau lam')
   const asksForRoadmap =
     normalizedQuestion.includes('lo trinh') ||
     normalizedQuestion.includes('hoc tiep') ||
@@ -980,6 +1169,13 @@ const buildTutorResponse = (question, memory) => {
     }
   }
 
+  if (asksForQuiz && !hasTeacherExerciseRequest) {
+    return {
+      memory: nextMemory,
+      text: `Mình không tự tạo bài tập mới nếu không có yêu cầu của giáo viên. Em hãy gửi câu hỏi hoặc câu trả lời trong Video khởi động, Phiếu học tập, Quiz hay Tự đánh giá; mình sẽ gợi ý và chấm giúp em. Em nên quay lại đúng phần bài học đang làm rồi thử nêu điều em chưa hiểu.`,
+    }
+  }
+
   if (asksForQuiz) {
     return {
       memory: {
@@ -989,7 +1185,7 @@ const buildTutorResponse = (question, memory) => {
           answerKeywords: topic.answerKeywords,
         },
       },
-      text: `Bài luyện ${topic.label}: ${topic.exercise} Trả lời ngắn, AI sẽ tự chấm và cập nhật mức hiểu của bạn.`,
+      text: `Câu được yêu cầu trong ${topic.label}: ${topic.exercise} Em hãy trả lời ngắn, mình sẽ đánh giá và gợi ý phần cần xem lại.`,
     }
   }
 
@@ -1005,7 +1201,7 @@ const buildTutorResponse = (question, memory) => {
 
   return {
     memory: nextMemory,
-    text: `${topic.label}: ${topic.summary} Mẹo làm bài: ${topic.tip} Bạn có thể gõ "bài tập" để AI tạo câu luyện theo đúng phần này.`,
+    text: `${topic.label}: ${topic.summary} Mẹo làm bài: ${topic.tip} Em có thể gửi câu hỏi hoặc câu trả lời trong phần đang học, mình sẽ gợi ý và đánh giá giúp em.`,
   }
 }
 
@@ -1034,6 +1230,7 @@ const normalizeFormulaText = (value) =>
 const requestAiResponse = async ({
   question,
   topic,
+  guidanceAttempt = 1,
   memory,
   previousMessages,
   mode,
@@ -1052,10 +1249,31 @@ const requestAiResponse = async ({
         : questionKind === 'exercise'
           ? 'Đây là bài tính toán hoặc bài có dữ kiện. Hãy gợi ý học sinh xác định dữ kiện đã cho, đại lượng cần tìm và công thức phù hợp. Chỉ dùng mẫu "đề cho gì, hỏi gì" trong loại bài này.'
           : 'Đây là câu hỏi học tập chung. Hãy gợi ý theo đúng nội dung học sinh hỏi, tự nhiên như gia sư đang trò chuyện, không dùng mẫu cứng.'
+  const tutorRoleRule = `VAI TRÒ:
+Bạn là AI trợ lí học tập Vật lí 11 được tích hợp trên website hỗ trợ tự học. Bạn hỗ trợ học sinh trong toàn bộ quá trình học các bài trên website, gồm Video khởi động, Phiếu học tập, Quiz và Tự đánh giá. Bạn không phải là công cụ làm bài thay học sinh. Bạn không tạo bài tập bổ trợ mới nếu học sinh không được giáo viên yêu cầu.
+
+Nhiệm vụ chính: gợi ý để học sinh tự hiểu vấn đề, đánh giá câu trả lời của học sinh, phân tích lỗi sai, chốt lại kiến thức đúng, đề xuất học sinh cần ôn lại phần nào trong bài học.
+
+PHẠM VI KIẾN THỨC:
+Chỉ hỗ trợ dựa trên kiến thức đã có trong website: Bài 22 Cường độ dòng điện; Bài 23 Điện trở và Định luật Ôm; Bài 24 Nguồn điện; Bài 25 Năng lượng và công suất điện; Bài 26 Thực hành đo suất điện động và điện trở trong của pin điện hóa.
+
+KHÔNG ĐƯỢC LÀM:
+Không tạo bài tập mới một cách chủ động. Không đưa đáp án ngay ở lần hỏi đầu tiên. Không làm thay toàn bộ nhiệm vụ của học sinh. Không trả lời lan man ngoài phạm vi bài học. Không dùng ngôn ngữ quá hàn lâm. Không khuyến khích học sinh học thuộc máy móc.
+
+NÊN LÀM:
+Gợi ý học sinh quay lại đúng phần bài học cần xem, ví dụ Phiếu học tập Bài 22, công thức I = Δq/Δt, ý nghĩa công suất điện trong Bài 25, hoặc cách đọc đồ thị U - I trong Bài 26. Luôn kết thúc bằng một định hướng học tập ngắn.`
+  const hintLevelRule =
+    guidanceAttempt <= 1
+      ? 'Đây là lần gợi ý 1: đưa gợi ý nhẹ, yêu cầu học sinh quan sát lại hiện tượng, dữ kiện hoặc nội dung đã học. Không đưa đáp án cuối.'
+      : guidanceAttempt === 2
+        ? 'Đây là lần gợi ý 2: đưa gợi ý cụ thể hơn, định hướng công thức, khái niệm hoặc mối liên hệ cần dùng. Không đưa lời giải hoàn chỉnh.'
+        : guidanceAttempt === 3
+          ? 'Đây là lần gợi ý 3: đưa gợi ý gần với lời giải, nhưng vẫn khuyến khích học sinh tự trả lời. Chưa làm thay toàn bộ.'
+          : 'Học sinh đã nhận ít nhất 3 lần gợi ý mà vẫn cần hỗ trợ. Được trình bày đáp án đầy đủ, giải thích từng bước, chỉ ra lỗi dễ nhầm và đề xuất ôn lại phần tương ứng.'
   const guidanceRule =
     mode === 'answer'
-      ? `Đây là lượt học sinh trả lời sau khi đã nhận gợi ý. Câu hỏi ban đầu là: "${originalQuestion || question}". Học sinh vừa phản hồi: "${question}". Hãy chấm độ chính xác câu trả lời theo thang 0-100 cho hệ thống dùng nội bộ. Dòng đầu tiên bắt buộc viết đúng mẫu: "Điểm: NN%". Từ dòng thứ hai trở đi tuyệt đối không nhắc lại điểm, phần trăm, ngưỡng chấm hay chữ "độ chính xác". Nếu NN >= ${PASSING_ANSWER_SCORE}, hãy chốt đáp án thật, giải từng bước ngắn gọn và chỉ rõ lỗi sai/thiếu trong câu trả lời của học sinh. Nếu NN < ${PASSING_ANSWER_SCORE}, tuyệt đối chưa đưa đáp án cuối hoặc lời giải hoàn chỉnh; chỉ nói còn thiếu ý nào và đưa thêm một gợi ý vừa sức để học sinh trả lời lại.`
-      : `Đây là lượt đầu tiên của một câu hỏi mới. Không trả lời đáp án cuối ngay. ${firstHintRule} Gợi ý phải vừa sức, cụ thể theo câu hỏi của học sinh, tối đa 2-3 câu. Kết thúc bằng một câu hỏi nhỏ để học sinh thử trả lời tiếp. Không trình bày lời giải hoàn chỉnh.`
+      ? `Đây là lượt học sinh đưa ra câu trả lời sau khi đã nhận gợi ý. Câu hỏi ban đầu là: "${originalQuestion || question}". Học sinh vừa phản hồi: "${question}". Hãy chấm độ chính xác câu trả lời theo thang 0-100 cho hệ thống dùng nội bộ. Dòng đầu tiên bắt buộc viết đúng mẫu: "Điểm: NN%". Từ dòng thứ hai trở đi tuyệt đối không nhắc lại điểm, phần trăm, ngưỡng chấm hay chữ "độ chính xác". Nếu NN >= ${PASSING_ANSWER_SCORE}: xác nhận đúng, giải thích vì sao đúng, trình bày lại đáp án chuẩn đầy đủ, và gợi ý nội dung trọng tâm cần ghi nhớ. Nếu NN < ${PASSING_ANSWER_SCORE}: không phê phán; chỉ ra phần học sinh đã hiểu đúng nếu có; chỉ ra lỗi sai cụ thể; giải thích nguyên nhân sai. ${guidanceAttempt >= 3 ? 'Vì học sinh đã được gợi ý nhiều lần, hãy trình bày đáp án đúng và đề xuất phần cần xem lại.' : 'Chưa đưa lời giải hoàn chỉnh; hãy đưa thêm một gợi ý vừa sức để học sinh trả lời lại.'} Luôn kết thúc bằng một định hướng học tập ngắn.`
+      : `Đây là lượt gợi ý cho câu hỏi học tập. ${hintLevelRule} ${firstHintRule} Gợi ý phải vừa sức, cụ thể theo câu hỏi của học sinh, tối đa 2-4 câu. Nếu chưa đến lần sau 3 gợi ý, kết thúc bằng một câu hỏi nhỏ để học sinh thử trả lời tiếp. Luôn kết thúc bằng một định hướng học tập ngắn.`
 
   const response = await fetch('/api/ai/chat', {
     method: 'POST',
@@ -1069,7 +1287,7 @@ const requestAiResponse = async ({
         {
           role: 'system',
           content:
-            'Bạn là AI tự học cho website Vật lí 11. Trả lời bằng tiếng Việt, ngắn gọn, đúng kiến thức phổ thông, ưu tiên giải thích từng bước và luôn khuyến khích học sinh tự làm tiếp. Không hiển thị quá trình suy nghĩ nội bộ, không dùng thẻ <think>. Không dùng markdown đậm kiểu **...** cho công thức; hãy viết công thức rõ ràng như P = U × I, I = U / R.',
+            `${tutorRoleRule}\n\nTrả lời bằng tiếng Việt, thân thiện, ngắn gọn, đúng kiến thức phổ thông. Không hiển thị quá trình suy nghĩ nội bộ, không dùng thẻ <think>. Không dùng markdown đậm kiểu **...** cho công thức; hãy viết công thức rõ ràng như P = U × I, I = U / R.`,
         },
         {
           role: 'system',
@@ -5416,7 +5634,7 @@ function getLesson24SolutionText(question, answerText) {
   }
 }
 
-function Lesson24ReviewGame() {
+function Lesson24ReviewGame({ onComplete, showSelfAssessment = true }) {
   const [currentMissionIndex, setCurrentMissionIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [attempts, setAttempts] = useState({})
@@ -5446,6 +5664,12 @@ function Lesson24ReviewGame() {
       : averageRating >= 4.5
         ? 'Chúc mừng! Bạn đã hoàn thành hành trình khám phá Nguồn điện.'
         : 'Bạn đã nắm được kiến thức cơ bản.'
+
+  useEffect(() => {
+    if (allMissionsDone) {
+      onComplete?.()
+    }
+  }, [allMissionsDone, onComplete])
 
   const updateAnswer = (missionId, value) => {
     setAnswers((current) => ({ ...current, [missionId]: value }))
@@ -5867,7 +6091,7 @@ function Lesson24ReviewGame() {
         </article>
       </div>
 
-      <section className="review-self-assessment">
+      {showSelfAssessment && <section className="review-self-assessment">
         <UnifiedSelfAssessment
           checks={ratings}
           className="lesson24-self-review"
@@ -5905,7 +6129,7 @@ function Lesson24ReviewGame() {
             ['reality', 'Tôi vận dụng được kiến thức nguồn điện vào thực tế.'],
           ]}
         />
-      </section>
+      </section>}
     </section>
   )
 }
@@ -6184,6 +6408,7 @@ function Lesson24WorksheetV2() {
   const [focusChoice, setFocusChoice] = useState('')
   const [conclusionChoice, setConclusionChoice] = useState('')
   const [quizOpen, setQuizOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
+  const [selfOpen, setSelfOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
 
   const isQuestionCorrect = (question, value) => {
     if (question.type === 'number') {
@@ -6641,7 +6866,7 @@ function Lesson24WorksheetV2() {
       )}
 
       {quizOpen && (
-        <Lesson24ReviewGame />
+        <Lesson24ReviewGame onComplete={() => setSelfOpen(true)} showSelfAssessment={selfOpen} />
       )}
     </div>
   )
@@ -6660,6 +6885,7 @@ function Lesson24StructuredLessonV2() {
   const finishVideo = () => {
     setVideoFinished(true)
     setKnowledgeUnlocked(true)
+    setJourneyStarted(true)
   }
 
   const handleStoryVideoTime = (event) => {
@@ -7664,7 +7890,7 @@ const lesson25VideoPrompts = [
   },
 ]
 
-function Lesson25InteractiveVideo({ src }) {
+function Lesson25InteractiveVideo({ onComplete, src }) {
   const videoRef = useRef(null)
   const [activePrompt, setActivePrompt] = useState(null)
   const [answeredPrompts, setAnsweredPrompts] = useState({})
@@ -7758,7 +7984,7 @@ function Lesson25InteractiveVideo({ src }) {
 
   return (
     <div className={activePrompt ? 'lesson25-interactive-video is-paused' : 'lesson25-interactive-video'}>
-      <video controls playsInline preload="metadata" ref={videoRef} onLoadedMetadata={syncVideoPrompt} onPause={syncVideoPrompt} onPlay={syncVideoPrompt} onSeeked={syncVideoPrompt} onTimeUpdate={syncVideoPrompt}>
+      <video controls playsInline preload="metadata" ref={videoRef} onEnded={onComplete} onLoadedMetadata={syncVideoPrompt} onPause={syncVideoPrompt} onPlay={syncVideoPrompt} onSeeked={syncVideoPrompt} onTimeUpdate={syncVideoPrompt}>
         <source src={src} type="video/mp4" />
         Trình duyệt của bạn không hỗ trợ phát video HTML5.
       </video>
@@ -8077,7 +8303,7 @@ function Lesson25ElectricJourney() {
             <p>Câu trả lời hoặc dự đoán ban đầu của học sinh.</p>
           </div>
         </div>
-        <Lesson25InteractiveVideo src="/videos/bai25.mp4" />
+        <Lesson25InteractiveVideo onComplete={() => setWorksheetOpen(true)} src="/videos/bai25.mp4" />
         <button className="primary-soft-btn lesson25-start-btn" type="button" onClick={() => setWorksheetOpen(true)}>Chuyển sang phiếu học tập</button>
       </article>
 
@@ -8724,6 +8950,23 @@ const createLesson26Rows = (prefix) =>
     i: '',
   }))
 
+const lesson26SampleRows = {
+  new: [
+    ['50', '1,47', '0,03'],
+    ['31', '1,45', '0,05'],
+    ['22', '1,43', '0,07'],
+    ['18', '1,42', '0,08'],
+    ['15', '1,41', '0,09'],
+  ],
+  old: [
+    ['50', '1,02', '0,015'],
+    ['41', '0,98', '0,02'],
+    ['27', '0,90', '0,03'],
+    ['20', '0,83', '0,04'],
+    ['11', '0,66', '0,06'],
+  ],
+}
+
 const lesson26IntroImages = {
   pinA: '/images/bai26/pin-a.png',
   pinB: '/images/bai26/pin-b.png',
@@ -8930,7 +9173,7 @@ function InteractiveIntroBai26({ onStartWorksheet }) {
   )
 }
 
-function Lesson26FinalReview() {
+function Lesson26FinalReview({ onComplete, showSelfAssessment = true }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [results, setResults] = useState({})
@@ -8989,6 +9232,12 @@ function Lesson26FinalReview() {
   }
 
   const currentResult = activeQuestion ? results[activeQuestion.id] : undefined
+
+  useEffect(() => {
+    if (isComplete) {
+      onComplete?.()
+    }
+  }, [isComplete, onComplete])
 
   return (
     <>
@@ -9197,7 +9446,7 @@ function Lesson26FinalReview() {
         )}
       </article>
 
-      <UnifiedSelfAssessment
+      {showSelfAssessment && <UnifiedSelfAssessment
         checks={selfChecks}
         className="lesson26-self-review"
         description="Đối chiếu kết quả học tập với yêu cầu của bài thực hành đo suất điện động và điện trở trong của pin điện hoá."
@@ -9234,7 +9483,7 @@ function Lesson26FinalReview() {
           ['resistance', 'Tôi xác định được điện trở trong của pin.'],
           ['meaning', 'Tôi giải thích được ý nghĩa của các đại lượng đo được.'],
         ]}
-      />
+      />}
     </>
   )
 }
@@ -9251,10 +9500,12 @@ function Lesson26BatteryLab() {
     new: { mId: '', nId: '' },
     old: { mId: '', nId: '' },
   })
+  const [visiblePointLabels, setVisiblePointLabels] = useState({})
   const [relationAnswer, setRelationAnswer] = useState('')
   const [extendedLine, setExtendedLine] = useState(false)
   const [compareAnswer, setCompareAnswer] = useState('')
   const [finished, setFinished] = useState(false)
+  const [selfOpen, setSelfOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
   const toolsRef = useRef(null)
   const quantityPromptRef = useRef(null)
   const circuitPromptRef = useRef(null)
@@ -9295,11 +9546,12 @@ function Lesson26BatteryLab() {
     ...validMeasurements.map((item) => item.uValue),
     ...[newFit?.intercept, oldFit?.intercept].filter((value) => Number.isFinite(value)),
   ]
-  const iMin = iValues.length ? Math.min(...iValues, 0) : 0
-  const iMax = iValues.length ? Math.max(...iValues, 0.1) : 0.1
+  const iMin = 0
+  const iMax = iValues.length ? Math.max(...iValues) : 0.05
+  const chartIMax = Math.max(iMax * 1.15, 0.05)
   const uMin = uValues.length ? Math.min(...uValues) - 0.03 : 1.35
   const uMax = uValues.length ? Math.max(...uValues) + 0.03 : 1.65
-  const mapI = (value) => 70 + ((value - iMin) / Math.max(1, iMax - iMin)) * 390
+  const mapI = (value) => 70 + ((value - iMin) / Math.max(0.001, chartIMax - iMin)) * 390
   const mapU = (value) => 240 - ((value - uMin) / Math.max(0.01, uMax - uMin)) * 175
   const mapToPoints = (items) =>
     items.map((item) => ({
@@ -9310,23 +9562,43 @@ function Lesson26BatteryLab() {
   const newPoints = mapToPoints(newMeasurements)
   const oldPoints = mapToPoints(oldMeasurements)
   const points = [...newPoints, ...oldPoints]
-  const createTrendPath = (items) => {
-    const sortedPoints = [...items].sort((a, b) => a.iValue - b.iValue)
-    return sortedPoints.length >= 2
-    ? `M${sortedPoints[0].x} ${sortedPoints[0].y}L${sortedPoints[sortedPoints.length - 1].x} ${sortedPoints[sortedPoints.length - 1].y}`
-    : ''
-  }
-  const newTrendPath = createTrendPath(newPoints)
-  const oldTrendPath = createTrendPath(oldPoints)
-  const createU0ExtensionPath = (items, fit) => {
+  const createFitPath = (items, fit) => {
     if (!fit || items.length < 2) return ''
-    const sortedItems = [...items].sort((a, b) => a.iValue - b.iValue)
-    return `M${mapI(0)} ${mapU(fit.intercept)}L${mapI(sortedItems[0].iValue)} ${mapU(sortedItems[0].uValue)}`
+    const maxMeasuredI = Math.max(...items.map((item) => item.iValue), 0)
+    return `M${mapI(0)} ${mapU(fit.intercept)}L${mapI(maxMeasuredI)} ${mapU(fit.intercept + fit.slope * maxMeasuredI)}`
   }
-  const newU0Path = createU0ExtensionPath(newMeasurements, newFit)
-  const oldU0Path = createU0ExtensionPath(oldMeasurements, oldFit)
+  const newTrendPath = createFitPath(newMeasurements, newFit)
+  const oldTrendPath = createFitPath(oldMeasurements, oldFit)
+  const chartXTicks = [0, 0.25, 0.5, 0.75, 1].map((ratio) => ({
+    x: mapI(chartIMax * ratio),
+    value: chartIMax * ratio,
+  }))
+  const chartYTicks = [0, 0.25, 0.5, 0.75, 1].map((ratio) => ({
+    y: mapU(uMin + (uMax - uMin) * ratio),
+    value: uMin + (uMax - uMin) * ratio,
+  }))
+  const formatChartValue = (value, digits = 2) =>
+    Number.isFinite(value)
+      ? value.toFixed(digits).replace(/\.?0+$/, '')
+      : ''
+  const getPointKey = (series, pointId) => `${series}:${pointId}`
+  const isPointLabelVisible = (series, pointId) => Boolean(visiblePointLabels[getPointKey(series, pointId)])
+  const getPointLabelProps = (point, index) => {
+    const isNearRight = point.x > 390
+    const isNearBottom = point.y > 212
+    return {
+      x: isNearRight ? point.x - 13 : point.x + 13,
+      y: Math.max(24, Math.min(236, point.y + (isNearBottom ? -28 : -12) + (index % 2) * 10)),
+      textAnchor: isNearRight ? 'end' : 'start',
+    }
+  }
 
   const selectResistancePoint = (series, point) => {
+    const pointKey = getPointKey(series, point.id)
+    setVisiblePointLabels((current) => ({
+      ...current,
+      [pointKey]: !current[pointKey],
+    }))
     setResistanceSelections((current) => {
       const seriesSelection = current[series] || { mId: '', nId: '' }
       const nextSeriesSelection =
@@ -9411,6 +9683,24 @@ function Lesson26BatteryLab() {
 
   const addMeasurementRow = (setRows, prefix) => {
     setRows((current) => [...current, { id: `${prefix}-${Date.now()}`, r: '', u: '', i: '' }])
+  }
+
+  const createSampleMeasurementRows = (prefix, samples) =>
+    samples.map(([r, u, i], index) => ({
+      id: `${prefix}-${index + 1}`,
+      r,
+      u,
+      i,
+    }))
+
+  const fillSampleMeasurements = () => {
+    setNewBatteryRows(createSampleMeasurementRows('new-battery', lesson26SampleRows.new))
+    setOldBatteryRows(createSampleMeasurementRows('old-battery', lesson26SampleRows.old))
+    setVisiblePointLabels({})
+    setResistanceSelections({
+      new: { mId: '', nId: '' },
+      old: { mId: '', nId: '' },
+    })
   }
 
   const scrollToCard = (targetRef) => {
@@ -9678,46 +9968,77 @@ function Lesson26BatteryLab() {
                       {renderMeasurementTable('Pin mới', 'new', newBatteryRows, setNewBatteryRows, 'new-battery')}
                       {renderMeasurementTable('Pin cũ', 'old', oldBatteryRows, setOldBatteryRows, 'old-battery')}
                     </div>
+                    <button className="lesson26-sample-data-btn" type="button" onClick={fillSampleMeasurements}>dữ liệu mẫu</button>
                     <div className="lesson26-table-graph">
                       <svg className="lesson26-chart lesson26-chart--compact" viewBox="0 0 520 300" role="img" aria-label="Đồ thị U theo I từ bảng nhập liệu">
                         <path className="axis" d="M70 245H470M70 245V45" />
-                        <text x="438" y="270">I (A)</text>
+                        <text className="axis-title" x="438" y="286">I (A)</text>
                         <text x="42" y="55">U</text>
                         <path className="grid" d="M70 200H470M70 155H470M70 110H470M160 245V45M250 245V45M340 245V45M430 245V45" />
-                        {newPoints.map((point, index) => (
-                          <circle
-                            aria-label={`Chọn điểm pin mới: U = ${point.uValue.toFixed(2)} V, I = ${point.iValue.toFixed(2)} A`}
-                            className={`data-dot data-dot--new${getResistancePointClass('new', point.id)}`}
-                            cx={point.x}
-                            cy={point.y}
-                            key={point.id}
-                            onClick={() => selectResistancePoint('new', point)}
-                            onKeyDown={(event) => handleResistancePointKey(event, 'new', point)}
-                            r="7"
-                            role="button"
-                            style={{ '--delay': `${index * 80}ms` }}
-                            tabIndex="0"
-                          />
-                        ))}
-                        {oldPoints.map((point, index) => (
-                          <circle
-                            aria-label={`Chọn điểm pin cũ: U = ${point.uValue.toFixed(2)} V, I = ${point.iValue.toFixed(2)} A`}
-                            className={`data-dot data-dot--old${getResistancePointClass('old', point.id)}`}
-                            cx={point.x}
-                            cy={point.y}
-                            key={point.id}
-                            onClick={() => selectResistancePoint('old', point)}
-                            onKeyDown={(event) => handleResistancePointKey(event, 'old', point)}
-                            r="7"
-                            role="button"
-                            style={{ '--delay': `${index * 80}ms` }}
-                            tabIndex="0"
-                          />
-                        ))}
+                        <g className="axis-ticks axis-ticks--x">
+                          {chartXTicks.map((tick) => (
+                            <text key={`i-${tick.value}`} textAnchor="middle" x={tick.x} y="264">{formatChartValue(tick.value, 3)}</text>
+                          ))}
+                        </g>
+                        <g className="axis-ticks axis-ticks--y">
+                          {chartYTicks.map((tick) => (
+                            <text key={`u-${tick.value}`} textAnchor="end" x="62" y={tick.y + 4}>{formatChartValue(tick.value)}</text>
+                          ))}
+                        </g>
                         {newTrendPath && <path className="trend-line trend-line--live trend-line--new" d={newTrendPath} />}
                         {oldTrendPath && <path className="trend-line trend-line--live trend-line--old" d={oldTrendPath} />}
-                        {newU0Path && <path className="extend-line extend-line--new" d={newU0Path} />}
-                        {oldU0Path && <path className="extend-line extend-line--old" d={oldU0Path} />}
+                        {newPoints.map((point, index) => {
+                          const label = getPointLabelProps(point, index)
+                          const showLabel = isPointLabelVisible('new', point.id)
+                          return (
+                            <Fragment key={point.id}>
+                              <circle
+                                aria-label={`Chọn điểm pin mới: U = ${point.uValue.toFixed(2)} V, I = ${point.iValue.toFixed(2)} A`}
+                                className={`data-dot data-dot--new${getResistancePointClass('new', point.id)}`}
+                                cx={point.x}
+                                cy={point.y}
+                                onClick={() => selectResistancePoint('new', point)}
+                                onKeyDown={(event) => handleResistancePointKey(event, 'new', point)}
+                                r="7"
+                                role="button"
+                                style={{ '--delay': `${index * 80}ms` }}
+                                tabIndex="0"
+                              />
+                              {showLabel && (
+                                <text className="point-label point-label--new" textAnchor={label.textAnchor} x={label.x} y={label.y}>
+                                  <tspan x={label.x}>U={formatChartValue(point.uValue)}V</tspan>
+                                  <tspan dy="13" x={label.x}>I={formatChartValue(point.iValue, 3)}A</tspan>
+                                </text>
+                              )}
+                            </Fragment>
+                          )
+                        })}
+                        {oldPoints.map((point, index) => {
+                          const label = getPointLabelProps(point, index)
+                          const showLabel = isPointLabelVisible('old', point.id)
+                          return (
+                            <Fragment key={point.id}>
+                              <circle
+                                aria-label={`Chọn điểm pin cũ: U = ${point.uValue.toFixed(2)} V, I = ${point.iValue.toFixed(2)} A`}
+                                className={`data-dot data-dot--old${getResistancePointClass('old', point.id)}`}
+                                cx={point.x}
+                                cy={point.y}
+                                onClick={() => selectResistancePoint('old', point)}
+                                onKeyDown={(event) => handleResistancePointKey(event, 'old', point)}
+                                r="7"
+                                role="button"
+                                style={{ '--delay': `${index * 80}ms` }}
+                                tabIndex="0"
+                              />
+                              {showLabel && (
+                                <text className="point-label point-label--old" textAnchor={label.textAnchor} x={label.x} y={label.y}>
+                                  <tspan x={label.x}>U={formatChartValue(point.uValue)}V</tspan>
+                                  <tspan dy="13" x={label.x}>I={formatChartValue(point.iValue, 3)}A</tspan>
+                                </text>
+                              )}
+                            </Fragment>
+                          )
+                        })}
                         {newFit && <circle className="emf-point emf-point--new" cx={mapI(0)} cy={mapU(newFit.intercept)} r="8" />}
                         {oldFit && <circle className="emf-point emf-point--old" cx={mapI(0)} cy={mapU(oldFit.intercept)} r="8" />}
                         {newFit && <text className="emf-label emf-label--new" x="84" y={Math.max(24, mapU(newFit.intercept) - 8)}>U0 mới</text>}
@@ -9845,7 +10166,9 @@ function Lesson26BatteryLab() {
             </>
           )}
         </article>
-        {(PREVIEW_ALL_LESSON_PARTS || compareAnswer) && <Lesson26FinalReview />}
+        {(PREVIEW_ALL_LESSON_PARTS || finished) && (
+          <Lesson26FinalReview onComplete={() => setSelfOpen(true)} showSelfAssessment={selfOpen} />
+        )}
         </>
       )}
     </section>
@@ -10905,7 +11228,7 @@ function SelfStudyMenuContent({ content, studyData, onOpenLesson, onStartExercis
   return null
 }
 
-function FeatureDialog({ content, onClose, onAction, onOpenLesson, onStartExercise, studyData }) {
+function FeatureDialog({ content, onClose, onAction, onOpenLesson, onStartExercise, onExportReport, studyData }) {
   const isRestoredLesson = content.lessonId === 'cuong-do-dong-dien' || content.lessonId === 'dien-tro-dinh-luat-om' || content.lessonId === 'nguon-dien' || content.lessonId === 'nang-luong-cong-suat-dien' || content.lessonId === 'thuc-hanh-pin-dien-hoa'
   const isSelfStudyMenu = ['overview', 'lessons', 'games', 'review', 'profile', 'formulas'].includes(content.featureKey)
   const showsLegacyLessonExtras = !isSelfStudyMenu && !isRestoredLesson
@@ -10943,6 +11266,11 @@ function FeatureDialog({ content, onClose, onAction, onOpenLesson, onStartExerci
                   </div>
                 </article>
               ))}
+              {content.featureKey === 'progress' && (
+                <button className="learning-report-export-btn" type="button" onClick={onExportReport}>
+                  Xuất báo cáo học tập
+                </button>
+              )}
             </div>
           )}
         </>
@@ -11167,7 +11495,7 @@ function App() {
     {
       role: 'assistant',
       text:
-        'Xin chào! Khi bạn đặt câu hỏi, mình sẽ gợi ý trước để bạn tự trả lời. Khi câu trả lời đủ tốt, mình sẽ chốt đáp án thật kèm lời giải và chỉ ra phần sai.',
+        'Xin chào! Khi bạn đặt câu hỏi, mình sẽ gợi ý từng bước để bạn tự trả lời. Khi bạn gửi câu trả lời, mình sẽ đánh giá, phân tích lỗi sai nếu có và chốt lại kiến thức đúng.',
     },
   ])
   const chatEndRef = useRef(null)
@@ -11280,8 +11608,8 @@ function App() {
         role: 'assistant',
         text:
           savedMemory
-            ? 'Xin chào! Thành tích và tiến độ học trước đó của bạn đã được tải lại. Khi bạn đặt câu hỏi, mình sẽ gợi ý trước để bạn tự trả lời.'
-            : 'Xin chào! Tài khoản mới đã bắt đầu từ 0. Khi bạn đặt câu hỏi, mình sẽ gợi ý trước để bạn tự trả lời.',
+            ? 'Xin chào! Thành tích và tiến độ học trước đó của bạn đã được tải lại. Khi bạn đặt câu hỏi, mình sẽ gợi ý từng bước để bạn tự trả lời.'
+            : 'Xin chào! Tài khoản mới đã bắt đầu từ 0. Khi bạn đặt câu hỏi, mình sẽ gợi ý từng bước để bạn tự trả lời.',
       },
     ])
     showToast(savedMemory ? 'Đã đăng nhập và tải lại thành tích đã lưu.' : 'Đã tạo tài khoản mới.')
@@ -11353,12 +11681,13 @@ function App() {
       ...currentMessages,
       {
         role: 'assistant',
-        text: `Bài luyện ${topic.label}: ${topic.exercise} Trả lời ngắn, AI sẽ tự chấm.`,
+        text: `Mình sẽ hỗ trợ em với câu có sẵn trong bài ${topic.label}: ${topic.exercise} Em hãy thử trả lời ngắn, mình sẽ đánh giá và gợi ý tiếp.`,
       },
     ])
     setPendingGuidance({
       question: topic.exercise,
       topicId: topic.id,
+      attempts: 1,
     })
     document.querySelector('.ai-question-input')?.focus()
   }
@@ -11372,7 +11701,8 @@ function App() {
       return
     }
 
-    const startsNewQuestion = Boolean(pendingGuidance && isLikelyNewQuestion(question))
+    const wantsMoreGuidance = Boolean(pendingGuidance && isMoreGuidanceRequest(question))
+    const startsNewQuestion = Boolean(pendingGuidance && isLikelyNewQuestion(question) && !wantsMoreGuidance)
     const activeMemory = startsNewQuestion
       ? {
           ...memory,
@@ -11381,10 +11711,15 @@ function App() {
       : memory
     const result = buildTutorResponse(question, activeMemory)
     const previousMessages = startsNewQuestion ? [] : messages
-    const responseMode = pendingGuidance && !startsNewQuestion ? 'answer' : 'hint'
-    const originalQuestion = responseMode === 'answer' ? pendingGuidance?.question || question : question
+    const responseMode = pendingGuidance && !startsNewQuestion && !wantsMoreGuidance ? 'answer' : 'hint'
+    const originalQuestion = pendingGuidance && !startsNewQuestion ? pendingGuidance.question || question : question
+    const guidanceAttempt = wantsMoreGuidance
+      ? (pendingGuidance?.attempts || 1) + 1
+      : responseMode === 'answer'
+        ? pendingGuidance?.attempts || 1
+        : 1
     const conversationTopic =
-      responseMode === 'answer'
+      pendingGuidance && !startsNewQuestion
         ? topics.find((topic) => topic.id === pendingGuidance?.topicId) || selectedTopic
         : findTopic(question, activeMemory)
     setMessages((currentMessages) => [
@@ -11398,6 +11733,7 @@ function App() {
     try {
       const aiText = await requestAiResponse({
         question,
+        guidanceAttempt,
         topic: conversationTopic,
         memory: result.memory,
         previousMessages,
@@ -11428,8 +11764,9 @@ function App() {
       setPendingGuidance(
         shouldKeepGuiding
           ? {
-              question: originalQuestion,
-              topicId: conversationTopic.id,
+            question: originalQuestion,
+            topicId: conversationTopic.id,
+              attempts: guidanceAttempt,
             }
           : null,
       )
@@ -11460,6 +11797,7 @@ function App() {
           ? {
               question: originalQuestion,
               topicId: conversationTopic.id,
+              attempts: guidanceAttempt,
             }
           : null,
       )
@@ -11535,12 +11873,13 @@ function App() {
       setPendingGuidance({
         question: `Học nhánh ${action} trong ${lessonFromDialog.label}`,
         topicId: lessonFromDialog.id,
+        attempts: 1,
       })
       setMessages((currentMessages) => [
         ...currentMessages,
         {
           role: 'assistant',
-          text: `Đã mở nhánh "${action}" của ${lessonFromDialog.label}. Em có thể gõ "gợi ý", "bài tập", hoặc câu hỏi cụ thể về nhánh này.`,
+          text: `Đã mở nhánh "${action}" của ${lessonFromDialog.label}. Em có thể gõ "gợi ý" hoặc gửi câu trả lời cụ thể để mình đánh giá.`,
         },
       ])
       document.querySelector('.ai-question-input')?.focus()
@@ -11548,6 +11887,20 @@ function App() {
     }
 
     showToast(`Đã chọn: ${action}`)
+  }
+
+  const handleExportLearningReport = () => {
+    const exportedAt = new Date().toLocaleString('vi-VN', {
+      dateStyle: 'short',
+      timeStyle: 'short',
+    })
+    const opened = openLearningReportWindow({
+      studentName: currentStudent?.username || 'Học sinh',
+      exportedAt,
+      details: progressDetails,
+    })
+
+    showToast(opened ? 'Đã mở báo cáo học tập.' : 'Trình duyệt đã chặn cửa sổ báo cáo.')
   }
 
   const activeLessonId = activeFeature?.startsWith('lesson:')
@@ -11560,7 +11913,7 @@ function App() {
         title: activeLesson.label,
         body: `${activeLesson.summary} ${activeLesson.tip}`,
         branches: activeLesson.branches || [],
-        actions: ['Tạo bài tập theo bài này', 'Hỏi AI về bài này', 'Đánh dấu đã học'],
+        actions: ['Hỏi AI về bài này', 'Xem gợi ý học phần này', 'Đánh dấu đã học'],
       }
     : activeFeature
       ? { ...featureContent[activeFeature], featureKey: activeFeature }
@@ -12015,12 +12368,12 @@ function App() {
               <div className="ai-intro">
                 <img src={robotImage} alt="Robot trợ lí ảo" />
                 <div>
-                  <p>Xin chào! Mình là trợ lí ảo. Mình có thể giúp bạn:</p>
+                  <p>Xin chào! Mình là trợ lí học tập Vật lí 11. Mình có thể giúp bạn:</p>
                   <ul>
-                    <li>Gợi ý trước khi giải</li>
+                    <li>Gợi ý để tự hiểu</li>
                     <li>Đánh giá câu trả lời</li>
                     <li>Phân tích lỗi sai</li>
-                    <li>Tạo bài tập thêm</li>
+                    <li>Chốt kiến thức đúng</li>
                   </ul>
                 </div>
               </div>
@@ -12061,6 +12414,7 @@ function App() {
           studyData={studyData}
           onAction={handleDialogAction}
           onClose={() => setActiveFeature(null)}
+          onExportReport={handleExportLearningReport}
           onOpenLesson={openLesson}
           onStartExercise={startAiExercise}
         />
