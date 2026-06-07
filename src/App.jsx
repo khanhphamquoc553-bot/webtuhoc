@@ -20,6 +20,7 @@ import './App.css'
 const STORAGE_KEY = 'vat-ly-11-self-learning-ai'
 const ACCOUNTS_KEY = `${STORAGE_KEY}:accounts`
 const SESSION_KEY = `${STORAGE_KEY}:current-student`
+const PREVIEW_ALL_LESSON_PARTS = true
 
 const topics = [
   {
@@ -1732,112 +1733,72 @@ const lesson22VideoInteractions = [
     id: 'intro-observe',
     type: 'message',
     startTime: 0,
-    endTime: 2,
-    text: 'Quan sát video để trả lời câu hỏi',
+    endTime: 3,
+    text: 'Hoạt động trước khi học: quan sát hai bóng đèn và chuẩn bị trả lời câu hỏi.',
+    pauseOnShow: true,
+    actionLabel: 'Tiếp tục',
   },
   {
     id: 'brighter-case',
     type: 'question',
-    time: 3.6,
-    question: 'Sau khi quan sát video, trong trường hợp nào bóng đèn sáng hơn?',
-    options: ['Trường hợp 1', 'Trường hợp 2'],
+    time: 3.8,
+    question: 'Bóng đèn nào sáng hơn?',
+    options: ['Bóng đèn ở Trường hợp 1', 'Bóng đèn ở Trường hợp 2'],
     answer: 0,
-    wrongHint: 'Hãy quan sát phần phát sáng của bóng đèn ở hai trường hợp. Bóng ở Trường hợp 1 sáng rõ hơn, cho thấy tác dụng của dòng điện mạnh hơn.',
+    correctFeedback: 'Đúng. Em đã quan sát được sự khác nhau về độ sáng giữa hai bóng đèn.',
+    wrongHint: 'Hãy quan sát lại phần phát sáng của hai bóng đèn và chọn bóng có ánh sáng rõ hơn.',
   },
   {
-    id: 'observe-electrons',
-    type: 'message',
-    startTime: 15,
-    endTime: 17,
-    text: 'Quan sát sự chuyển động của các electron',
-  },
-  {
-    id: 'electron-opposite-current',
+    id: 'stronger-current-prediction',
     type: 'question',
-    time: 21,
-    question: 'Các electron chuyển động ngược chiều dòng điện.',
-    options: ['Đúng', 'Sai'],
+    time: 28.5,
+    question: 'Theo em, dòng điện trong mạch nào mạnh hơn?',
+    options: ['Mạch có bóng đèn sáng hơn', 'Mạch có bóng đèn sáng yếu hơn'],
     answer: 0,
-    correctFeedback: 'Đúng. Chiều chuyển động của các electron ngược với chiều dòng điện vì chiều dòng điện là chiều từ cực dương sang cực âm.',
-    wrongFeedback: 'Sai. Chiều quy ước của dòng điện là chiều từ cực dương sang cực âm.',
-    wrongHint: 'Sai. Chiều quy ước của dòng điện là chiều từ cực dương sang cực âm.',
+    correctFeedback: 'Đúng hướng. Đây là dự đoán ban đầu dựa trên hiện tượng quan sát được.',
+    wrongHint: 'Hãy liên hệ độ sáng của bóng đèn với mức độ hoạt động mạnh hoặc yếu của thiết bị.',
   },
   {
-    id: 'metal-wire-fill',
-    type: 'drag-fill',
-    time: 24,
-    instruction: 'Hãy kéo những nội dung phù hợp cho phần còn thiếu',
-    slots: [
-      { id: 'particles', answer: 'electron tự do' },
-      { id: 'motion', answer: 'có hướng' },
-      { id: 'current', answer: 'dòng điện' },
-    ],
-    options: ['dòng điện', 'electron tự do', 'có hướng'],
-    wrongHint: 'Hãy đọc thành câu trọn nghĩa: trong dây dẫn kim loại có electron tự do; các hạt này dịch chuyển có hướng; sự dịch chuyển đó tạo thành dòng điện.',
-  },
-  {
-    id: 'brighter-fast-electrons',
-    type: 'question',
-    time: 28,
-    question: 'Bóng đèn sáng hơn khi các electron tự do dịch chuyển nhanh hơn.',
-    options: ['Đúng', 'Sai'],
-    answer: 0,
-    wrongHint: 'Trong cùng một thời gian, electron dịch chuyển nhanh hơn làm nhiều điện tích đi qua tiết diện dây hơn. Dòng điện mạnh hơn nên bóng đèn sáng hơn.',
-  },
-  {
-    id: 'current-intensity-summary',
+    id: 'observe-two-circuits',
     type: 'info',
-    time: 29,
+    time: 15.5,
     lines: [
-      'Electron dịch chuyển nhanh hơn nên có nhiều điện tích',
-      'đi qua dây dẫn hơn trong cùng một khoảng thời gian',
-      'dẫn đến dòng điện mạnh hơn.',
-      'Để đặc trưng cho độ mạnh, yếu của dòng điện',
-      'cần một đại lượng là cường độ dòng điện.',
+      'Hãy quan sát bóng đèn của 2 mạch sau để trả lời câu hỏi.',
     ],
   },
   {
-    id: 'current-intensity-formula',
-    type: 'question',
-    time: 33,
-    question: 'Cường độ dòng điện được xác định bằng biểu thức?',
-    options: ['I = Δq/Δt', 'I = Δt/Δq'],
-    answer: 0,
-    wrongHint: 'Cường độ dòng điện cho biết điện lượng đi qua tiết diện dây trong một đơn vị thời gian, nên phải lấy điện lượng Δq chia cho thời gian Δt.',
+    id: 'current-can-vary',
+    type: 'info',
+    time: 30,
+    lines: [
+      'Gợi ý định hướng:',
+      'Dòng điện có thể có mức độ mạnh, yếu khác nhau.',
+      'Ta cần tìm một đại lượng để mô tả mức độ đó.',
+    ],
   },
   {
-    id: 'final-review-sequence',
-    type: 'sequence',
-    time: 35,
-    title: 'Lựa chọn ý đúng nhất',
-    cards: [
-      {
-        id: 'fast-electrons',
-        options: [
-          'Khi electron dịch chuyển nhanh hơn, lượng điện tích đi qua tiết diện dây dẫn trong cùng thời gian sẽ ít hơn làm bóng đèn sáng mờ hơn nên dòng điện nhỏ hơn.',
-          'Khi electron dịch chuyển nhanh hơn, lượng điện tích đi qua tiết diện dây dẫn trong cùng thời gian sẽ nhiều hơn làm bóng đèn sáng hơn nên dòng điện lớn hơn.',
-        ],
-        answer: 1,
-        wrongHint: 'Electron đi nhanh hơn nghĩa là trong cùng khoảng thời gian sẽ có nhiều điện tích đi qua dây hơn, không phải ít hơn.',
-      },
-      {
-        id: 'current-meaning',
-        options: [
-          'Cường độ dòng điện đặc trưng cho tác dụng mạnh, yếu của dòng điện.',
-          'Cường độ dòng điện không đặc trưng cho tác dụng mạnh, yếu của dòng điện.',
-        ],
-        answer: 0,
-        wrongHint: 'Hãy liên hệ với bóng đèn sáng mạnh hoặc yếu: cường độ dòng điện là đại lượng dùng để mô tả tác dụng mạnh, yếu đó.',
-      },
-      {
-        id: 'formula',
-        options: [
-          'Cường độ dòng điện được xác định bằng công thức I = Δt/Δq.',
-          'Cường độ dòng điện được xác định bằng công thức I = Δq/Δt.',
-        ],
-        answer: 1,
-        wrongHint: 'Từ ý nghĩa “điện lượng trong một đơn vị thời gian”, tử số phải là Δq và mẫu số phải là Δt: I = Δq/Δt.',
-      },
+    id: 'needed-quantity',
+    type: 'question',
+    time: 31.5,
+    question: 'Cần đại lượng nào để đặc trưng cho mức độ mạnh, yếu của dòng điện?',
+    options: [
+      'Một đại lượng mô tả dòng điện mạnh hay yếu',
+      'Màu sắc của dây dẫn',
+      'Hình dạng của bóng đèn',
+    ],
+    answer: 0,
+    correctFeedback: 'Đúng hướng. Hãy giữ dự đoán này để kiểm chứng ở phiếu học tập.',
+    wrongHint: 'Câu hỏi đang hướng tới một đại lượng dùng để mô tả chính mức độ mạnh, yếu của dòng điện.',
+  },
+  {
+    id: 'worksheet-reminder',
+    type: 'info',
+    time: 34,
+    completeOnContinue: true,
+    lines: [
+      'Vấn đề học tập:',
+      'Đại lượng nào đặc trưng cho mức độ mạnh, yếu của dòng điện?',
+      'Hãy hoàn thành phiếu học tập để tìm hiểu đại lượng này.',
     ],
   },
 ]
@@ -1922,7 +1883,7 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
       return
     }
 
-    if (['question', 'drag-fill', 'info', 'sequence'].includes(activeInteraction?.type)) {
+    if (['question', 'drag-fill', 'info', 'sequence'].includes(activeInteraction?.type) || activeInteraction?.pauseOnShow) {
       return
     }
 
@@ -1946,7 +1907,12 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
         currentTime <= interaction.endTime,
     )
 
-    if (timedMessage) {
+    if (timedMessage?.pauseOnShow && !answeredInteractions[timedMessage.id]) {
+      openTimedInteraction(timedMessage)
+      return
+    }
+
+    if (timedMessage && !timedMessage.pauseOnShow) {
       setActiveInteraction(timedMessage)
       return
     }
@@ -1961,7 +1927,10 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
 
     if (finalInteraction) {
       openTimedInteraction(finalInteraction)
+      return
     }
+
+    onComplete?.()
   }
 
   const handleCheckAnswer = () => {
@@ -2032,6 +2001,11 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
       onComplete?.()
     }
 
+    if (activeInteraction.completeOnContinue) {
+      onComplete?.()
+      return
+    }
+
     if (activeInteraction.type !== 'sequence') {
       window.setTimeout(() => video.play(), 80)
     }
@@ -2058,7 +2032,8 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
       {activeInteraction?.type === 'message' && (
         <div className={activeInteraction.transparent ? 'video-toast video-toast--transparent' : 'video-toast'}>
           <strong>{activeInteraction.text}</strong>
-          {activeInteraction.actionLabel && <button className="video-toast-action" type="button" onClick={() => onComplete?.()}>{activeInteraction.actionLabel}</button>}
+          {activeInteraction.pauseOnShow && <button className="video-toast-action" type="button" onClick={handleContinueVideo}>{activeInteraction.actionLabel || 'Tiếp tục'}</button>}
+          {!activeInteraction.pauseOnShow && activeInteraction.actionLabel && <button className="video-toast-action" type="button" onClick={() => onComplete?.()}>{activeInteraction.actionLabel}</button>}
         </div>
       )}
 
@@ -2215,34 +2190,66 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
 
 function Lesson22InteractiveWorksheet({ onAction }) {
   const [revealedBlocks, setRevealedBlocks] = useState({
-    worksheet: false,
-    nsve: false,
-    quiz: false,
-    selfCheck: false,
+    worksheet: PREVIEW_ALL_LESSON_PARTS,
+    quiz: PREVIEW_ALL_LESSON_PARTS,
+    selfCheck: PREVIEW_ALL_LESSON_PARTS,
   })
   const [answers, setAnswers] = useState({
-    concept: '',
-    formula: '',
-    i: '',
-    q: '',
-    t: '',
-    charge: '',
-    current: '',
-    n: '',
-    s: '',
-    v: '',
-    e: '',
-    advanced: '',
+    task1LampChoice: '',
+    task1MagnetChoice: '',
+    task1Fill: '',
+    task1Short: '',
+    task2TfA: '',
+    task2TfB: '',
+    task2Tool: '',
+    task2Fill: '',
+    task2Short: '',
+    task3FirstCase: '',
+    task3LargeFill: '',
+    task3SecondCase: '',
+    task3SmallFill: '',
+    task3Predict: '',
+    task3FormulaChoice: '',
+    task3Match: {},
+    task4UnitChoice: '',
+    task4Relation: '',
+    task4Meaning: '',
+    task5CarrierChoice: '',
+    task5Tf: '',
+    task5Fill: '',
+    task5Direction: '',
+    task6CountChoice: '',
+    task6SpeedChoice: '',
+    task6Short: '',
   })
   const [attempts, setAttempts] = useState({})
   const [feedbacks, setFeedbacks] = useState({})
-  const [quickChoices, setQuickChoices] = useState({})
-  const [showHint, setShowHint] = useState(false)
+  const [worksheetStep, setWorksheetStep] = useState(1)
+  const [lampCurrent, setLampCurrent] = useState(0.2)
+  const [magnetCurrent, setMagnetCurrent] = useState(0.2)
+  const [questionFeedbacks, setQuestionFeedbacks] = useState({})
   const [selfChecks, setSelfChecks] = useState({})
-  const [lesson22CardStep, setLesson22CardStep] = useState(0)
+  const [selfReflection, setSelfReflection] = useState({
+    question: '',
+    plan: '',
+  })
 
   const revealBlock = (key) => {
     setRevealedBlocks((current) => (current[key] ? current : { ...current, [key]: true }))
+  }
+
+  const revealWorksheetFromVideo = () => {
+    revealBlock('worksheet')
+    window.setTimeout(() => {
+      document.getElementById('lesson22-worksheet')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 80)
+  }
+
+  const revealSelfCheckFromQuiz = () => {
+    revealBlock('selfCheck')
+    window.setTimeout(() => {
+      document.getElementById('lesson22-self-check')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 120)
   }
 
   const updateAnswer = (key, value) => {
@@ -2253,28 +2260,14 @@ function Lesson22InteractiveWorksheet({ onAction }) {
     if (isCorrect) {
       setAttempts((current) => ({ ...current, [key]: 0 }))
       const nextFeedbacks = { ...feedbacks, [key]: { type: 'correct', message: 'Đúng. Em đang suy luận theo đúng hướng.' } }
-      const worksheetDone = ['concept', 'formula', 'meanings', 'charge', 'current'].every((item) => nextFeedbacks[item]?.type === 'correct')
-      const nsveDone = nextFeedbacks.quick?.type === 'correct' && nextFeedbacks.advanced?.type === 'correct'
-      const unlockStep = {
-        concept: 1,
-        formula: 2,
-        meanings: 3,
-        charge: 4,
-        current: 5,
-        quick: 6,
-        advanced: 7,
-      }[key]
+      const worksheetDone = ['task1', 'task2', 'task3', 'task4', 'task5', 'task6'].every((item) => nextFeedbacks[item]?.type === 'correct')
+      const taskNumber = Number(key.replace('task', ''))
 
       setFeedbacks(nextFeedbacks)
-      if (unlockStep !== undefined) {
-        setLesson22CardStep((current) => Math.max(current, unlockStep))
+      if (Number.isFinite(taskNumber)) {
+        setWorksheetStep((current) => Math.max(current, Math.min(taskNumber + 1, 6)))
       }
-
       if (worksheetDone) {
-        revealBlock('nsve')
-      }
-
-      if (nsveDone) {
         revealBlock('quiz')
       }
 
@@ -2295,274 +2288,533 @@ function Lesson22InteractiveWorksheet({ onAction }) {
     playLessonTone('wrong')
   }
 
-  const checkFormula = () => {
-    const normalized = normalizeText(answers.formula)
-      .replace(/[∆Δδ]/g, 'delta')
-      .replace(/[÷:]/g, '/')
-      .replace(/\s/g, '')
-      .replace(/^i=/, '')
-    const isCorrect = ['deltaq/deltat', 'q/t'].includes(normalized)
+  const includesAny = (text, keywords) => keywords.some((keyword) => text.includes(keyword))
+
+  const checkTask1 = () => {
+    const fill = normalizeText(answers.task1Fill)
+    const conclusion = normalizeText(answers.task1Short)
+    const isCorrect =
+      answers.task1LampChoice === 'increase' &&
+      answers.task1MagnetChoice === 'increase' &&
+      includesAny(fill, ['manh hon', 'manh']) &&
+      conclusion.includes('dong dien') &&
+      includesAny(conclusion, ['manh hon', 'manh']) &&
+      includesAny(conclusion, ['tang', 'ampe'])
     setProgressFeedback(
-      'formula',
+      'task1',
       isCorrect,
-      'I = Δq / Δt',
-      'Gợi ý: cường độ dòng điện bằng điện lượng đi qua tiết diện chia cho thời gian.',
-      'Ô đã có sẵn I = nên em chỉ cần nhập Δq / Δt. Δq là điện lượng đi qua tiết diện, còn Δt là thời gian; phải lấy điện lượng chia cho thời gian, không đảo thứ tự hay dùng phép nhân.',
+      'Khi số chỉ ampe kế tăng, bóng đèn sáng mạnh hơn, nam châm điện hút nhiều ghim hơn; tác dụng của dòng điện mạnh hơn.',
+      'Gợi ý: cả bóng đèn và nam châm điện đều biểu hiện tác dụng rõ hơn khi số chỉ ampe kế tăng.',
+      'Cần chọn tăng lên ở hai câu quan sát và nêu được: khi số chỉ ampe kế tăng, tác dụng của dòng điện mạnh hơn.',
     )
   }
 
-  const checkMeanings = () => {
-    const i = normalizeText(answers.i)
-    const q = normalizeText(answers.q)
-    const t = normalizeText(answers.t)
-    const isCorrect = i.includes('cuong do') && (q.includes('dien luong') || q.includes('dien tich')) && t.includes('thoi gian')
+  const checkTask2 = () => {
+    const fill = normalizeText(answers.task2Fill)
+    const short = normalizeText(answers.task2Short)
+    const isCorrect =
+      answers.task2TfA === 'false' &&
+      answers.task2TfB === 'true' &&
+      answers.task2Tool === 'current' &&
+      includesAny(fill, ['manh yeu', 'manh hay yeu', 'manh hoac yeu', 'manh, yeu']) &&
+      short.includes('tac dung') &&
+      includesAny(short, ['tang', 'manh hon', 'ro hon'])
     setProgressFeedback(
-      'meanings',
+      'task2',
       isCorrect,
-      'I là cường độ dòng điện; Δq là điện lượng đi qua tiết diện dây; Δt là thời gian',
-      'Gợi ý: đọc từng kí hiệu trong công thức I = Δq / Δt.',
-      'Bảng cần nêu đủ ý nghĩa của cả ba đại lượng, đặc biệt Δq là điện lượng đi qua tiết diện dây.',
+      'Cường độ dòng điện là đại lượng đặc trưng cho tác dụng mạnh, yếu của dòng điện.',
+      'Gợi ý: ampe kế đo đại lượng nào? Đại lượng đó biểu thị mức độ mạnh/yếu của dòng điện.',
+      'Cần xác định đúng hai nhận định, chọn ampe kế đo cường độ dòng điện và hoàn thành nhận xét.',
     )
   }
 
-  const checkCharge = () => {
-    const normalized = normalizeText(answers.charge).replace(/\s/g, '')
+  const checkTask3 = () => {
+    const largeFill = normalizeText(answers.task3LargeFill)
+    const smallFill = normalizeText(answers.task3SmallFill)
+    const predict = normalizeText(answers.task3Predict)
+    const match = answers.task3Match || {}
+    const isCorrect =
+      answers.task3FirstCase === 'b' &&
+      includesAny(largeFill, ['lon', 'nhieu']) &&
+      answers.task3SecondCase === 'a' &&
+      includesAny(smallFill, ['nho', 'ngan']) &&
+      predict.includes('dien luong') &&
+      predict.includes('thoi gian') &&
+      answers.task3FormulaChoice === 'dqdt' &&
+      match.I === 'Cường độ dòng điện' &&
+      match.q === 'Điện lượng chuyển qua tiết diện' &&
+      match.t === 'Thời gian'
     setProgressFeedback(
-      'charge',
-      normalized.includes('12'),
-      'q = I.t = 3.4 = 12 C',
-      'Gợi ý: dùng q = I.t với I = 3 A và t = 4 s.',
-      'Sai thường gặp là lấy 3 / 4; bài này cần nhân cường độ dòng điện với thời gian.',
-    )
-  }
-
-  const checkCurrent = () => {
-    const normalized = normalizeText(answers.current).replace(/\s/g, '')
-    setProgressFeedback(
-      'current',
-      normalized.includes('2'),
-      'I = q / t = 10 / 5 = 2 A',
-      'Gợi ý: dùng I = q / t với q = 10 C và t = 5 s.',
-      'Sai thường gặp là nhân 10 với 5; công thức định nghĩa yêu cầu chia điện lượng cho thời gian.',
-    )
-  }
-
-  const checkQuick = () => {
-    const isCorrect = quickChoices.n && quickChoices.s && quickChoices.v && !quickChoices.e
-    setProgressFeedback(
-      'quick',
+      'task3',
       isCorrect,
-      'Tăng n, tăng S hoặc tăng v; không tăng e',
-      'Gợi ý: e là điện tích của một electron nên coi là hằng số.',
-      'Nếu chọn tăng e thì sai vì e không thay đổi trong bài học này.',
+      'Trong cùng thời gian, điện lượng càng lớn thì dòng điện càng mạnh; cùng điện lượng, thời gian càng nhỏ thì dòng điện càng mạnh. Công thức: I = Δq / Δt.',
+      'Gợi ý: so sánh từng cặp trường hợp để thấy I tăng khi Δq tăng và giảm khi Δt tăng.',
+      'Cần chọn đúng hai trường hợp mạnh hơn, điền lớn/nhỏ, chọn công thức I = Δq/Δt và ghép đúng kí hiệu.',
     )
   }
 
-  const checkAdvanced = () => {
-    const normalized = normalizeText(answers.advanced).replace(/\s/g, '')
-    const isCorrect = ['0,3264', '0.3264', '0,33', '0.33', '0,326', '0.326'].some((item) => normalized.includes(item))
+  const checkTask4 = () => {
+    const meaning = normalizeText(answers.task4Meaning)
+    const relation = normalizeText(answers.task4Relation).replace(/\s/g, '')
+    const isCorrect =
+      answers.task4UnitChoice === 'a' &&
+      (relation.includes('1') || relation.includes('mot')) &&
+      meaning.includes('1') &&
+      (meaning.includes('c') || meaning.includes('culong')) &&
+      (meaning.includes('giay') || meaning.includes('s'))
     setProgressFeedback(
-      'advanced',
+      'task4',
       isCorrect,
-      'I ≈ 0,326 A',
-      'Gợi ý: đổi S = 2 mm² = 2.10^-6 m² và v = 0,12 mm/s = 1,2.10^-4 m/s, rồi dùng I = nSev.',
-      'Kết quả lệch nhiều thường do quên đổi mm² sang m² hoặc mm/s sang m/s.',
+      'Đơn vị cường độ dòng điện là ampe (A); 1 A = 1 C/s, nghĩa là mỗi giây có 1 C điện lượng đi qua tiết diện dây dẫn.',
+      'Gợi ý: công thức I = Δq/Δt cho thấy đơn vị của I là C chia cho s.',
+      'Cần chọn A, điền 1 vào hệ thức và nêu ý nghĩa 1 C đi qua trong 1 s.',
+    )
+  }
+
+  const checkTask5 = () => {
+    const fill = normalizeText(answers.task5Fill)
+    const isCorrect =
+      answers.task5CarrierChoice === 'electron' &&
+      answers.task5Tf === 'true' &&
+      fill.includes('co huong') &&
+      answers.task5Direction === 'opposite'
+    setProgressFeedback(
+      'task5',
+      isCorrect,
+      'Trong kim loại, hạt tải điện là electron tự do; khi có điện trường, electron tự do dịch chuyển có hướng; chiều dòng điện quy ước ngược chiều chuyển động của electron.',
+      'Gợi ý: electron mang điện âm nên chiều chuyển động của electron không trùng chiều dòng điện quy ước.',
+      'Cần chọn electron tự do, xác nhận chuyển động hỗn loạn khi chưa có điện trường, điền có hướng và chọn ngược chiều.',
+    )
+  }
+
+  const checkTask6 = () => {
+    const short = normalizeText(answers.task6Short)
+    const isCorrect =
+      answers.task6CountChoice === 'increase' &&
+      answers.task6SpeedChoice === 'increase' &&
+      includesAny(short, ['tang', 'lon hon', 'manh hon']) &&
+      (short.includes('so') || short.includes('nhieu') || short.includes('toc do'))
+    setProgressFeedback(
+      'task6',
+      isCorrect,
+      'Số hạt mang điện đi qua tiết diện trong một giây tăng hoặc tốc độ dịch chuyển có hướng tăng thì cường độ dòng điện tăng.',
+      'Gợi ý: nhiều hạt đi qua hơn trong cùng thời gian nghĩa là tác dụng của dòng điện mạnh hơn.',
+      'Cần chọn tăng ở cả hai quan sát và rút ra nhận xét về số lượng hạt, tốc độ chuyển động với cường độ dòng điện.',
     )
   }
 
   const finishWorksheet = () => {
     onAction('Đã hoàn thành phiếu học tập Bài 22')
   }
+
+  const updateSelfCheck = (key) => {
+    setSelfChecks((current) => ({ ...current, [key]: !current[key] }))
+  }
+
+  const updateSelfReflection = (key, value) => {
+    setSelfReflection((current) => ({ ...current, [key]: value }))
+  }
+
+  const completedWorksheetTasks = ['task1', 'task2', 'task3', 'task4', 'task5', 'task6'].filter((key) => feedbacks[key]?.type === 'correct').length
+  const worksheetProgress = Math.round((completedWorksheetTasks / 6) * 100)
+  const lampBrightness = Math.round(((Number(lampCurrent) - 0.2) / 0.8) * 100)
+  const attractedPins = Math.round(((Number(magnetCurrent) - 0.2) / 0.8) * 5)
+  const currentLabel = (value, weakText, strongText) => Number(value) < 0.65 ? weakText : strongText
+
+  const renderChoiceGroup = (answerKey, options) => (
+    <div className="worksheet-choice-grid">
+      {options.map((option) => (
+        <button
+          className={answers[answerKey] === option.id ? 'soft-choice soft-choice--active' : 'soft-choice'}
+          key={option.id}
+          type="button"
+          onClick={() => updateAnswer(answerKey, option.id)}
+        >
+          {option.text}
+        </button>
+      ))}
+    </div>
+  )
+
+  const renderStepFeedback = (answerKey, correctValue, correctText = 'Đúng hướng.', wrongText = 'Hãy quan sát lại dữ kiện trước đó.') => {
+    if (!answers[answerKey]) return null
+    return <p className={answers[answerKey] === correctValue ? 'worksheet-step-feedback worksheet-step-feedback--correct' : 'worksheet-step-feedback'}>{answers[answerKey] === correctValue ? correctText : wrongText}</p>
+  }
+
+  const renderQuestionFeedbackButton = (feedbackKey, answerKey, correctValue, correctText, wrongText) => (
+    <>
+      <button
+        className="ghost-soft-btn"
+        type="button"
+        onClick={() => setQuestionFeedbacks((current) => ({ ...current, [feedbackKey]: answers[answerKey] === correctValue ? 'correct' : 'wrong' }))}
+      >
+        Gợi ý / phản hồi
+      </button>
+      {questionFeedbacks[feedbackKey] && (
+        <p className={questionFeedbacks[feedbackKey] === 'correct' ? 'worksheet-step-feedback worksheet-step-feedback--correct' : 'worksheet-step-feedback'}>
+          {questionFeedbacks[feedbackKey] === 'correct' ? correctText : wrongText}
+        </p>
+      )}
+    </>
+  )
+
+  const updateMatchAnswer = (symbol, value) => {
+    updateAnswer('task3Match', { ...(answers.task3Match || {}), [symbol]: value })
+  }
   return (
     <section className="restored-lesson restored22">
       <div className="restored-hero">
         <span>Bài 22</span>
         <h1>Cường độ dòng điện</h1>
-        <p>Hoàn thành các điểm dừng tương tác trong video trước khi làm phiếu học tập bên dưới.</p>
+        <p>Cấu trúc tự học gồm 4 phần: Video khởi động, Phiếu học tập, Quiz và Tự đánh giá.</p>
       </div>
 
       <article className="restored-card">
+        <div className="journey-heading">
+          <span>Phần 1</span>
+          <h2>Video khởi động</h2>
+          <p>Hoạt động trước khi học: quan sát thiết bị điện hoạt động mạnh/yếu để hình thành vấn đề học tập.</p>
+        </div>
+        <div className="lesson22-section-meta" aria-label="Thông tin phần video khởi động">
+          <div>
+            <strong>Mục tiêu</strong>
+            <p>Tạo tình huống có vấn đề và định hướng nhiệm vụ tìm hiểu đại lượng đặc trưng cho dòng điện mạnh, yếu.</p>
+          </div>
+          <div>
+            <strong>Nhiệm vụ của học sinh</strong>
+            <p>Quan sát hai bóng đèn hoặc thiết bị điện, trả lời câu hỏi tương tác và nêu dự đoán ban đầu.</p>
+          </div>
+          <div>
+            <strong>Sản phẩm học tập</strong>
+            <p>Câu trả lời và dự đoán ban đầu của học sinh trước khi chuyển sang phiếu học tập.</p>
+          </div>
+        </div>
         <div className="h5p-embed local-video-embed">
           <InteractiveLessonVideo
             interactions={lesson22VideoInteractions}
-            onComplete={() => revealBlock('worksheet')}
+            onComplete={revealWorksheetFromVideo}
             src="/videos/bai22.mp4"
             title="Video tương tác bài 22"
           />
         </div>
       </article>
 
-      {revealedBlocks.worksheet && <article className="restored-card journey-card lesson22-reveal-block">
+      {revealedBlocks.worksheet && <article className="restored-card journey-card lesson22-reveal-block" id="lesson22-worksheet">
         <div className="journey-heading">
-          <span>Phiếu học tập</span>
-          <h2>Khám phá cường độ dòng điện</h2>
+          <span>Phần 2</span>
+          <h2>Phiếu học tập</h2>
+          <strong className="journey-heading__subhead">Khám phá cường độ dòng điện</strong>
           <p>Từ bóng đèn sáng mạnh/yếu, em tự nối hiện tượng với công thức và bài tập.</p>
+        </div>
+        <div className="lesson22-section-meta" aria-label="Thông tin phần phiếu học tập">
+          <div>
+            <strong>Mục tiêu</strong>
+            <p>Dẫn dắt học sinh tự khám phá khái niệm cường độ dòng điện, công thức I = Δq / Δt, đơn vị đo và dòng điện trong kim loại.</p>
+          </div>
+          <div>
+            <strong>Nhiệm vụ của học sinh</strong>
+            <p>Quan sát, lựa chọn, điền khuyết, ghép đôi, trả lời ngắn và rút ra kết luận sau từng nhiệm vụ.</p>
+          </div>
+          <div>
+            <strong>Sản phẩm học tập</strong>
+            <p>Phiếu học tập đã hoàn thành với các nhận xét và kết luận do học sinh tự rút ra.</p>
+          </div>
+        </div>
+
+        <div className="worksheet-progress-card">
+          <div>
+            <strong>Tiến trình phiếu học tập</strong>
+            <span>{completedWorksheetTasks}/6 nhiệm vụ đã hoàn thành</span>
+          </div>
+          <div className="review-progress" aria-label="Tiến trình phiếu học tập">
+            <span style={{ width: `${worksheetProgress}%` }} />
+          </div>
         </div>
 
         <div className="journey-line">
-          <section className="journey-item">
+          {worksheetStep >= 1 && <section className="journey-item">
             <b>1</b>
             <div>
-              <h3>Nếu trong cùng một khoảng thời gian có nhiều điện tích đi qua tiết diện dây dẫn hơn thì:</h3>
-              <div className="choice-row">
-                {[
-                  ['stronger', 'Dòng điện mạnh hơn'],
-                  ['weaker', 'Dòng điện yếu hơn'],
-                ].map(([value, label]) => (
-                  <button
-                    className={answers.concept === value ? 'soft-choice soft-choice--active' : 'soft-choice'}
-                    key={value}
-                    type="button"
-                    onClick={() => {
-                      updateAnswer('concept', value)
-                      setProgressFeedback('concept', value === 'stronger', 'Dòng điện mạnh hơn', 'Gợi ý: nhiều điện lượng hơn trong cùng thời gian làm I lớn hơn.', 'Dòng điện yếu hơn là nhầm chiều so sánh.')
-                    }}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-              {feedbacks.concept && <p className={`inline-feedback inline-feedback--${feedbacks.concept.type}`}>{feedbacks.concept.message}</p>}
-            </div>
-          </section>
+              <h3>Nhiệm vụ 1. Quan sát tác dụng của dòng điện</h3>
+              <p className="worksheet-prompt"><b>Mục tiêu:</b> Nhận biết dòng điện có thể mạnh hoặc yếu khác nhau thông qua tác dụng của dòng điện.</p>
+              <div className="current-sim-grid">
+                <section className="current-sim-card current-sim-card--lamp">
+                  <div className="current-sim-top">
+                    <strong>Thí nghiệm bóng đèn</strong>
+                    <span className="ammeter-readout">A = {Number(lampCurrent).toFixed(1)} A</span>
+                  </div>
+                  <div className="lamp-sim-scene">
+                    <div className="lamp-bulb" style={{ '--glow': `${0.22 + lampBrightness / 90}`, '--light': `${lampBrightness}%` }}><span /></div>
+                    <div className="simple-wire" />
+                    <div className="sim-ammeter">A</div>
+                  </div>
+                  <label className="sim-slider">
+                    <span>{currentLabel(lampCurrent, 'Dòng điện nhỏ → đèn sáng yếu', 'Dòng điện lớn → đèn sáng mạnh')}</span>
+                    <input min="0.2" max="1" step="0.1" type="range" value={lampCurrent} onChange={(event) => setLampCurrent(event.target.value)} />
+                  </label>
+                </section>
 
-          {lesson22CardStep >= 1 && <section className="journey-item">
+                <section className="current-sim-card current-sim-card--magnet">
+                  <div className="current-sim-top">
+                    <strong>Thí nghiệm nam châm điện</strong>
+                    <span className="ammeter-readout">A = {Number(magnetCurrent).toFixed(1)} A</span>
+                  </div>
+                  <div className="magnet-sim-scene">
+                    <div className="coil-core"><span /><span /><span /><span /></div>
+                    <div className="paperclip-field">
+                      {[0, 1, 2, 3, 4].map((pin) => (
+                        <i className={pin < attractedPins ? 'paperclip paperclip--attracted' : 'paperclip'} key={pin} style={{ '--pin': pin }} />
+                      ))}
+                    </div>
+                    <div className="sim-ammeter">A</div>
+                  </div>
+                  <label className="sim-slider">
+                    <span>{currentLabel(magnetCurrent, 'Dòng điện nhỏ → hút ít ghim', 'Dòng điện lớn → hút nhiều ghim')}</span>
+                    <input min="0.2" max="1" step="0.1" type="range" value={magnetCurrent} onChange={(event) => setMagnetCurrent(event.target.value)} />
+                  </label>
+                </section>
+              </div>
+              <div className="worksheet-question-block">
+                <strong>Bước 1. Khi số chỉ ampe kế tăng, độ sáng của bóng đèn:</strong>
+                {renderChoiceGroup('task1LampChoice', [{ id: 'decrease', text: 'Giảm đi' }, { id: 'same', text: 'Không thay đổi' }, { id: 'increase', text: 'Tăng lên' }])}
+                {renderQuestionFeedbackButton('task1LampChoice', 'task1LampChoice', 'increase', 'Đúng: khi số chỉ ampe kế tăng, bóng đèn sáng mạnh hơn.', 'Gợi ý: kéo thanh trượt và quan sát độ sáng của bóng đèn.')}
+              </div>
+              <div className="worksheet-question-block">
+                <strong>Bước 2. Khi số chỉ ampe kế tăng, số ghim bị hút:</strong>
+                {renderChoiceGroup('task1MagnetChoice', [{ id: 'decrease', text: 'Giảm đi' }, { id: 'same', text: 'Không thay đổi' }, { id: 'increase', text: 'Tăng lên' }])}
+                {renderQuestionFeedbackButton('task1MagnetChoice', 'task1MagnetChoice', 'increase', 'Đúng: khi số chỉ ampe kế tăng, nam châm điện hút nhiều ghim hơn.', 'Gợi ý: kéo thanh trượt và đếm số ghim bị hút về phía cuộn dây.')}
+              </div>
+              {answers.task1LampChoice === 'increase' && answers.task1MagnetChoice === 'increase' && (
+                <>
+                  <label className="worksheet-answer"><span>Bước 3. Từ hai hiện tượng trên, em hãy nhận xét tác dụng của dòng điện khi số chỉ ampe kế tăng.</span><textarea value={answers.task1Short} onChange={(event) => {
+                    updateAnswer('task1Short', event.target.value)
+                    updateAnswer('task1Fill', event.target.value)
+                  }} placeholder="Ví dụ: Khi số chỉ ampe kế tăng..." /></label>
+                  <button className="ghost-soft-btn" type="button" onClick={() => {
+                    const normalized = normalizeText(answers.task1Short)
+                    setQuestionFeedbacks((current) => ({ ...current, task1Summary: normalized.includes('manh') && normalized.includes('tang') ? 'correct' : 'wrong' }))
+                  }}>Gợi ý / phản hồi</button>
+                  {questionFeedbacks.task1Summary && <p className={questionFeedbacks.task1Summary === 'correct' ? 'worksheet-step-feedback worksheet-step-feedback--correct' : 'worksheet-step-feedback'}>{questionFeedbacks.task1Summary === 'correct' ? 'Đúng: em đã rút ra tác dụng của dòng điện mạnh hơn khi số chỉ ampe kế tăng.' : 'Gợi ý: hãy dùng cụm “số chỉ ampe kế tăng” và “tác dụng của dòng điện mạnh hơn”.'}</p>}
+                  <button className="primary-soft-btn" type="button" onClick={checkTask1}>Tiếp tục nhiệm vụ tiếp theo</button>
+                  {feedbacks.task1 && <p className={`inline-feedback inline-feedback--${feedbacks.task1.type}`}>{feedbacks.task1.message}</p>}
+                </>
+              )}
+              {feedbacks.task1?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận tạm thời:</strong><span>Dòng điện có thể mạnh hoặc yếu khác nhau. Khi số chỉ ampe kế tăng, các tác dụng của dòng điện thể hiện rõ hơn.</span></div>}
+            </div>
+          </section>}
+
+          {worksheetStep >= 2 && <section className="journey-item">
             <b>2</b>
             <div>
-              <h3>Hoàn thành công thức định nghĩa cường độ dòng điện</h3>
-              <div className="formula-input">
-                <span>I =</span>
-                <input value={answers.formula} onChange={(event) => updateAnswer('formula', event.target.value)} placeholder="Điền công thức vào đây" />
-                <button type="button" onClick={checkFormula}>Kiểm tra</button>
+              <h3>Nhiệm vụ 2. Hình thành khái niệm cường độ dòng điện</h3>
+              <p className="worksheet-prompt"><b>Mục tiêu:</b> Hình thành khái niệm cường độ dòng điện từ kết quả quan sát ở nhiệm vụ 1.</p>
+              <div className="worksheet-question-block">
+                <strong>Bước 1a. Dòng điện luôn có mức độ mạnh như nhau.</strong>
+                {renderChoiceGroup('task2TfA', [{ id: 'true', text: 'Đúng' }, { id: 'false', text: 'Sai' }])}
+                {renderStepFeedback('task2TfA', 'false')}
               </div>
-              {feedbacks.formula && <p className={`inline-feedback inline-feedback--${feedbacks.formula.type}`}>{feedbacks.formula.message}</p>}
+              <div className="worksheet-question-block">
+                <strong>Bước 1b. Có thể dùng một đại lượng để biểu thị mức độ mạnh, yếu của dòng điện.</strong>
+                {renderChoiceGroup('task2TfB', [{ id: 'true', text: 'Đúng' }, { id: 'false', text: 'Sai' }])}
+                {renderStepFeedback('task2TfB', 'true')}
+              </div>
+              <div className="worksheet-question-block">
+                <strong>Bước 2. Ampe kế là dụng cụ dùng để đo:</strong>
+                {renderChoiceGroup('task2Tool', [{ id: 'charge', text: 'Điện tích' }, { id: 'voltage', text: 'Hiệu điện thế' }, { id: 'current', text: 'Cường độ dòng điện' }, { id: 'power', text: 'Công suất điện' }])}
+                {renderStepFeedback('task2Tool', 'current', 'Đúng: ampe kế đo cường độ dòng điện.')}
+              </div>
+              <label className="worksheet-answer"><span>Bước 3. Cường độ dòng điện là đại lượng đặc trưng cho tác dụng ... của dòng điện.</span><input value={answers.task2Fill} onChange={(event) => updateAnswer('task2Fill', event.target.value)} placeholder="Điền khuyết..." /></label>
+              <label className="worksheet-answer"><span>Bước 4. Nếu cường độ dòng điện tăng thì tác dụng của dòng điện thay đổi như thế nào?</span><textarea value={answers.task2Short} onChange={(event) => updateAnswer('task2Short', event.target.value)} placeholder="Trả lời ngắn..." /></label>
+              <button className="primary-soft-btn" type="button" onClick={checkTask2}>Tiếp tục nhiệm vụ tiếp theo</button>
+              {feedbacks.task2 && <p className={`inline-feedback inline-feedback--${feedbacks.task2.type}`}>{feedbacks.task2.message}</p>}
+              {feedbacks.task2?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Cường độ dòng điện là đại lượng đặc trưng cho tác dụng mạnh hay yếu của dòng điện.</span></div>}
             </div>
           </section>}
 
-          {lesson22CardStep >= 2 && <section className="journey-item">
+          {worksheetStep >= 3 && <section className="journey-item">
             <b>3</b>
             <div>
-              <h3>Điền ý nghĩa các đại lượng trong công thức I = Δq / Δt</h3>
-              <div className="symbol-table">
+              <h3>Nhiệm vụ 3. Khám phá công thức cường độ dòng điện</h3>
+              <p className="worksheet-prompt"><b>Mục tiêu:</b> Tự xây dựng công thức xác định cường độ dòng điện.</p>
+              <div className="worksheet-observe-step">
+                <strong>Bước 1. Quan sát tình huống</strong>
+                <div className="case-compare-card">
+                  <span className="case-compare-label">Cùng thời gian: 1 s</span>
+                  <div className="case-compare-options">
+                    <div><b>Trường hợp A</b><strong>2 C</strong><small>đi qua tiết diện dây dẫn</small></div>
+                    <div><b>Trường hợp B</b><strong>6 C</strong><small>đi qua tiết diện dây dẫn</small></div>
+                  </div>
+                </div>
+              </div>
+              <div className="worksheet-question-block"><strong>Bước 2. Trường hợp nào có dòng điện mạnh hơn?</strong>{renderChoiceGroup('task3FirstCase', [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }])}{renderStepFeedback('task3FirstCase', 'b')}</div>
+              <label className="worksheet-answer"><span>Bước 3. Trong cùng một khoảng thời gian, điện lượng đi qua tiết diện dây dẫn càng ... thì dòng điện càng mạnh.</span><input value={answers.task3LargeFill} onChange={(event) => updateAnswer('task3LargeFill', event.target.value)} placeholder="Điền khuyết..." /></label>
+              <div className="worksheet-observe-step">
+                <strong>Bước 4. Quan sát tiếp</strong>
+                <div className="case-compare-card">
+                  <span className="case-compare-label">Cùng điện lượng: 6 C</span>
+                  <div className="case-compare-options">
+                    <div><b>Trường hợp A</b><strong>1 s</strong><small>thời gian chuyển qua tiết diện</small></div>
+                    <div><b>Trường hợp B</b><strong>3 s</strong><small>thời gian chuyển qua tiết diện</small></div>
+                  </div>
+                </div>
+              </div>
+              <div className="worksheet-question-block"><strong>Bước 5. Trường hợp nào có dòng điện mạnh hơn?</strong>{renderChoiceGroup('task3SecondCase', [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }])}{renderStepFeedback('task3SecondCase', 'a')}</div>
+              <label className="worksheet-answer"><span>Bước 6. Trong cùng một điện lượng, thời gian càng ... thì dòng điện càng mạnh.</span><input value={answers.task3SmallFill} onChange={(event) => updateAnswer('task3SmallFill', event.target.value)} placeholder="Điền khuyết..." /></label>
+              <label className="worksheet-answer"><span>Bước 7. Cường độ dòng điện phụ thuộc vào những đại lượng nào?</span><textarea value={answers.task3Predict} onChange={(event) => updateAnswer('task3Predict', event.target.value)} placeholder="Dự đoán từ hai nhận xét trên..." /></label>
+              <div className="worksheet-question-block"><strong>Bước 8. Chọn công thức phù hợp:</strong>{renderChoiceGroup('task3FormulaChoice', [{ id: 'dqdt', text: 'I = Δq / Δt' }, { id: 'dtdq', text: 'I = Δt / Δq' }, { id: 'multiply', text: 'I = Δq.Δt' }])}{renderStepFeedback('task3FormulaChoice', 'dqdt', 'Đúng: lấy điện lượng chia cho thời gian.')}</div>
+              <div className="worksheet-match-grid">
                 {[
-                  ['I', 'i'],
+                  ['I', 'I'],
                   ['Δq', 'q'],
                   ['Δt', 't'],
-                ].map(([symbol, key]) => (
-                  <label key={key}>
-                    <strong>{symbol}</strong>
-                    <input value={answers[key]} onChange={(event) => updateAnswer(key, event.target.value)} placeholder="Điền câu trả lời vào đây" />
-                  </label>
+                ].map(([label, key]) => (
+                  <label key={key}><strong>{label}</strong><select value={answers.task3Match?.[key] || ''} onChange={(event) => updateMatchAnswer(key, event.target.value)}><option value="">Chọn ý nghĩa</option><option>Cường độ dòng điện</option><option>Điện lượng chuyển qua tiết diện</option><option>Thời gian</option></select></label>
                 ))}
               </div>
-              <button className="primary-soft-btn" type="button" onClick={checkMeanings}>Kiểm tra bảng</button>
-              {feedbacks.meanings && <p className={`inline-feedback inline-feedback--${feedbacks.meanings.type}`}>{feedbacks.meanings.message}</p>}
+              <button className="primary-soft-btn" type="button" onClick={checkTask3}>Tiếp tục nhiệm vụ tiếp theo</button>
+              {feedbacks.task3 && <p className={`inline-feedback inline-feedback--${feedbacks.task3.type}`}>{feedbacks.task3.message}</p>}
+              {feedbacks.task3?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>I = Δq / Δt, với I là cường độ dòng điện, Δq là điện lượng, Δt là thời gian.</span></div>}
             </div>
           </section>}
 
-          {lesson22CardStep >= 3 && <section className="journey-item">
+          {worksheetStep >= 4 && <section className="journey-item">
             <b>4</b>
             <div>
-              <h3>Dòng điện I = 3 A chạy qua dây trong 4 s. Tính q.</h3>
-              <div className="answer-row">
-                <input value={answers.charge} onChange={(event) => updateAnswer('charge', event.target.value)} placeholder="Nhập lời giải ngắn..." />
-                <button type="button" onClick={checkCharge}>Kiểm tra</button>
-              </div>
-              {feedbacks.charge && <p className={`inline-feedback inline-feedback--${feedbacks.charge.type}`}>{feedbacks.charge.message}</p>}
+              <h3>Nhiệm vụ 4. Đơn vị đo cường độ dòng điện</h3>
+              <p className="worksheet-prompt"><b>Mục tiêu:</b> Hiểu đơn vị đo và ý nghĩa của đơn vị.</p>
+              <div className="worksheet-question-block"><strong>Bước 1. Đơn vị của cường độ dòng điện là:</strong>{renderChoiceGroup('task4UnitChoice', [{ id: 'v', text: 'V' }, { id: 'a', text: 'A' }, { id: 'w', text: 'W' }, { id: 'ohm', text: 'Ω' }])}{renderStepFeedback('task4UnitChoice', 'a')}</div>
+              <div className="formula-input"><span>1 A =</span><input value={answers.task4Relation} onChange={(event) => updateAnswer('task4Relation', event.target.value)} placeholder="... C/s" /></div>
+              <label className="worksheet-answer"><span>Bước 3. 1 A cho biết điều gì về điện lượng chuyển qua tiết diện dây dẫn trong mỗi giây?</span><textarea value={answers.task4Meaning} onChange={(event) => updateAnswer('task4Meaning', event.target.value)} placeholder="Trả lời ngắn..." /></label>
+              <button className="primary-soft-btn" type="button" onClick={checkTask4}>Tiếp tục nhiệm vụ tiếp theo</button>
+              {feedbacks.task4 && <p className={`inline-feedback inline-feedback--${feedbacks.task4.type}`}>{feedbacks.task4.message}</p>}
+              {feedbacks.task4?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Đơn vị cường độ dòng điện là ampe (A); 1 A = 1 C/s.</span></div>}
             </div>
           </section>}
 
-          {lesson22CardStep >= 4 && <section className="journey-item">
+          {worksheetStep >= 5 && <section className="journey-item">
             <b>5</b>
             <div>
-              <h3>Trong 5 s có điện lượng 10 C đi qua tiết diện dây. Tính I.</h3>
-              <div className="answer-row">
-                <input value={answers.current} onChange={(event) => updateAnswer('current', event.target.value)} placeholder="Nhập lời giải ngắn..." />
-                <button type="button" onClick={checkCurrent}>Kiểm tra</button>
-              </div>
-              {feedbacks.current && <p className={`inline-feedback inline-feedback--${feedbacks.current.type}`}>{feedbacks.current.message}</p>}
+              <h3>Nhiệm vụ 5. Dòng điện trong kim loại</h3>
+              <p className="worksheet-prompt"><b>Mục tiêu:</b> Nhận biết bản chất dòng điện trong kim loại.</p>
+              <div className="electron-sim" aria-hidden="true"><span>e</span><span>e</span><span>e</span><span>e</span><strong>Electron tự do trong dây dẫn kim loại</strong></div>
+              <div className="worksheet-question-block"><strong>Bước 1. Hạt tải điện trong kim loại là:</strong>{renderChoiceGroup('task5CarrierChoice', [{ id: 'proton', text: 'Proton' }, { id: 'electron', text: 'Electron tự do' }, { id: 'positiveIon', text: 'Ion dương' }, { id: 'negativeIon', text: 'Ion âm' }])}{renderStepFeedback('task5CarrierChoice', 'electron')}</div>
+              <div className="worksheet-question-block"><strong>Bước 2. Electron tự do chuyển động hỗn loạn khi chưa có điện trường.</strong>{renderChoiceGroup('task5Tf', [{ id: 'true', text: 'Đúng' }, { id: 'false', text: 'Sai' }])}{renderStepFeedback('task5Tf', 'true')}</div>
+              <label className="worksheet-answer"><span>Bước 3. Khi có điện trường, electron chuyển động ... tạo thành dòng điện.</span><input value={answers.task5Fill} onChange={(event) => updateAnswer('task5Fill', event.target.value)} placeholder="Điền khuyết..." /></label>
+              <div className="worksheet-question-block"><strong>Bước 4. Chiều dòng điện quy ước:</strong>{renderChoiceGroup('task5Direction', [{ id: 'same', text: 'Cùng chiều electron' }, { id: 'opposite', text: 'Ngược chiều electron' }])}{renderStepFeedback('task5Direction', 'opposite')}</div>
+              <button className="primary-soft-btn" type="button" onClick={checkTask5}>Tiếp tục nhiệm vụ tiếp theo</button>
+              {feedbacks.task5 && <p className={`inline-feedback inline-feedback--${feedbacks.task5.type}`}>{feedbacks.task5.message}</p>}
+              {feedbacks.task5?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Dòng điện trong kim loại là dòng chuyển dời có hướng của electron tự do; chiều dòng điện quy ước ngược chiều electron.</span></div>}
+            </div>
+          </section>}
+
+          {worksheetStep >= 6 && <section className="journey-item">
+            <b>6</b>
+            <div>
+              <h3>Nhiệm vụ 6. Liên hệ giữa cường độ dòng điện và hạt mang điện</h3>
+              <p className="worksheet-prompt"><b>Mục tiêu:</b> Hiểu định tính sự phụ thuộc của cường độ dòng điện.</p>
+              <div className="worksheet-flow worksheet-flow--particles"><span>Số electron qua tiết diện tăng</span><strong>Tiết diện dây dẫn</strong><span>Tốc độ dịch chuyển tăng</span></div>
+              <div className="worksheet-question-block"><strong>Bước 2. Khi số electron đi qua tiết diện tăng, cường độ dòng điện:</strong>{renderChoiceGroup('task6CountChoice', [{ id: 'decrease', text: 'Giảm' }, { id: 'same', text: 'Không đổi' }, { id: 'increase', text: 'Tăng' }])}{renderStepFeedback('task6CountChoice', 'increase')}</div>
+              <div className="worksheet-question-block"><strong>Bước 4. Khi tốc độ dịch chuyển của electron tăng, cường độ dòng điện:</strong>{renderChoiceGroup('task6SpeedChoice', [{ id: 'decrease', text: 'Giảm' }, { id: 'same', text: 'Không đổi' }, { id: 'increase', text: 'Tăng' }])}{renderStepFeedback('task6SpeedChoice', 'increase')}</div>
+              <label className="worksheet-answer"><span>Bước 5. Rút ra nhận xét về mối liên hệ giữa cường độ dòng điện với số lượng và tốc độ chuyển động của hạt mang điện.</span><textarea value={answers.task6Short} onChange={(event) => updateAnswer('task6Short', event.target.value)} placeholder="Trả lời ngắn..." /></label>
+              <button className="primary-soft-btn" type="button" onClick={checkTask6}>Hoàn thành phiếu học tập</button>
+              {feedbacks.task6 && <p className={`inline-feedback inline-feedback--${feedbacks.task6.type}`}>{feedbacks.task6.message}</p>}
+              {feedbacks.task6?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Số hạt mang điện qua tiết diện trong mỗi giây tăng hoặc tốc độ dịch chuyển có hướng tăng thì cường độ dòng điện tăng.</span></div>}
             </div>
           </section>}
         </div>
+
+        <div className="worksheet-product">
+          <strong>Sản phẩm học tập:</strong>
+          <span>Phiếu học tập đã hoàn thành.</span>
+        </div>
       </article>}
 
-      {revealedBlocks.nsve && <article className="restored-card nsve-discovery lesson22-reveal-block">
+      {revealedBlocks.quiz && <Lesson22ReviewQuest onAction={onAction} onComplete={revealSelfCheckFromQuiz} />}
+
+      {revealedBlocks.selfCheck && <article className="restored-card self-check lesson22-reveal-block" id="lesson22-self-check">
         <div className="journey-heading">
-          <span>Khám phá công thức vi mô</span>
-          <h2>Đi sâu hơn vào chuyển động của electron</h2>
+          <span>Phần 4</span>
+          <h2>Tự đánh giá</h2>
+          <p>Đối chiếu kết quả học tập với yêu cầu của bài Cường độ dòng điện.</p>
         </div>
-        <div className="timeline-cards">
-          {[
-            ['e-', 'Electron dịch chuyển nhanh hơn'],
-            ['q', 'Có nhiều điện tích đi qua dây dẫn hơn'],
-            ['I', 'Cường độ dòng điện lớn hơn'],
-          ].map(([icon, text], index) => (
-            <div className="glow-card" style={{ '--delay': `${index * 120}ms` }} key={text}><span>{icon}</span><strong>{text}</strong></div>
-          ))}
+        <div className="lesson22-section-meta" aria-label="Thông tin phần tự đánh giá">
+          <div>
+            <strong>Mục tiêu</strong>
+            <p>Tự nhận biết mức độ hoàn thành sau video, phiếu học tập và quiz.</p>
+          </div>
+          <div>
+            <strong>Nhiệm vụ của học sinh</strong>
+            <p>Đánh dấu các năng lực đã đạt, xem lại phần còn yếu và lưu kết quả tự học.</p>
+          </div>
+          <div>
+            <strong>Sản phẩm học tập</strong>
+            <p>Nội dung tự đánh giá của học sinh.</p>
+          </div>
         </div>
-        <div className="big-question"><span>?</span><strong>Vậy ngoài tốc độ electron, cường độ dòng điện còn phụ thuộc vào điều gì?</strong></div>
-        <div className="factor-grid">
-          {[
-            ['n', 'Nhiều electron tự do hơn', 'có nhiều điện tích đi qua hơn'],
-            ['S', 'Dây dẫn lớn hơn', 'nhiều electron đi qua cùng lúc hơn'],
-            ['v', 'Electron chuyển động nhanh hơn', 'điện tích đi qua nhanh hơn'],
-          ].map(([icon, title, note]) => (
-            <div className="factor-card" key={title}><span>{icon}</span><strong>{title}</strong><small>→ {note}</small></div>
-          ))}
-        </div>
-        <div className="formula-reveal"><span>Cường độ dòng điện trong dây dẫn kim loại phụ thuộc vào số electron tự do, tiết diện dây dẫn và tốc độ dịch chuyển có hướng của electron.</span><strong>I = nSev</strong></div>
-        <div className="symbol-grid">
-          {[
-            ['n', 'Mật độ electron tự do trong dây dẫn', 'n càng lớn → càng nhiều electron'],
-            ['S', 'Tiết diện dây dẫn', 'Dây càng to → nhiều electron đi qua cùng lúc hơn'],
-            ['v', 'Tốc độ dịch chuyển có hướng của electron', 'Electron đi nhanh hơn → cường độ dòng điện lớn hơn'],
-            ['e', 'Điện tích của một electron', 'e là hằng số'],
-          ].map(([symbol, title, note]) => (
-            <div className="symbol-card" key={symbol}><strong>{symbol}</strong><span>{title}</span><small>{note}</small></div>
-          ))}
-        </div>
-        <div className="quick-check">
-          <h3>Muốn cường độ dòng điện lớn hơn thì có thể thay đổi yếu tố nào?</h3>
-          {[
-            ['n', 'tăng n'],
-            ['s', 'tăng S'],
-            ['v', 'tăng v'],
-            ['e', 'tăng e'],
-          ].map(([key, label]) => (
-            <label className="soft-checkbox" key={key}>
-              <input checked={Boolean(quickChoices[key])} onChange={() => setQuickChoices((current) => ({ ...current, [key]: !current[key] }))} type="checkbox" />
-              <span>{label}</span>
+        <div className="self-evaluation-grid">
+          <section className="self-evaluation-panel">
+            <h3>1. Mức độ hoàn thành nhiệm vụ</h3>
+            {[
+              ['watchedVideo', 'Tôi đã xem video khởi động.'],
+              ['answeredGuide', 'Tôi đã trả lời câu hỏi định hướng.'],
+              ['completedWorksheet', 'Tôi đã hoàn thành phiếu học tập.'],
+              ['completedQuiz', 'Tôi đã hoàn thành Quiz.'],
+            ].map(([key, label]) => (
+              <label className="soft-checkbox" key={key}>
+                <input checked={Boolean(selfChecks[key])} onChange={() => updateSelfCheck(key)} type="checkbox" />
+                <span>{label}</span>
+              </label>
+            ))}
+          </section>
+
+          <section className="self-evaluation-panel">
+            <h3>2. Mức độ hiểu bài</h3>
+            {[
+              ['understandMeaning', 'Tôi hiểu cường độ dòng điện đặc trưng cho điều gì.'],
+              ['knowFormula', 'Tôi biết công thức I = Δq/Δt.'],
+              ['knowUnit', 'Tôi biết đơn vị đo cường độ dòng điện.'],
+              ['understandMetalCurrent', 'Tôi hiểu dòng điện trong kim loại là gì.'],
+              ['canApplyFormula', 'Tôi biết vận dụng công thức để giải bài tập đơn giản.'],
+            ].map(([key, label]) => (
+              <label className="soft-checkbox" key={key}>
+                <input checked={Boolean(selfChecks[key])} onChange={() => updateSelfCheck(key)} type="checkbox" />
+                <span>{label}</span>
+              </label>
+            ))}
+          </section>
+
+          <section className="self-evaluation-panel">
+            <h3>3. Nội dung còn khó khăn</h3>
+            {[
+              ['hardConcept', 'Khái niệm cường độ dòng điện.'],
+              ['hardFormula', 'Công thức tính.'],
+              ['hardUnit', 'Đơn vị đo.'],
+              ['hardMetalCurrent', 'Dòng điện trong kim loại.'],
+              ['hardPractice', 'Bài tập vận dụng.'],
+            ].map(([key, label]) => (
+              <label className="soft-checkbox" key={key}>
+                <input checked={Boolean(selfChecks[key])} onChange={() => updateSelfCheck(key)} type="checkbox" />
+                <span>{label}</span>
+              </label>
+            ))}
+          </section>
+
+          <section className="self-evaluation-panel">
+            <h3>4. Ghi chú cá nhân</h3>
+            <label className="worksheet-answer">
+              <span>Điều em còn thắc mắc.</span>
+              <textarea value={selfReflection.question} onChange={(event) => updateSelfReflection('question', event.target.value)} placeholder="Nhập thắc mắc của em..." />
             </label>
-          ))}
-          <button className="primary-soft-btn" type="button" onClick={checkQuick}>Kiểm tra</button>
-          {feedbacks.quick && <p className={`inline-feedback inline-feedback--${feedbacks.quick.type}`}>{feedbacks.quick.message}</p>}
+            <label className="worksheet-answer">
+              <span>Kế hoạch học tập tiếp theo của em.</span>
+              <textarea value={selfReflection.plan} onChange={(event) => updateSelfReflection('plan', event.target.value)} placeholder="Ví dụ: xem lại công thức, làm thêm 3 bài tập..." />
+            </label>
+          </section>
         </div>
-        {lesson22CardStep >= 6 && <div className="advanced-card">
-          <h3>Bài vận dụng nâng cao</h3>
-          <p>Một dây dẫn kim loại có n = 8,5 × 10²⁸ electron/m³, S = 2 mm², v = 0,12 mm/s. Biết e = 1,6 × 10⁻¹⁹ C. Tính cường độ dòng điện trong dây dẫn.</p>
-          <button className="ghost-soft-btn" type="button" onClick={() => setShowHint((current) => !current)}>Xem gợi ý</button>
-          {showHint && <div className="hint-panel"><p>Đổi S = 2 mm² = 2.10^-6 m².</p><p>Đổi v = 0,12 mm/s = 1,2.10^-4 m/s.</p><p>Sử dụng công thức I = nSev.</p></div>}
-          <textarea value={answers.advanced} onChange={(event) => updateAnswer('advanced', event.target.value)} placeholder="Trình bày lời giải..." />
-          <button className="primary-soft-btn" type="button" onClick={checkAdvanced}>Kiểm tra</button>
-          {feedbacks.advanced && <p className={`inline-feedback inline-feedback--${feedbacks.advanced.type}`}>{feedbacks.advanced.message}</p>}
-        </div>}
-      </article>}
-
-      {revealedBlocks.quiz && <Lesson22ReviewQuest onAction={onAction} onComplete={() => revealBlock('selfCheck')} />}
-
-      {revealedBlocks.selfCheck && <article className="restored-card self-check lesson22-reveal-block">
-        <h3>Tự đánh giá mức độ hiểu bài</h3>
-        {[
-          ['concept', 'Em hiểu cường độ dòng điện'],
-          ['formula', 'Em sử dụng được công thức I = Δq / Δt'],
-          ['nsve', 'Em hiểu ý nghĩa công thức I = nSev'],
-          ['practice', 'Em giải được bài tập vận dụng'],
-        ].map(([key, label]) => (
-          <label className="soft-checkbox" key={key}>
-            <input checked={Boolean(selfChecks[key])} onChange={() => setSelfChecks((current) => ({ ...current, [key]: !current[key] }))} type="checkbox" />
-            <span>{label}</span>
-          </label>
-        ))}
+        <div className="worksheet-product">
+          <strong>Sản phẩm học tập:</strong>
+          <span>Nội dung tự đánh giá của học sinh.</span>
+        </div>
         <button className="primary-soft-btn" type="button" onClick={finishWorksheet}>Lưu kết quả</button>
       </article>}
     </section>
@@ -2572,112 +2824,143 @@ function Lesson22InteractiveWorksheet({ onAction }) {
 const lesson22ReviewQuestions = [
   {
     id: 'q1',
-    type: 'single',
     badge: 'Khái niệm',
-    prompt: 'Nếu trong cùng một khoảng thời gian có nhiều điện tích đi qua tiết diện dây dẫn hơn thì:',
+    prompt: 'Cường độ dòng điện là đại lượng đặc trưng cho điều gì?',
     options: [
-      { id: 'stronger', text: 'Dòng điện mạnh hơn' },
-      { id: 'weaker', text: 'Dòng điện yếu hơn' },
+      { id: 'a', text: 'Hình dạng của dây dẫn' },
+      { id: 'b', text: 'Tác dụng mạnh, yếu của dòng điện' },
+      { id: 'c', text: 'Màu sắc của bóng đèn' },
+      { id: 'd', text: 'Khối lượng của nguồn điện' },
     ],
-    answer: 'stronger',
-    explain: 'Cùng một thời gian, điện lượng đi qua tiết diện càng nhiều thì I càng lớn, dòng điện càng mạnh.',
+    answer: 'b',
+    review: 'Xem lại Nhiệm vụ 2: khái niệm cường độ dòng điện.',
+    explain: 'Cường độ dòng điện đặc trưng cho tác dụng mạnh, yếu của dòng điện.',
   },
   {
     id: 'q2',
-    type: 'formula',
-    badge: 'Công thức',
-    prompt: 'Hoàn thành công thức cường độ dòng điện',
-    answer: ['Δq', 'Δt'],
-    explain: 'Cường độ dòng điện được xác định bởi I = Δq / Δt.',
+    badge: 'Ý nghĩa',
+    prompt: 'Khi số chỉ ampe kế tăng, bóng đèn sáng hơn và nam châm điện hút nhiều ghim hơn. Nhận xét nào phù hợp?',
+    options: [
+      { id: 'a', text: 'Nguồn điện luôn yếu đi' },
+      { id: 'b', text: 'Dòng điện không có tác dụng' },
+      { id: 'c', text: 'Tác dụng của dòng điện mạnh hơn' },
+      { id: 'd', text: 'Dây dẫn đổi màu nên đèn sáng hơn' },
+    ],
+    answer: 'c',
+    review: 'Xem lại Nhiệm vụ 1: quan sát tác dụng của dòng điện.',
+    explain: 'Đèn sáng hơn và nam châm hút nhiều ghim hơn cho thấy tác dụng của dòng điện mạnh hơn.',
   },
   {
     id: 'q3',
-    type: 'single',
-    badge: 'Chiều dòng điện',
-    prompt: 'Trong kim loại, electron chuyển động như thế nào so với chiều dòng điện?',
+    badge: 'Công thức',
+    prompt: 'Công thức xác định cường độ dòng điện là:',
     options: [
-      { id: 'same', text: 'Cùng chiều' },
-      { id: 'opposite', text: 'Ngược chiều' },
+      { id: 'a', text: 'I = Δq.Δt' },
+      { id: 'b', text: 'I = Δt / Δq' },
+      { id: 'c', text: 'I = Δq + Δt' },
+      { id: 'd', text: 'I = Δq / Δt' },
     ],
-    answer: 'opposite',
-    explain: 'Electron mang điện âm nên trong kim loại chúng dịch chuyển ngược chiều dòng điện quy ước.',
+    answer: 'd',
+    review: 'Xem lại Nhiệm vụ 3: xây dựng công thức.',
+    explain: 'Cường độ dòng điện bằng điện lượng chuyển qua tiết diện dây dẫn chia cho thời gian.',
   },
   {
     id: 'q4',
-    type: 'multi',
-    badge: 'I = nSev',
-    prompt: 'Yếu tố nào làm cường độ dòng điện tăng?',
+    badge: 'Kí hiệu',
+    prompt: 'Trong công thức I = Δq/Δt, Δq là đại lượng nào?',
     options: [
-      { id: 'n', text: 'tăng n' },
-      { id: 's', text: 'tăng S' },
-      { id: 'v', text: 'tăng v' },
-      { id: 'e', text: 'tăng e' },
+      { id: 'a', text: 'Thời gian dòng điện chạy qua' },
+      { id: 'b', text: 'Cường độ dòng điện' },
+      { id: 'c', text: 'Điện lượng chuyển qua tiết diện dây dẫn' },
+      { id: 'd', text: 'Điện trở của dây dẫn' },
     ],
-    answer: ['n', 's', 'v'],
-    explain: 'Theo I = nSev, I tăng khi n, S hoặc v tăng. e là độ lớn điện tích electron, xem như hằng số.',
+    answer: 'c',
+    review: 'Xem lại Nhiệm vụ 3: ý nghĩa I, Δq và Δt.',
+    explain: 'Δq là điện lượng chuyển qua tiết diện dây dẫn trong khoảng thời gian Δt.',
   },
   {
     id: 'q5',
-    type: 'scenario',
-    badge: 'Thực tế',
-    prompt: 'Tại sao dây điện dùng cho máy lạnh thường to hơn dây đèn LED?',
-    placeholder: 'Nhập câu trả lời ngắn...',
-    required: ['tiet dien', 'lon', 'dong dien', 'may lanh', 'den led'],
-    exactAnswer: 'Dây máy lạnh cần tiết diện lớn hơn để cho dòng điện lớn hơn đi qua ổn định và an toàn hơn.',
-    explain: 'Câu trả lời đã nêu được một phần ý chính. Đáp án đầy đủ cần nhấn mạnh tiết diện dây lớn hơn và dòng điện lớn hơn.',
+    badge: 'Đơn vị',
+    prompt: 'Đơn vị đo cường độ dòng điện là:',
+    options: [
+      { id: 'a', text: 'Vôn (V)' },
+      { id: 'b', text: 'Culông (C)' },
+      { id: 'c', text: 'Ampe (A)' },
+      { id: 'd', text: 'Giây (s)' },
+    ],
+    answer: 'c',
+    review: 'Xem lại Nhiệm vụ 4: đơn vị đo.',
+    explain: 'Đơn vị đo cường độ dòng điện là ampe, kí hiệu A.',
   },
   {
     id: 'q6',
-    type: 'numeric',
-    badge: 'Tính nhanh',
-    prompt: 'Trong 5 s có điện lượng 15 C đi qua tiết diện dây dẫn. Tính I.',
-    suffix: 'A',
-    answer: 3,
-    explain: 'I = Δq / Δt = 15 / 5 = 3 A.',
+    badge: 'Hệ thức',
+    prompt: 'Hệ thức nào đúng?',
+    options: [
+      { id: 'a', text: '1 A = 1 s/C' },
+      { id: 'b', text: '1 A = 1 V/s' },
+      { id: 'c', text: '1 A = 1 C.s' },
+      { id: 'd', text: '1 A = 1 C/s' },
+    ],
+    answer: 'd',
+    review: 'Xem lại Nhiệm vụ 4: từ I = Δq/Δt suy ra đơn vị.',
+    explain: 'Nếu Δq tính bằng C và Δt tính bằng s thì I có đơn vị C/s, nên 1 A = 1 C/s.',
   },
   {
     id: 'q7',
-    type: 'advanced',
-    badge: 'Vận dụng',
-    prompt: 'Một dây dẫn có n = 8,5 × 10²⁸ electron/m³, S = 2 mm², v = 0,1 mm/s, e = 1,6 × 10⁻¹⁹ C. Tính cường độ dòng điện.',
-    suffix: 'A',
-    answer: 2.72,
-    hints: [
-      'Đổi đơn vị: S = 2 mm² = 2 × 10⁻⁶ m²; v = 0,1 mm/s = 1 × 10⁻⁴ m/s.',
-      'Xác định công thức: I = nSev.',
+    badge: 'Kim loại',
+    prompt: 'Hạt tải điện trong kim loại là:',
+    options: [
+      { id: 'a', text: 'Proton tự do' },
+      { id: 'b', text: 'Nguyên tử trung hòa' },
+      { id: 'c', text: 'Electron tự do' },
+      { id: 'd', text: 'Phân tử khí' },
     ],
-    explain: 'Điểm dễ sai nhất là đổi mm² và mm/s sang đơn vị SI trước khi thay số.',
-    solution: [
-      'Đổi đơn vị: S = 2 mm² = 2 × 10⁻⁶ m²; v = 0,1 mm/s = 1 × 10⁻⁴ m/s.',
-      'Áp dụng công thức: I = nSev.',
-      'Thay số: I = 8,5 × 10²⁸ × 2 × 10⁻⁶ × 1 × 10⁻⁴ × 1,6 × 10⁻¹⁹ = 2,72 A.',
-    ],
+    answer: 'c',
+    review: 'Xem lại Nhiệm vụ 5: dòng điện trong kim loại.',
+    explain: 'Trong kim loại, hạt tải điện là các electron tự do.',
   },
   {
     id: 'q8',
-    type: 'drag',
-    badge: 'Kéo thả',
-    prompt: 'Ghép từng kí hiệu trong I = nSev với ý nghĩa đúng.',
-    slots: [
-      { id: 'n', label: 'n', answer: 'Mật độ electron tự do' },
-      { id: 'S', label: 'S', answer: 'Diện tích tiết diện dây' },
-      { id: 'v', label: 'v', answer: 'Tốc độ dịch chuyển có hướng' },
-      { id: 'e', label: 'e', answer: 'Độ lớn điện tích electron' },
+    badge: 'Chiều dòng điện',
+    prompt: 'Trong dây dẫn kim loại, chiều dòng điện quy ước so với chiều chuyển động của electron là:',
+    options: [
+      { id: 'a', text: 'Không có liên hệ' },
+      { id: 'b', text: 'Cùng chiều' },
+      { id: 'c', text: 'Luôn vuông góc' },
+      { id: 'd', text: 'Ngược chiều' },
     ],
-    bank: ['Tốc độ dịch chuyển có hướng', 'Độ lớn điện tích electron', 'Mật độ electron tự do', 'Diện tích tiết diện dây'],
-    explain: 'Nhớ bộ bốn: n là mật độ hạt, S là tiết diện, v là tốc độ trôi, e là điện tích electron.',
+    answer: 'd',
+    review: 'Xem lại Nhiệm vụ 5: electron mang điện âm nên chuyển động ngược chiều dòng điện quy ước.',
+    explain: 'Electron tự do dịch chuyển ngược chiều dòng điện quy ước.',
   },
   {
     id: 'q9',
-    type: 'trueFalse',
-    badge: 'Đúng sai',
-    prompt: 'Đánh dấu đúng hoặc sai cho các nhận định sau.',
-    statements: [
-      { id: 'a', text: 'Dòng điện trong kim loại là dòng chuyển dời có hướng của electron tự do.', answer: true },
-      { id: 'b', text: 'Chiều dòng điện quy ước trong mạch ngoài đi từ cực âm sang cực dương.', answer: false },
-      { id: 'c', text: 'Dòng điện càng mạnh thì tác dụng của dòng điện thường càng rõ.', answer: true },
+    badge: 'Vận dụng',
+    prompt: 'Trong 5 s có điện lượng 15 C chuyển qua tiết diện dây dẫn. Cường độ dòng điện là:',
+    options: [
+      { id: 'a', text: '10 A' },
+      { id: 'b', text: '75 A' },
+      { id: 'c', text: '0,33 A' },
+      { id: 'd', text: '3 A' },
     ],
-    explain: 'Trong mạch ngoài, chiều dòng điện quy ước đi từ cực dương sang cực âm; electron trong kim loại đi ngược chiều đó.',
+    answer: 'd',
+    review: 'Xem lại Nhiệm vụ 3: vận dụng I = Δq/Δt.',
+    explain: 'I = Δq/Δt = 15/5 = 3 A.',
+  },
+  {
+    id: 'q10',
+    badge: 'Định tính',
+    prompt: 'Nếu số hạt mang điện đi qua tiết diện dây dẫn trong 1 giây tăng và tốc độ dịch chuyển có hướng tăng thì cường độ dòng điện:',
+    options: [
+      { id: 'a', text: 'Luôn bằng 0' },
+      { id: 'b', text: 'Giảm' },
+      { id: 'c', text: 'Tăng' },
+      { id: 'd', text: 'Không thể thay đổi' },
+    ],
+    answer: 'c',
+    review: 'Xem lại Nhiệm vụ 6: liên hệ định tính giữa số hạt, tốc độ dịch chuyển và cường độ dòng điện.',
+    explain: 'Nhiều hạt mang điện đi qua hơn trong cùng thời gian hoặc hạt dịch chuyển nhanh hơn thì cường độ dòng điện tăng.',
   },
 ]
 
@@ -2685,9 +2968,6 @@ function Lesson22ReviewQuest({ onAction, onComplete }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [results, setResults] = useState({})
-  const [showHint, setShowHint] = useState(false)
-  const [draggingText, setDraggingText] = useState('')
-  const [selfChecks, setSelfChecks] = useState({})
   const activeQuestion = lesson22ReviewQuestions[activeIndex]
   const answeredCount = Object.keys(results).length
   const score = Object.values(results).filter(Boolean).length
@@ -2705,81 +2985,60 @@ function Lesson22ReviewQuest({ onAction, onComplete }) {
     setAnswers((current) => ({ ...current, [id]: value }))
   }
 
-  const normalizeQuizText = (value) =>
-    String(value || '')
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/đ/g, 'd')
-      .replace(/[∆Δδ]/g, 'delta')
-
   const isQuestionCorrect = (question) => {
-    const value = answers[question.id]
-    if (question.type === 'single') return value === question.answer
-    if (question.type === 'multi') {
-      const selected = Object.keys(value || {}).filter((key) => value[key]).sort()
-      return selected.length === question.answer.length && question.answer.every((item, index) => item === selected[index])
-    }
-    if (question.type === 'formula') {
-      const left = normalizeQuizText(value?.top).replace(/\s/g, '')
-      const right = normalizeQuizText(value?.bottom).replace(/\s/g, '')
-      const isCharge = ['δq', 'dq', 'deltaq', 'q'].includes(left)
-      const isTime = ['δt', 'dt', 'deltat', 't'].includes(right)
-      return isCharge && isTime
-    }
-    if (question.type === 'scenario') {
-      const normalized = normalizeQuizText(value)
-      const matchedCount = question.required.filter((keyword) => normalized.includes(keyword)).length
-      return matchedCount / question.required.length >= 0.5
-    }
-    if (question.type === 'numeric' || question.type === 'advanced') {
-      const numeric = Number(String(value || '').replace(',', '.').match(/-?\d+(\.\d+)?/)?.[0])
-      return Number.isFinite(numeric) && Math.abs(numeric - question.answer) <= 0.02
-    }
-    if (question.type === 'drag') {
-      return question.slots.every((slot) => value?.[slot.id] === slot.answer)
-    }
-    if (question.type === 'trueFalse') {
-      return question.statements.every((statement) => value?.[statement.id] === statement.answer)
-    }
-    return false
+    return answers[question.id] === question.answer
   }
 
   const submitQuizAnswer = () => {
     const correct = isQuestionCorrect(activeQuestion)
     setResults((current) => ({ ...current, [activeQuestion.id]: correct }))
     playLessonTone(correct ? 'correct' : 'wrong')
+    if (activeIndex === lesson22ReviewQuestions.length - 1) {
+      window.setTimeout(() => {
+        setActiveIndex(lesson22ReviewQuestions.length)
+        onAction('Đã hoàn thành Quiz Bài 22')
+      }, 450)
+    }
   }
 
   const goToNextQuestion = () => {
     const nextIndex = activeIndex + 1
-    setShowHint(false)
     setActiveIndex(nextIndex)
     if (nextIndex === lesson22ReviewQuestions.length) {
-      onAction('Đã hoàn thành thử thách ôn tập Bài 22')
-      onComplete?.()
+      onAction('Đã hoàn thành Quiz Bài 22')
     }
   }
 
-  const fillDragSlot = (slotId, text) => {
-    if (!text) return
-    updateQuizAnswer(activeQuestion.id, { ...(answers[activeQuestion.id] || {}), [slotId]: text })
-    setDraggingText('')
-  }
-
   const currentResult = activeQuestion ? results[activeQuestion.id] : undefined
+  const wrongQuestions = lesson22ReviewQuestions.filter((question) => results[question.id] === false)
+  const isLastQuestion = activeIndex === lesson22ReviewQuestions.length - 1
 
   return (
     <article className="review-quest-card" id="lesson22-review-quiz">
       <div className="review-quest-header">
         <div>
-          <span className="review-quest-kicker"><b>⚡</b> Quiz ôn tập cuối bài</span>
-          <h2>Thử thách ôn tập bài 22</h2>
-          <p>Đi qua từng nhiệm vụ nhỏ để tự kiểm tra mức độ hiểu bài Cường độ dòng điện.</p>
+          <span className="review-quest-kicker"><b>⚡</b> Phần 3</span>
+          <h2>Quiz</h2>
+          <p>Hoạt động sau khi học: củng cố kiến thức và tự kiểm tra mức độ hiểu bài Cường độ dòng điện.</p>
         </div>
         <div className="review-score-orb">
           <strong>{score}</strong>
           <span>điểm</span>
+        </div>
+      </div>
+
+      <div className="lesson22-section-meta lesson22-section-meta--quiz" aria-label="Thông tin phần quiz">
+        <div>
+          <strong>Mục tiêu</strong>
+          <p>Củng cố kiến thức trọng tâm và giúp học sinh tự kiểm tra sau khi hoàn thành phiếu học tập.</p>
+        </div>
+        <div>
+          <strong>Nhiệm vụ của học sinh</strong>
+          <p>Trả lời 10 câu hỏi trắc nghiệm, nộp từng câu và xem tổng kết sau câu cuối.</p>
+        </div>
+        <div>
+          <strong>Sản phẩm học tập</strong>
+          <p>Số câu đúng, đáp án đúng và phản hồi ngắn về nội dung cần xem lại.</p>
         </div>
       </div>
 
@@ -2799,150 +3058,36 @@ function Lesson22ReviewQuest({ onAction, onComplete }) {
           </div>
           <h3>{activeQuestion.prompt}</h3>
 
-          {activeQuestion.type === 'single' && (
-            <div className="quest-options">
-              {activeQuestion.options.map((option) => (
-                <button
-                  className={answers[activeQuestion.id] === option.id ? 'quest-option quest-option--active' : 'quest-option'}
-                  disabled={currentResult !== undefined}
-                  key={option.id}
-                  type="button"
-                  onClick={() => updateQuizAnswer(activeQuestion.id, option.id)}
-                >
-                  <span />
-                  {option.text}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {activeQuestion.type === 'multi' && (
-            <div className="quest-options quest-options--grid">
-              {activeQuestion.options.map((option) => (
-                <button
-                  className={answers[activeQuestion.id]?.[option.id] ? 'quest-option quest-option--active' : 'quest-option'}
-                  disabled={currentResult !== undefined}
-                  key={option.id}
-                  type="button"
-                  onClick={() => updateQuizAnswer(activeQuestion.id, { ...(answers[activeQuestion.id] || {}), [option.id]: !answers[activeQuestion.id]?.[option.id] })}
-                >
-                  <span />
-                  {option.text}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {activeQuestion.type === 'formula' && (
-            <div className="quest-formula">
-              <strong>I =</strong>
-              <input aria-label="Tử số của công thức cường độ dòng điện" disabled={currentResult !== undefined} value={answers[activeQuestion.id]?.top || ''} onChange={(event) => updateQuizAnswer(activeQuestion.id, { ...(answers[activeQuestion.id] || {}), top: event.target.value })} />
-              <em>/</em>
-              <input aria-label="Mẫu số của công thức cường độ dòng điện" disabled={currentResult !== undefined} value={answers[activeQuestion.id]?.bottom || ''} onChange={(event) => updateQuizAnswer(activeQuestion.id, { ...(answers[activeQuestion.id] || {}), bottom: event.target.value })} />
-            </div>
-          )}
-
-          {(activeQuestion.type === 'scenario' || activeQuestion.type === 'numeric' || activeQuestion.type === 'advanced') && (
-            <div className="quest-write">
-              {activeQuestion.type === 'advanced' && (
-                <>
-                  <button className="quest-hint-btn" type="button" onClick={() => setShowHint((current) => !current)}>Xem gợi ý</button>
-                  {showHint && (
-                    <div className="quest-hint-panel">
-                      {activeQuestion.hints.map((hint) => <p key={hint}>{hint}</p>)}
-                    </div>
-                  )}
-                </>
-              )}
-              <textarea
+          <div className="quest-options quest-options--grid">
+            {activeQuestion.options.map((option) => (
+              <button
+                className={answers[activeQuestion.id] === option.id ? 'quest-option quest-option--active' : 'quest-option'}
                 disabled={currentResult !== undefined}
-                value={answers[activeQuestion.id] || ''}
-                onChange={(event) => updateQuizAnswer(activeQuestion.id, event.target.value)}
-                placeholder={activeQuestion.placeholder || `Nhập đáp án${activeQuestion.suffix ? ` (${activeQuestion.suffix})` : ''}...`}
-              />
-            </div>
-          )}
-
-          {activeQuestion.type === 'drag' && (
-            <div className="quest-drag-wrap">
-              <div className="quest-drop-grid">
-                {activeQuestion.slots.map((slot) => (
-                  <button
-                    className={answers[activeQuestion.id]?.[slot.id] ? 'quest-drop quest-drop--filled' : 'quest-drop'}
-                    disabled={currentResult !== undefined}
-                    key={slot.id}
-                    onClick={() => fillDragSlot(slot.id, draggingText)}
-                    onDragOver={(event) => event.preventDefault()}
-                    onDrop={(event) => fillDragSlot(slot.id, event.dataTransfer.getData('text/plain'))}
-                    type="button"
-                  >
-                    <strong>{slot.label}</strong>
-                    <span>{answers[activeQuestion.id]?.[slot.id] || 'Thả đáp án vào đây'}</span>
-                  </button>
-                ))}
-              </div>
-              <div className="quest-bank">
-                {activeQuestion.bank
-                  .filter((item) => !Object.values(answers[activeQuestion.id] || {}).includes(item))
-                  .map((item) => (
-                    <button
-                      className={draggingText === item ? 'quest-chip quest-chip--active' : 'quest-chip'}
-                      draggable={currentResult === undefined}
-                      disabled={currentResult !== undefined}
-                      key={item}
-                      onClick={() => setDraggingText(item)}
-                      onDragStart={(event) => event.dataTransfer.setData('text/plain', item)}
-                      type="button"
-                    >
-                      {item}
-                    </button>
-                  ))}
-              </div>
-            </div>
-          )}
-
-          {activeQuestion.type === 'trueFalse' && (
-            <div className="quest-truefalse">
-              {activeQuestion.statements.map((statement) => (
-                <div className="quest-tf-row" key={statement.id}>
-                  <p>{statement.text}</p>
-                  <div>
-                    {[true, false].map((value) => (
-                      <button
-                        className={answers[activeQuestion.id]?.[statement.id] === value ? 'quest-tf-btn quest-tf-btn--active' : 'quest-tf-btn'}
-                        disabled={currentResult !== undefined}
-                        key={String(value)}
-                        type="button"
-                        onClick={() => updateQuizAnswer(activeQuestion.id, { ...(answers[activeQuestion.id] || {}), [statement.id]: value })}
-                      >
-                        {value ? 'Đúng' : 'Sai'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+                key={option.id}
+                type="button"
+                onClick={() => updateQuizAnswer(activeQuestion.id, option.id)}
+              >
+                <span />
+                {option.text}
+              </button>
+            ))}
+          </div>
 
           {currentResult !== undefined && (
             <div className={currentResult ? 'quest-feedback quest-feedback--correct' : 'quest-feedback quest-feedback--wrong'}>
               <strong>{currentResult ? '✓ Chính xác' : 'Chưa đúng'}</strong>
               <p>{activeQuestion.explain}</p>
-              {activeQuestion.exactAnswer && <p><b>Đáp án chính xác:</b> {activeQuestion.exactAnswer}</p>}
-              {activeQuestion.solution && (
-                <div className="quest-solution">
-                  <b>Bài giải hoàn chỉnh:</b>
-                  {activeQuestion.solution.map((step) => <p key={step}>{step}</p>)}
-                </div>
-              )}
+              {!currentResult && <p><b>Cần xem lại:</b> {activeQuestion.review}</p>}
             </div>
           )}
 
           <div className="quest-actions">
             {currentResult === undefined ? (
-              <button className="quest-primary" type="button" onClick={submitQuizAnswer}>Kiểm tra</button>
+              <button className="quest-primary" disabled={!answers[activeQuestion.id]} type="button" onClick={submitQuizAnswer}>Nộp câu trả lời</button>
+            ) : isLastQuestion ? (
+              <button className="quest-primary" disabled type="button">Đang tổng kết quiz...</button>
             ) : (
-              <button className="quest-primary" type="button" onClick={goToNextQuestion}>{activeIndex === lesson22ReviewQuestions.length - 1 ? 'Xem tổng kết' : 'Câu tiếp theo'}</button>
+              <button className="quest-primary" type="button" onClick={goToNextQuestion}>Câu tiếp theo</button>
             )}
           </div>
         </section>
@@ -2952,22 +3097,108 @@ function Lesson22ReviewQuest({ onAction, onComplete }) {
           <h3>{score}/{lesson22ReviewQuestions.length} câu đúng</h3>
           <strong>{percent}%</strong>
           <p>{level}</p>
-          <div className="quest-self-check">
-            <h4>Tự đánh giá</h4>
-            {[
-              ['concept', 'Em hiểu cường độ dòng điện'],
-              ['formula', 'Em sử dụng được I = Δq / Δt'],
-              ['nsve', 'Em hiểu I = nSev'],
-              ['practice', 'Em vận dụng được vào thực tế'],
-            ].map(([key, label]) => (
-              <label key={key}>
-                <input checked={Boolean(selfChecks[key])} onChange={() => setSelfChecks((current) => ({ ...current, [key]: !current[key] }))} type="checkbox" />
-                <span>{label}</span>
-              </label>
-            ))}
+          <div className="quest-answer-review">
+            <h4>Đáp án đúng</h4>
+            {lesson22ReviewQuestions.map((question, index) => {
+              const correctOption = question.options.find((option) => option.id === question.answer)
+              const userOption = question.options.find((option) => option.id === answers[question.id])
+              const isCorrect = results[question.id]
+              return (
+                <article className={isCorrect ? 'quest-answer-item quest-answer-item--correct' : 'quest-answer-item quest-answer-item--wrong'} key={question.id}>
+                  <strong>Câu {index + 1}: {correctOption?.text}</strong>
+                  <p>Em chọn: {userOption?.text || 'Chưa chọn'}</p>
+                  <span>{question.explain}</span>
+                </article>
+              )
+            })}
           </div>
+          <div className="quest-review-note">
+            <h4>Nội dung cần xem lại</h4>
+            {wrongQuestions.length > 0 ? (
+              wrongQuestions.map((question) => <p key={question.id}>{question.review}</p>)
+            ) : (
+              <p>Em đã trả lời đúng toàn bộ câu hỏi. Có thể chuyển sang phần tự đánh giá.</p>
+            )}
+          </div>
+          <button className="quest-primary" type="button" onClick={onComplete}>Mở tự đánh giá</button>
         </section>
       )}
+    </article>
+  )
+}
+
+function UnifiedSelfAssessment({
+  className = '',
+  id,
+  title = 'Tự đánh giá',
+  description,
+  meta,
+  completionItems,
+  understandingItems,
+  difficultyItems,
+  checks,
+  onToggleCheck,
+  reflectionQuestion,
+  reflectionPlan,
+  onReflectionChange,
+  onPlanChange,
+  doneMessage,
+}) {
+  const renderChecklist = (items) =>
+    items.map(([key, label]) => (
+      <label className="soft-checkbox" key={key}>
+        <input checked={Boolean(checks?.[key])} onChange={() => onToggleCheck(key)} type="checkbox" />
+        <span>{label}</span>
+      </label>
+    ))
+
+  return (
+    <article className={`restored-card self-check lesson22-reveal-block ${className}`.trim()} id={id}>
+      <div className="journey-heading">
+        <span>Phần 4</span>
+        <h2>{title}</h2>
+        {description && <p>{description}</p>}
+      </div>
+      <div className="lesson22-section-meta" aria-label="Thông tin phần tự đánh giá">
+        <div>
+          <strong>Mục tiêu</strong>
+          <p>{meta.objective}</p>
+        </div>
+        <div>
+          <strong>Nhiệm vụ của học sinh</strong>
+          <p>{meta.task}</p>
+        </div>
+        <div>
+          <strong>Sản phẩm học tập</strong>
+          <p>{meta.product}</p>
+        </div>
+      </div>
+      <div className="self-evaluation-grid">
+        <section className="self-evaluation-panel">
+          <h3>1. Mức độ hoàn thành nhiệm vụ</h3>
+          {renderChecklist(completionItems)}
+        </section>
+        <section className="self-evaluation-panel">
+          <h3>2. Mức độ hiểu bài</h3>
+          {renderChecklist(understandingItems)}
+        </section>
+        <section className="self-evaluation-panel">
+          <h3>3. Nội dung còn khó khăn</h3>
+          {renderChecklist(difficultyItems)}
+        </section>
+        <section className="self-evaluation-panel">
+          <h3>4. Ghi chú cá nhân</h3>
+          <label className="worksheet-answer">
+            <span>Điều em còn thắc mắc.</span>
+            <textarea value={reflectionQuestion} onChange={(event) => onReflectionChange(event.target.value)} placeholder="Nhập thắc mắc của em..." />
+          </label>
+          <label className="worksheet-answer">
+            <span>Kế hoạch học tập tiếp theo của em.</span>
+            <textarea value={reflectionPlan} onChange={(event) => onPlanChange(event.target.value)} placeholder="Ví dụ: xem lại công thức, làm thêm 3 bài tập..." />
+          </label>
+        </section>
+      </div>
+      {doneMessage && <div className="lesson25-final-card"><strong>{doneMessage}</strong></div>}
     </article>
   )
 }
@@ -3097,7 +3328,7 @@ const resistanceGameMissions = [
   'Giải cứu thành phố',
 ]
 
-function Lesson23FinalChallengeGame() {
+function Lesson23FinalChallengeGame({ onComplete }) {
   const totalMissions = resistanceGameMissions.length
   const [started, setStarted] = useState(false)
   const [mission, setMission] = useState(0)
@@ -3184,6 +3415,7 @@ function Lesson23FinalChallengeGame() {
     playLessonTone('correct')
     if (mission === totalMissions - 1) {
       setFinished(true)
+      onComplete?.()
     }
   }
 
@@ -3456,6 +3688,9 @@ function Lesson23FinalChallengeGame() {
 function Lesson23OhmLesson() {
   const discoveryRef = useRef(null)
   const voltageControlRef = useRef(null)
+  const quizRef = useRef(null)
+  const selfCheckRef = useRef(null)
+
   const [conductorChoice, setConductorChoice] = useState('')
   const [electronFlowChoice, setElectronFlowChoice] = useState('')
   const [resistanceQuestion, setResistanceQuestion] = useState('')
@@ -3502,6 +3737,11 @@ function Lesson23OhmLesson() {
   const [competencyRatings, setCompetencyRatings] = useState({})
   const [reflectionText, setReflectionText] = useState('')
   const [overallUnderstanding, setOverallUnderstanding] = useState('')
+  const [lesson23UnlockedParts, setLesson23UnlockedParts] = useState({
+    worksheet: PREVIEW_ALL_LESSON_PARTS,
+    quiz: PREVIEW_ALL_LESSON_PARTS,
+    selfCheck: PREVIEW_ALL_LESSON_PARTS,
+  })
 
   const hasElectronFlowInsight = electronFlowChoice === 'decrease'
   const isConceptRevealed = conductorChoice === 'hard' && hasElectronFlowInsight && resistanceQuestion === 'not-same'
@@ -3634,27 +3874,166 @@ function Lesson23OhmLesson() {
   const availableStatementBank = ohmStatementBank.filter((word) => !usedStatementKeywords.includes(word.id))
   const assessmentItemCount = lesson23SelfAssessment.reduce((total, section) => total + section.items.length, 0)
   const assessedCount = Object.keys(competencyRatings).length
+  const worksheetMilestones = [
+    isConceptRevealed,
+    isOhmReady,
+    isStatementComplete,
+    causeSituationsComplete,
+    wireFactorsComplete,
+    temperatureJourneyComplete,
+  ]
+  const worksheetCompletedCount = worksheetMilestones.filter(Boolean).length
+  const worksheetProgress = Math.round((worksheetCompletedCount / worksheetMilestones.length) * 100)
+
+  const completeLesson23Video = () => {
+    setLesson23UnlockedParts((current) => current.worksheet ? current : { ...current, worksheet: true })
+    window.setTimeout(() => discoveryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
+  }
+
+  const completeLesson23Worksheet = () => {
+    setLesson23UnlockedParts((current) => current.quiz ? current : { ...current, quiz: true })
+    window.setTimeout(() => quizRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
+  }
+
+  const completeLesson23Quiz = () => {
+    setLesson23UnlockedParts((current) => current.selfCheck ? current : { ...current, selfCheck: true })
+    window.setTimeout(() => selfCheckRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
+  }
+
+  const lesson23SectionMeta = {
+    video: {
+      goals: [
+        'Tạo tình huống có vấn đề.',
+        'Khơi gợi hứng thú học tập.',
+        'Hình thành nhu cầu tìm hiểu bài học.',
+      ],
+      tasks: [
+        'Quan sát video tương tác.',
+        'Trả lời các câu hỏi định hướng.',
+        'Đưa ra dự đoán ban đầu.',
+      ],
+      products: [
+        'Câu trả lời của học sinh.',
+        'Dự đoán ban đầu về nguyên nhân làm dòng điện mạnh hoặc yếu khác nhau.',
+      ],
+    },
+    worksheet: {
+      goals: [
+        'Hình thành kiến thức mới.',
+        'Giúp học sinh tự khám phá nội dung bài học thông qua các nhiệm vụ học tập.',
+        'Phát triển khả năng tự tìm hiểu và tự chiếm lĩnh kiến thức.',
+      ],
+      tasks: [
+        'Thực hiện các nhiệm vụ học tập.',
+        'Quan sát hiện tượng.',
+        'Phân tích dữ liệu.',
+        'Trả lời câu hỏi.',
+        'Rút ra nhận xét và kết luận.',
+      ],
+      products: [
+        'Phiếu học tập đã hoàn thành.',
+        'Các câu trả lời của học sinh.',
+        'Các kết luận rút ra từ từng nhiệm vụ.',
+      ],
+    },
+    quiz: {
+      goals: [
+        'Củng cố kiến thức.',
+        'Tự kiểm tra mức độ hiểu bài.',
+      ],
+      tasks: [
+        'Trả lời các câu hỏi Quiz.',
+        'Kiểm tra kết quả học tập của bản thân.',
+      ],
+      products: [
+        'Điểm số.',
+        'Kết quả thực hiện Quiz.',
+      ],
+    },
+    selfCheck: {
+      goals: [
+        'Giúp học sinh tự nhìn nhận quá trình học tập.',
+        'Điều chỉnh hoạt động học tập của bản thân.',
+      ],
+      tasks: [
+        'Tự đánh giá mức độ hoàn thành nhiệm vụ học tập.',
+        'Xác định những nội dung còn khó khăn.',
+        'Xây dựng kế hoạch học tập tiếp theo.',
+      ],
+      products: [
+        'Nội dung tự đánh giá.',
+        'Kế hoạch học tập tiếp theo.',
+      ],
+    },
+  }
+  const renderLesson23SectionMeta = ({ goals, tasks, products }) => (
+    <div className="lesson22-section-meta lesson23-framework-meta" aria-label="Thông tin tổ chức hoạt động">
+      {[
+        ['Mục tiêu', goals],
+        ['Nhiệm vụ của học sinh', tasks],
+        ['Sản phẩm học tập', products],
+      ].map(([title, items]) => (
+        <div key={title}>
+          <strong>{title}</strong>
+          <ul>
+            {items.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+  )
 
   return (
-    <section className="lesson23-lab">
-      <article className="lesson23-video-card">
+    <section className="lesson23-lab lesson23-framework">
+      <article className="lesson23-video-card lesson23-framework-section">
         <div className="lesson23-video-title">
           <span>Bài 23</span>
           <h1>Điện trở. Định luật Ôm</h1>
         </div>
+        <div className="journey-heading">
+          <span>Phần 1</span>
+          <h2>Video khởi động</h2>
+        </div>
+        {renderLesson23SectionMeta(lesson23SectionMeta.video)}
         <div className="lesson23-video-slot">
           <div className="lesson23-video-screen">
             <InteractiveLessonVideo
               interactions={lesson23VideoInteractions}
-              onComplete={() => discoveryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              onComplete={completeLesson23Video}
               src="/videos/bai23.mp4"
               title="Video tương tác bài 23 - Điện trở. Định luật Ôm"
             />
           </div>
         </div>
+        {lesson23UnlockedParts.worksheet && (
+          <button className="primary-soft-btn lesson23-framework-next" type="button" onClick={() => discoveryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+            Tiếp tục Phiếu học tập
+          </button>
+        )}
       </article>
 
-      <article className="lesson23-flow" ref={discoveryRef}>
+      {lesson23UnlockedParts.worksheet && (
+      <section className="lesson23-learning-part lesson23-framework-section" ref={discoveryRef}>
+        <div className="journey-heading">
+          <span>Phần 2</span>
+          <h2>Phiếu học tập</h2>
+        </div>
+        {renderLesson23SectionMeta(lesson23SectionMeta.worksheet)}
+
+        <article className="lesson23-worksheet-unified">
+          <div className="lesson23-worksheet-progress" aria-label={`Tiến trình Phiếu học tập: ${worksheetProgress}%`}>
+            <div>
+              <strong>Tiến trình Phiếu học tập</strong>
+              <span>{worksheetCompletedCount}/{worksheetMilestones.length} chặng đã hoàn thành</span>
+            </div>
+            <i><b style={{ width: `${worksheetProgress}%` }} /></i>
+          </div>
+
+      <article className="lesson23-flow lesson23-worksheet-task">
+        <div className="lesson23-task-heading">
+          <span>Nhiệm vụ 1</span>
+          <h3>Khám phá điện trở</h3>
+        </div>
         <div className="conductor-grid">
           {[
             ['easy', 'Vật dẫn A', '46'],
@@ -3709,6 +4088,10 @@ function Lesson23OhmLesson() {
 
       {isConceptRevealed && (
         <article className="lesson23-flow lesson23-flow--experiment">
+          <div className="lesson23-task-heading">
+            <span>Nhiệm vụ 2</span>
+            <h3>Khám phá đường đặc trưng vôn-ampe</h3>
+          </div>
           <p>Nếu vật dẫn cản trở dòng điện... vậy cường độ dòng điện phụ thuộc vào hiệu điện thế như thế nào?</p>
           <div className="voltage-lab-guide">
             <strong>Vật dẫn {activeTest.label}</strong>
@@ -3857,6 +4240,10 @@ function Lesson23OhmLesson() {
 
       {isOhmReady && (
         <article className="lesson23-flow">
+          <div className="lesson23-task-heading">
+            <span>Nhiệm vụ 3</span>
+            <h3>Khám phá định luật Ôm</h3>
+          </div>
           <p>Vậy cường độ dòng điện phụ thuộc đồng thời vào hiệu điện thế và điện trở như thế nào?</p>
           <div className="ohm-builder">
             <div className="drag-sentence">
@@ -3898,6 +4285,10 @@ function Lesson23OhmLesson() {
       {isStatementComplete && (
         <>
           <article className="lesson23-flow lesson23-metal-cause" id="lesson23-cause">
+            <div className="lesson23-task-heading">
+              <span>Nhiệm vụ 4</span>
+              <h3>Nguyên nhân gây ra điện trở</h3>
+            </div>
             <p>Nguyên nhân gây ra điện trở</p>
             <span className="cause-observe-intro">Quan sát chuyển động electron trong ba trường hợp rồi so sánh mức cản trở.</span>
             <div className="cause-situation-grid">
@@ -3954,6 +4345,10 @@ function Lesson23OhmLesson() {
 
           {causeSituationsComplete && (
             <article className="lesson23-flow wire-factor-discovery" id="lesson23-wire-factors">
+              <div className="lesson23-task-heading">
+                <span>Nhiệm vụ 5</span>
+                <h3>Khám phá các yếu tố ảnh hưởng đến điện trở</h3>
+              </div>
               <p>Điều gì làm mức cản trở mạnh hay yếu?</p>
               <span className="cause-observe-intro">Ta đã biết các vật dẫn khác nhau có mức cản trở dòng điện khác nhau. Vậy những yếu tố nào làm điện trở của một dây dẫn tăng hoặc giảm?</span>
               <div className="question-card factor-entry-question">
@@ -4111,6 +4506,10 @@ function Lesson23OhmLesson() {
 
           {wireFactorsComplete && (
             <article className="lesson23-flow temperature-discovery" id="lesson23-temperature">
+              <div className="lesson23-task-heading">
+                <span>Nhiệm vụ 6</span>
+                <h3>Ảnh hưởng của nhiệt độ đến điện trở</h3>
+              </div>
               <p>Nhiệt độ có làm điện trở thay đổi không?</p>
               <div className="thermal-scenarios" aria-label="Các tình huống vật dẫn nóng lên trong thực tế">
                 <div className="thermal-scenario thermal-scenario--charger"><i /><strong>Dây sạc nóng lên khi sạc nhanh</strong></div>
@@ -4322,7 +4721,7 @@ function Lesson23OhmLesson() {
                         </div>
                       </div>
                     </div>
-                    {hasHeatedNtc && (
+                  {hasHeatedNtc && (
                       <div className="question-card">
                         <h3>Khi nhiệt độ tăng, điện trở của NTC thay đổi thế nào?</h3>
                         <div className="choice-row">
@@ -4370,7 +4769,7 @@ function Lesson23OhmLesson() {
                           </div>
                         </div>
                       </div>
-                      {hasHeatedPtc && (
+                  {hasHeatedPtc && (
                         <div className="question-card">
                           <h3>Khi nhiệt độ tăng, điện trở của PTC thay đổi thế nào?</h3>
                           <div className="choice-row">
@@ -4409,85 +4808,69 @@ function Lesson23OhmLesson() {
             </article>
           )}
 
-          {temperatureJourneyComplete && <Lesson23FinalChallengeGame />}
-
-          {temperatureJourneyComplete && (
-            <article className="lesson23-capability-review">
-              <header className="capability-review-head">
-                <h2>Em đã làm được những gì sau bài học này?</h2>
-                <div className="capability-review-progress" aria-label={`Đã tự đánh giá ${assessedCount} trên ${assessmentItemCount} năng lực`}>
-                  <span style={{ width: `${(assessedCount / assessmentItemCount) * 100}%` }} />
-                  <strong>{assessedCount}/{assessmentItemCount} mục đã đánh giá</strong>
-                </div>
-              </header>
-
-              <div className="capability-sections">
-                {lesson23SelfAssessment.map((section) => (
-                  <section className="capability-group" key={section.title}>
-                    <h3><span>{section.icon}</span>{section.title}</h3>
-                    {section.items.map((item) => (
-                      <div className={competencyRatings[item.id] ? 'capability-row is-assessed' : 'capability-row'} key={item.id}>
-                        <div className="capability-description">
-                          <i aria-hidden="true">{competencyRatings[item.id] ? '✓' : ''}</i>
-                          <div>
-                            <p>{item.text}</p>
-                            {item.details && (
-                              <ul>
-                                {item.details.map((detail) => <li key={detail}>{detail}</li>)}
-                              </ul>
-                            )}
-                          </div>
-                        </div>
-                        <div className="capability-levels" role="group" aria-label={`Tự đánh giá: ${item.text}`}>
-                          {[
-                            ['review', 'Chưa rõ'],
-                            ['understand', 'Đã hiểu'],
-                            ['explain', 'Có thể giải thích cho người khác'],
-                          ].map(([value, label]) => (
-                            <button
-                              className={competencyRatings[item.id] === value ? `is-selected is-${value}` : ''}
-                              type="button"
-                              key={value}
-                              onClick={() => setCompetencyRatings((current) => ({ ...current, [item.id]: value }))}
-                            >
-                              {label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </section>
-                ))}
-              </div>
-
-              <section className="capability-reflection">
-                <h3>Điều em thấy thú vị nhất trong bài học này là gì?</h3>
-                <textarea
-                  value={reflectionText}
-                  onChange={(event) => setReflectionText(event.target.value)}
-                  placeholder="Viết suy nghĩ của em sau khi quan sát và thực hiện các thí nghiệm..."
-                  rows="4"
-                />
-              </section>
-
-              <section className="understanding-summary">
-                <h3>Mức độ hiểu bài của em</h3>
-                <div>
-                  {[
-                    ['review', 'Cần ôn thêm'],
-                    ['basic', 'Đã hiểu cơ bản'],
-                    ['apply', 'Đã hiểu và có thể vận dụng'],
-                  ].map(([value, label]) => (
-                    <button className={overallUnderstanding === value ? 'is-selected' : ''} type="button" key={value} onClick={() => setOverallUnderstanding(value)}>
-                      <span />
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </section>
-            </article>
-          )}
         </>
+      )}
+          {temperatureJourneyComplete && !lesson23UnlockedParts.quiz && (
+            <button className="primary-soft-btn lesson23-complete-worksheet" type="button" onClick={completeLesson23Worksheet}>
+              Hoàn thành Phiếu học tập
+            </button>
+          )}
+        </article>
+      </section>
+      )}
+
+      {lesson23UnlockedParts.quiz && (
+        <section className="lesson23-learning-part lesson23-framework-section" ref={quizRef}>
+          <div className="journey-heading">
+            <span>Phần 3</span>
+            <h2>Quiz</h2>
+          </div>
+          {renderLesson23SectionMeta(lesson23SectionMeta.quiz)}
+          <Lesson23FinalChallengeGame onComplete={completeLesson23Quiz} />
+        </section>
+      )}
+
+      {lesson23UnlockedParts.selfCheck && (
+        <section className="lesson23-learning-part lesson23-framework-section" ref={selfCheckRef}>
+          <UnifiedSelfAssessment
+            checks={competencyRatings}
+            className="lesson23-self-review"
+            description="Đối chiếu kết quả học tập với yêu cầu của bài Điện trở. Định luật Ôm."
+            meta={{
+              objective: 'Tự nhận biết mức độ hoàn thành sau video, phiếu học tập và quiz.',
+              task: 'Đánh dấu các năng lực đã đạt, xem lại phần còn yếu và lưu kết quả học tập.',
+              product: 'Nội dung tự đánh giá của học sinh.',
+            }}
+            completionItems={[
+              ['watchedVideo', 'Tôi đã xem video khởi động.'],
+              ['answeredGuide', 'Tôi đã trả lời câu hỏi định hướng.'],
+              ['completedWorksheet', 'Tôi đã hoàn thành phiếu học tập.'],
+              ['completedQuiz', 'Tôi đã hoàn thành Quiz.'],
+            ]}
+            difficultyItems={[
+              ['hardResistance', 'Khái niệm điện trở.'],
+              ['hardOhmFormula', 'Công thức định luật Ôm.'],
+              ['hardGraph', 'Đường đặc trưng vôn-ampe.'],
+              ['hardTemperature', 'Ảnh hưởng của nhiệt độ.'],
+              ['hardThermistor', 'Điện trở nhiệt NTC và PTC.'],
+            ]}
+            doneMessage={assessedCount >= 9 && reflectionText.trim() && overallUnderstanding.trim() ? 'Bạn đã hoàn thành phiếu tự đánh giá Bài 23.' : ''}
+            id="lesson23-self-check"
+            onPlanChange={setOverallUnderstanding}
+            onReflectionChange={setReflectionText}
+            onToggleCheck={(key) => setCompetencyRatings((current) => ({ ...current, [key]: !current[key] }))}
+            reflectionPlan={overallUnderstanding}
+            reflectionQuestion={reflectionText}
+            understandingItems={[
+              ['understandResistance', 'Tôi hiểu điện trở đặc trưng cho mức cản trở dòng điện.'],
+              ['knowOhmLaw', 'Tôi biết công thức I = U/R.'],
+              ['readGraph', 'Tôi nhận biết được đường đặc trưng vôn-ampe.'],
+              ['explainCollision', 'Tôi giải thích được nguyên nhân gây ra điện trở.'],
+              ['understandTemperature', 'Tôi hiểu điện trở kim loại phụ thuộc nhiệt độ.'],
+              ['distinguishThermistors', 'Tôi phân biệt được NTC và PTC.'],
+            ]}
+          />
+        </section>
       )}
     </section>
   )
@@ -4797,7 +5180,7 @@ const lesson24ReviewMissions = [
     kind: 'matching',
     prompt: 'Kéo nguồn điện phù hợp vào từng thiết bị.',
     hint: 'Thiết bị nhỏ cần nguồn nhỏ; thiết bị cần dòng lớn hơn cần nguồn có khả năng cấp điện tốt hơn.',
-    solution: ['Đồng hồ điện tử dùng pin cúc áo.', 'Đèn pin thường dùng pin AA.', 'Quạt mini cần nguồn mạnh hơn, có thể dùng acquy/pin sạc.'],
+    solution: ['Đồng hồ điện tử dùng pin cúc áo.', 'Đèn pin thường dùng pin AA.', 'Quạt cần nguồn mạnh hơn, có thể dùng acquy/pin sạc.'],
     mistake: 'Lỗi hay gặp: chỉ nhìn kích thước thiết bị mà quên nhu cầu cấp dòng điện.',
   },
   {
@@ -4914,7 +5297,7 @@ const lesson24ReviewSources = [
 const lesson24ReviewDevices = [
   ['clock', 'đồng hồ điện tử'],
   ['flashlight', 'đèn pin'],
-  ['fan', 'quạt mini'],
+  ['fan', 'quạt'],
 ]
 
 const lesson24ReviewMatches = {
@@ -5385,6 +5768,12 @@ function Lesson24ReviewGame() {
 
   return (
     <section className="lesson24-review-game">
+      <Lesson24SectionMeta
+        title="Phần 3. Quiz"
+        objective="Kiểm tra mức độ hiểu bài."
+        tasks={['Hoàn thành các câu hỏi trắc nghiệm.']}
+        product={['Kết quả làm bài và điểm số.']}
+      />
       <div className="review-game-header">
         <div>
           <span>Hành trình kỹ thuật viên điện</span>
@@ -5478,41 +5867,45 @@ function Lesson24ReviewGame() {
         </article>
       </div>
 
-      {allMissionsDone && (
-        <section className="review-self-assessment">
-          <div>
-            <span>Tự đánh giá cuối bài</span>
-            <h3>Em cảm thấy mình đã làm chủ phần nào?</h3>
-          </div>
-          <div className="review-rating-list">
-            {lesson24SelfCriteria.map(([key, label]) => (
-              <div className="review-rating-row" key={key}>
-                <strong>{label}</strong>
-                <div className="review-stars">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      className={ratings[key] >= star ? 'is-active' : ''}
-                      key={star}
-                      type="button"
-                      aria-label={`${label} ${star} sao`}
-                      onClick={() => setRatings((current) => ({ ...current, [key]: star }))}
-                    >
-                      ★
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          {allRated && (
-            <div className={averageRating >= 4.5 ? 'review-final-badge review-final-badge--high' : 'review-final-badge'}>
-              <Icon name="trophy" />
-              <strong>🏆 Chuyên gia nguồn điện</strong>
-              <p>{reflectionMessage}</p>
-            </div>
-          )}
-        </section>
-      )}
+      <section className="review-self-assessment">
+        <UnifiedSelfAssessment
+          checks={ratings}
+          className="lesson24-self-review"
+          description="Đối chiếu kết quả học tập với yêu cầu của bài Nguồn điện."
+          meta={{
+            objective: 'Tự nhận biết mức độ hoàn thành sau video, phiếu học tập và quiz.',
+            task: 'Đánh dấu các năng lực đã đạt, xem lại phần còn yếu và lưu kết quả học tập.',
+            product: 'Nội dung tự đánh giá của học sinh.',
+          }}
+          completionItems={[
+            ['watchedVideo', 'Tôi đã xem video khởi động.'],
+            ['answeredGuide', 'Tôi đã trả lời câu hỏi định hướng.'],
+            ['completedWorksheet', 'Tôi đã hoàn thành phiếu học tập.'],
+            ['completedQuiz', 'Tôi đã hoàn thành Quiz.'],
+          ]}
+          difficultyItems={[
+            ['hardCondition', 'Điều kiện duy trì dòng điện.'],
+            ['hardSource', 'Vai trò của nguồn điện.'],
+            ['hardEmf', 'Suất điện động.'],
+            ['hardInternal', 'Điện trở trong.'],
+            ['hardWholeCircuit', 'Định luật Ôm toàn mạch.'],
+          ]}
+          doneMessage={allMissionsDone && allRated && answers.selfQuestion?.trim() && answers.selfPlan?.trim() ? reflectionMessage : ''}
+          onPlanChange={(value) => updateAnswer('selfPlan', value)}
+          onReflectionChange={(value) => updateAnswer('selfQuestion', value)}
+          onToggleCheck={(key) => setRatings((current) => ({ ...current, [key]: !current[key] }))}
+          reflectionPlan={answers.selfPlan || ''}
+          reflectionQuestion={answers.selfQuestion || ''}
+          understandingItems={[
+            ['condition', 'Tôi hiểu điều kiện duy trì dòng điện.'],
+            ['source', 'Tôi hiểu vai trò của nguồn điện.'],
+            ['emf', 'Tôi hiểu suất điện động.'],
+            ['internal', 'Tôi hiểu điện trở trong của nguồn.'],
+            ['wholeOhm', 'Tôi biết công thức I = ξ/(R+r) và U = ξ - Ir.'],
+            ['reality', 'Tôi vận dụng được kiến thức nguồn điện vào thực tế.'],
+          ]}
+        />
+      </section>
     </section>
   )
 }
@@ -5749,6 +6142,32 @@ const lesson24OpeningFocusCards = [
   ['wire', '📏 Chiều dài dây dẫn'],
 ]
 
+function Lesson24SectionMeta({ title, objective, tasks, product }) {
+  return (
+    <div className="lesson24-section-meta">
+      {title && <span>{title}</span>}
+      <div className="lesson24-section-meta__grid">
+        <section>
+          <strong>Mục tiêu:</strong>
+          <p>{objective}</p>
+        </section>
+        <section>
+          <strong>Nhiệm vụ học tập:</strong>
+          <ul>
+            {tasks.map((task) => <li key={task}>{task}</li>)}
+          </ul>
+        </section>
+        <section>
+          <strong>Sản phẩm học tập:</strong>
+          <ul>
+            {product.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </section>
+      </div>
+    </div>
+  )
+}
+
 function Lesson24WorksheetV2() {
   const [cardIndex, setCardIndex] = useState(0)
   const [answers, setAnswers] = useState({})
@@ -5764,6 +6183,7 @@ function Lesson24WorksheetV2() {
   const [openingAttempts, setOpeningAttempts] = useState({})
   const [focusChoice, setFocusChoice] = useState('')
   const [conclusionChoice, setConclusionChoice] = useState('')
+  const [quizOpen, setQuizOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
 
   const isQuestionCorrect = (question, value) => {
     if (question.type === 'number') {
@@ -5854,6 +6274,15 @@ function Lesson24WorksheetV2() {
 
   const currentCardDone = completedCards.includes(lesson24WorksheetCards[cardIndex]?.id)
   const openingDone = openingStepDone.sequence && openingStepDone.focus && openingStepDone.conclusion
+  const worksheetComplete = currentCardDone && cardIndex === lesson24WorksheetCards.length - 1
+  const worksheetTaskCount = lesson24WorksheetCards.length + 1
+  const completedTaskCount = (openingDone ? 1 : 0) + completedCards.length
+  const worksheetProgress = Math.round((completedTaskCount / worksheetTaskCount) * 100)
+  const worksheetSummaryLines = [
+    'Pin mới giúp dòng điện tiếp tục được duy trì.',
+    'Muốn đèn sáng liên tục cần duy trì dòng điện.',
+    ...lesson24WorksheetCards.flatMap((card) => card.questions.map((question) => question.conclusion)),
+  ]
 
   const setOpeningSmartFeedback = (key, isCorrect, firstHint, secondHint, successText) => {
     if (isCorrect) {
@@ -5962,14 +6391,37 @@ function Lesson24WorksheetV2() {
   return (
     <div className="worksheet24">
       <section className="worksheet24-intro">
-        <span>Phiếu học tập khởi động</span>
-        <h2>Vì sao thay pin mới thì đèn sáng trở lại?</h2>
-        <p>Dẫn dắt từ hiện tượng thực tế sang nhu cầu tìm hiểu điều kiện duy trì dòng điện.</p>
+        <span>Bài 24 - Nguồn điện</span>
+        <h2>Phiếu học tập</h2>
+        <p>Hoàn thành các nhiệm vụ học tập để tự hình thành kiến thức của bài.</p>
       </section>
+
+      <Lesson24SectionMeta
+        objective="Tự khám phá kiến thức mới của bài học."
+        tasks={[
+          'Quan sát mô phỏng.',
+          'Thao tác với các công cụ tương tác.',
+          'Trả lời các câu hỏi.',
+          'Rút ra nhận xét và kết luận.',
+        ]}
+        product={[
+          'Các câu trả lời.',
+          'Các nhận xét.',
+          'Các kết luận được hình thành trong quá trình học.',
+        ]}
+      />
+
+      <div className="worksheet24-progress" aria-label={`Tiến trình Phiếu học tập ${worksheetProgress}%`}>
+        <div>
+          <strong>{completedTaskCount}/{worksheetTaskCount} nhiệm vụ</strong>
+          <span>{worksheetProgress}% hoàn thành</span>
+        </div>
+        <i><b style={{ width: `${worksheetProgress}%` }} /></i>
+      </div>
 
       <section className={openingDone ? 'worksheet24-card is-done' : 'worksheet24-card'}>
         <div className="worksheet24-card-head">
-          <span>Nhiệm vụ</span>
+          <span>Nhiệm vụ 1</span>
           <h3>Hãy hoàn thành chuỗi suy luận</h3>
           <p>Kéo các thẻ vào đúng thứ tự xảy ra trong thực tế.</p>
         </div>
@@ -6098,7 +6550,7 @@ function Lesson24WorksheetV2() {
             <p>Nhưng dòng điện có thể tồn tại lâu dài nhờ điều gì?</p>
             <p>Điều kiện nào giúp dòng điện không bị mất đi?</p>
             {!openingComplete && (
-              <button className="primary-soft-btn" type="button" onClick={() => setOpeningComplete(true)}>👉 Chuyển sang phiếu tiếp theo: Điều kiện duy trì dòng điện</button>
+              <button className="primary-soft-btn" type="button" onClick={() => setOpeningComplete(true)}>Tiếp tục nhiệm vụ hình thành kiến thức</button>
             )}
           </div>
         )}
@@ -6106,18 +6558,13 @@ function Lesson24WorksheetV2() {
 
       {openingComplete && (
         <section className="worksheet24-card worksheet24-unified-card">
-          <div className="worksheet24-card-head">
-            <span>Phiếu học tập</span>
-            <h3>Nguồn điện</h3>
-            <p>Hoàn thành từng phần để mở tiếp nội dung trong cùng một phiếu.</p>
-          </div>
           {lesson24WorksheetCards.slice(0, cardIndex + 1).map((card, index) => {
             const done = completedCards.includes(card.id)
 
             return (
               <section className={done ? 'worksheet24-section is-done' : 'worksheet24-section'} key={card.id}>
                 <div className="worksheet24-card-head worksheet24-section-head">
-                  <span>Phần {index + 1}</span>
+                  <span>Nhiệm vụ {index + 2}</span>
                   <h3>{card.title}</h3>
                   <p>{card.lead}</p>
                 </div>
@@ -6170,7 +6617,7 @@ function Lesson24WorksheetV2() {
                   </div>
                 )}
                 {done && index < lesson24WorksheetCards.length - 1 && index === cardIndex && (
-                  <button className="primary-soft-btn" type="button" onClick={() => setCardIndex((current) => current + 1)}>Mở phần tiếp theo</button>
+                  <button className="primary-soft-btn" type="button" onClick={() => setCardIndex((current) => current + 1)}>Mở nhiệm vụ tiếp theo</button>
                 )}
               </section>
             )
@@ -6178,7 +6625,22 @@ function Lesson24WorksheetV2() {
         </section>
       )}
 
-      {currentCardDone && cardIndex === lesson24WorksheetCards.length - 1 && (
+      {worksheetComplete && (
+        <section className="worksheet24-card worksheet24-summary">
+          <div className="worksheet24-card-head">
+            <span>Tổng kết</span>
+            <h3>TỔNG KẾT KIẾN THỨC</h3>
+          </div>
+          <div className="worksheet24-summary-list">
+            {worksheetSummaryLines.map((line) => <p key={line}>{line}</p>)}
+          </div>
+          {!quizOpen && (
+            <button className="primary-soft-btn" type="button" onClick={() => setQuizOpen(true)}>Chuyển sang Quiz</button>
+          )}
+        </section>
+      )}
+
+      {quizOpen && (
         <Lesson24ReviewGame />
       )}
     </div>
@@ -6192,8 +6654,8 @@ function Lesson24StructuredLessonV2() {
   const [videoCheckpointOpen, setVideoCheckpointOpen] = useState(false)
   const [videoCheckpointResolved, setVideoCheckpointResolved] = useState(false)
   const [videoCheckpointFeedback, setVideoCheckpointFeedback] = useState('')
-  const [knowledgeUnlocked, setKnowledgeUnlocked] = useState(false)
-  const [journeyStarted, setJourneyStarted] = useState(false)
+  const [knowledgeUnlocked, setKnowledgeUnlocked] = useState(PREVIEW_ALL_LESSON_PARTS)
+  const [journeyStarted, setJourneyStarted] = useState(PREVIEW_ALL_LESSON_PARTS)
 
   const finishVideo = () => {
     setVideoFinished(true)
@@ -6235,6 +6697,15 @@ function Lesson24StructuredLessonV2() {
       </div>
 
       <article className="restored-card">
+        <Lesson24SectionMeta
+          title="Phần 1. Video khởi động"
+          objective="Kích hoạt kiến thức nền và tạo tình huống học tập."
+          tasks={[
+            'Quan sát video.',
+            'Trả lời câu hỏi gợi mở.',
+          ]}
+          product={['Câu trả lời hoặc dự đoán ban đầu của học sinh.']}
+        />
         <div className="journey-heading">
           <span>Video dẫn dắt</span>
           <h2>Chiếc đèn pin trong bóng tối</h2>
@@ -7071,6 +7542,8 @@ function Lesson25ElectricJourneyOld() {
   )
 }
 
+// Kept for the older lesson 25 unit-matching activity.
+// eslint-disable-next-line no-unused-vars
 const lesson25UnitPairs = [
   ['J', 'Đơn vị điện năng hoặc công'],
   ['W', 'Đơn vị công suất'],
@@ -7080,21 +7553,69 @@ const lesson25UnitPairs = [
 ]
 
 const lesson25NewQuiz = [
-  { id: 'q1', type: 'single', badge: 'Nhiệm vụ 1', prompt: 'Gia đình A có điều hòa 2638 W, quạt điện 55 W và đèn LED 20 W. Thiết bị nào có khả năng làm hóa đơn điện tăng nhiều nhất nếu sử dụng liên tục?', options: ['Đèn LED', 'Quạt điện', 'Điều hòa'], answer: 2, explain: 'Điều hòa có công suất lớn nhất nên trong cùng một khoảng thời gian sẽ tiêu thụ điện năng nhiều hơn.' },
-  { id: 'q2', type: 'match', badge: 'Nhiệm vụ 2', prompt: 'Thám tử công suất: ghép thiết bị với công suất phù hợp.', pairs: [['Đèn LED', '20 W'], ['Quạt điện', '55 W'], ['Điều hòa', '2638 W']], targets: ['20 W', '55 W', '2638 W'], explain: 'Đèn LED thường có công suất nhỏ khoảng 20 W, quạt điện khoảng 55 W, còn điều hòa có công suất rất lớn 2638 W.' },
-  { id: 'q3', type: 'blank', badge: 'Nhiệm vụ 3', prompt: 'Hoàn thành bí mật công thức: A = U × I × _____.', answer: 't', explain: 'Điện năng tiêu thụ của đoạn mạch được tính bởi A = UIt, nên ô còn thiếu là t.' },
-  { id: 'q4', type: 'single', badge: 'Nhiệm vụ 4', prompt: 'Một bóng đèn hoạt động với U = 220 V, I = 0,5 A, t = 10 s. Điện năng tiêu thụ là bao nhiêu?', options: ['110 J', '1100 J', '2200 J'], answer: 1, explain: 'A = UIt = 220 × 0,5 × 10 = 1100 J.' },
-  { id: 'q5', type: 'single', badge: 'Nhiệm vụ 5', prompt: 'Hai thiết bị cùng tiêu thụ 1000 J. Thiết bị A tiêu thụ trong 10 s, thiết bị B tiêu thụ trong 100 s. Thiết bị nào có công suất lớn hơn?', options: ['Thiết bị A', 'Thiết bị B'], answer: 0, explain: 'Cùng tiêu thụ 1000 J nhưng thiết bị A dùng trong thời gian ngắn hơn nên công suất lớn hơn.' },
-  { id: 'q6', type: 'single', badge: 'Nhiệm vụ 6', prompt: 'Trên điều hòa ghi 220 V - 2638 W. Số 2638 W cho biết điều gì?', options: ['Hiệu điện thế', 'Công suất điện', 'Điện năng tiêu thụ'], answer: 1, explain: 'Đơn vị W là oát, dùng để chỉ công suất điện của thiết bị.' },
-  { id: 'q7', type: 'single', badge: 'Nhiệm vụ 7', prompt: 'Đúng hay sai: Khi thời gian sử dụng tăng gấp đôi thì điện năng tiêu thụ cũng tăng gấp đôi nếu U và I không đổi.', options: ['Đúng', 'Sai'], answer: 0, explain: 'Theo A = UIt, khi U và I không đổi thì A tỉ lệ thuận với t.' },
-  { id: 'q8', type: 'single', badge: 'Nhiệm vụ 8', prompt: 'Một quạt điện 55 W hoạt động trong 2 giờ. Điện năng tiêu thụ là bao nhiêu?', options: ['110 Wh', '55 Wh', '220 Wh'], answer: 0, explain: 'A = Pt = 55 × 2 = 110 Wh.' },
-  { id: 'q9', type: 'singleExplain', badge: 'Nhiệm vụ 9', prompt: 'Gia đình có hai lựa chọn: đèn sợi đốt 100 W hoặc đèn LED 20 W. Muốn tiết kiệm điện nên chọn loại nào? Giải thích ngắn.', options: ['Đèn sợi đốt', 'Đèn LED'], answer: 1, explain: 'Nên chọn đèn LED vì công suất nhỏ hơn nhiều, nên dùng cùng thời gian sẽ tiêu thụ ít điện năng hơn.' },
-  { id: 'q10', type: 'blank', badge: 'Nhiệm vụ 10', prompt: 'Hoàn thành công thức công suất: P = _____ / t.', answer: 'a', explain: 'Công suất điện là điện năng tiêu thụ trong một đơn vị thời gian: P = A/t.' },
-  { id: 'q11', type: 'match', badge: 'Nhiệm vụ 11', prompt: 'Săn đơn vị: ghép đại lượng với đơn vị phù hợp.', pairs: [['A', 'J'], ['P', 'W'], ['t', 's'], ['U', 'V'], ['I', 'A']], targets: ['J', 'W', 's', 'V', 'A'], explain: 'A đo bằng J, P đo bằng W, t đo bằng s, U đo bằng V, I đo bằng A.' },
-  { id: 'q12', type: 'numeric', badge: 'Nhiệm vụ 12', prompt: 'Một điều hòa 2638 W hoạt động trong 4 giờ. Điện năng tiêu thụ là bao nhiêu kWh? Có thể nhập 10,552 kWh hoặc 10552 Wh.', answer: [10.552, 10552], tolerance: 0.05, hint: ['Bước 1: Đổi 2638 W = 2,638 kW nếu tính theo kWh.', 'Bước 2: Dùng công thức A = Pt.'], explain: 'A = Pt = 2,638 × 4 = 10,552 kWh, tương đương 10552 Wh.' },
-  { id: 'q13', type: 'multi', badge: 'Nhiệm vụ 13', prompt: 'Nhà tư vấn tiết kiệm điện: chọn 3 hành động giúp giảm tiền điện.', options: ['Tắt thiết bị khi không sử dụng', 'Bật điều hòa 18°C cả ngày', 'Sử dụng đèn LED', 'Tận dụng ánh sáng tự nhiên', 'Mở tủ lạnh liên tục'], answer: [0, 2, 3], explain: 'Tắt thiết bị khi không sử dụng, dùng đèn LED và tận dụng ánh sáng tự nhiên đều giúp giảm điện năng tiêu thụ.' },
-  { id: 'q14', type: 'scenario', badge: 'Nhiệm vụ 14', prompt: 'Thử thách cuối: viết một biện pháp giúp gia đình em tiết kiệm điện.', required: ['tat', 'led', 'anh sang', 'dieu hoa', 'tiet kiem', 'khong su dung'], explain: 'Một biện pháp hợp lí có thể là tắt thiết bị khi không dùng, dùng đèn LED, tận dụng ánh sáng tự nhiên hoặc dùng điều hòa hợp lí.' },
-  { id: 'q15', type: 'single', badge: 'Nhiệm vụ 15', prompt: 'Huy hiệu hoàn thành: mục tiêu cao nhất của thử thách này là gì?', options: ['Trở thành chuyên gia điện năng', 'Học thuộc lòng mọi số liệu', 'Dùng nhiều thiết bị hơn'], answer: 0, explain: 'Mục tiêu là hiểu điện năng, công suất và biết vận dụng để sử dụng điện tiết kiệm trong đời sống.' },
+  { id: 'q1', type: 'single', badge: 'Trắc nghiệm', prompt: 'Điện năng tiêu thụ của đoạn mạch được xác định bằng công thức nào?', options: ['U/I', 'UIt', 'UI', 'A/t'], answer: 1, explain: 'Điện năng tiêu thụ bằng công của lực điện và được xác định bởi công thức A = UIt.' },
+  { id: 'q2', type: 'single', badge: 'Trắc nghiệm', prompt: 'Thiết bị nào dùng để đo điện năng tiêu thụ trong gia đình?', options: ['Ampe kế', 'Vôn kế', 'Công tơ điện', 'Ôm kế'], answer: 2, explain: 'Công tơ điện dùng để đo điện năng tiêu thụ trong gia đình.' },
+  {
+    id: 'q3',
+    type: 'truefalse',
+    badge: 'Đúng - Sai',
+    prompt: 'Đánh dấu Đúng hoặc Sai.',
+    statements: [
+      ['a', 'Điện năng tiêu thụ bằng công của lực điện.'],
+      ['b', 'Công suất điện cho biết tốc độ tiêu thụ điện năng.'],
+      ['c', 'Công tơ điện dùng để đo cường độ dòng điện.'],
+      ['d', 'Thiết bị có công suất lớn hơn luôn tiêu thụ ít điện năng hơn.'],
+    ],
+    answer: { a: true, b: true, c: false, d: false },
+    explain: 'Điện năng tiêu thụ bằng công của lực điện; công suất điện cho biết tốc độ tiêu thụ điện năng; công tơ điện đo điện năng, không đo cường độ dòng điện.',
+  },
+  {
+    id: 'q4',
+    type: 'truefalse',
+    badge: 'Đúng - Sai',
+    prompt: 'Đánh dấu Đúng hoặc Sai.',
+    statements: [
+      ['a', 'Đơn vị của công suất điện là W.'],
+      ['b', 'Đơn vị của điện năng tiêu thụ là J.'],
+      ['c', '1 kWh = 360 J.'],
+      ['d', 'Điện năng tiêu thụ tăng khi thời gian sử dụng tăng.'],
+    ],
+    answer: { a: true, b: true, c: false, d: true },
+    explain: 'Công suất điện có đơn vị W, điện năng có đơn vị J; 1 kWh = 3,6 × 10^6 J và điện năng tiêu thụ tăng khi thời gian sử dụng tăng.',
+  },
+  { id: 'q5', type: 'blank', badge: 'Điền khuyết', prompt: 'Hoàn thành công thức: A = ______', answer: 'uit', explain: 'Điện năng tiêu thụ của đoạn mạch được xác định bởi A = UIt.' },
+  { id: 'q6', type: 'blank', badge: 'Điền khuyết', prompt: 'Hoàn thành công thức: P = ______', answer: 'ui', explain: 'Từ P = A/t và A = UIt, ta được P = UI.' },
+  { id: 'q7', type: 'match', badge: 'Ghép nối', prompt: 'Ghép đại lượng với đơn vị phù hợp.', pairs: [['Điện năng tiêu thụ', 'J'], ['Công suất điện', 'W'], ['Hiệu điện thế', 'V'], ['Cường độ dòng điện', 'A']], targets: ['J', 'W', 'V', 'A'], explain: 'Điện năng tiêu thụ đo bằng J, công suất điện đo bằng W, hiệu điện thế đo bằng V và cường độ dòng điện đo bằng A.' },
+  {
+    id: 'q8',
+    type: 'group',
+    badge: 'Kéo thả',
+    prompt: 'Kéo các thiết bị vào nhóm phù hợp.',
+    groups: [
+      { id: 'small', title: 'Công suất nhỏ', answers: ['Đèn LED 20 W', 'Quạt điện 55 W'] },
+      { id: 'large', title: 'Công suất lớn', answers: ['Nồi cơm điện 600 W', 'Điều hòa 2638 W'] },
+    ],
+    items: ['Đèn LED 20 W', 'Quạt điện 55 W', 'Nồi cơm điện 600 W', 'Điều hòa 2638 W'],
+    explain: 'Đèn LED 20 W và quạt điện 55 W thuộc nhóm công suất nhỏ; nồi cơm điện 600 W và điều hòa 2638 W thuộc nhóm công suất lớn.',
+  },
+  {
+    id: 'q9',
+    type: 'order',
+    badge: 'Sắp xếp',
+    prompt: 'Sắp xếp các bước hình thành công thức điện năng.',
+    items: ['A = qU', 'I = q/t', 'q = It', 'A = UIt'],
+    answer: ['A = qU', 'I = q/t', 'q = It', 'A = UIt'],
+    explain: 'Từ A = qU và I = q/t suy ra q = It, sau đó thay vào A = qU để được A = UIt.',
+  },
+  {
+    id: 'q10',
+    type: 'multi',
+    badge: 'Vận dụng',
+    prompt: 'Một gia đình muốn giảm tiền điện. Hãy chọn các biện pháp phù hợp.',
+    options: ['Tắt thiết bị khi không sử dụng.', 'Chọn thiết bị tiết kiệm điện.', 'Bật đồng thời tất cả thiết bị điện.', 'Giảm thời gian sử dụng các thiết bị không cần thiết.'],
+    answer: [0, 1, 3],
+    explain: 'Tắt thiết bị khi không sử dụng, chọn thiết bị tiết kiệm điện và giảm thời gian sử dụng thiết bị không cần thiết đều giúp giảm điện năng tiêu thụ.',
+  },
 ]
 
 const lesson25VideoPrompts = [
@@ -7327,7 +7848,7 @@ function Lesson25InteractiveVideo({ src }) {
 }
 
 function Lesson25ElectricJourney() {
-  const [worksheetOpen, setWorksheetOpen] = useState(false)
+  const [worksheetOpen, setWorksheetOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
   const [maxStep, setMaxStep] = useState(0)
   const [answers, setAnswers] = useState({ meanings: {}, units: {}, checks: {} })
   const [feedbacks, setFeedbacks] = useState({})
@@ -7337,7 +7858,7 @@ function Lesson25ElectricJourney() {
   const [quizResults, setQuizResults] = useState({})
   const [quizSubmitted, setQuizSubmitted] = useState(false)
   const [selectedQuizMatch, setSelectedQuizMatch] = useState('')
-  const [selfOpen, setSelfOpen] = useState(false)
+  const [selfOpen, setSelfOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
 
   const normalizeFormula = (value) => normalizeText(String(value || '')).replace(/[∆Δδ]/g, 'delta').replace(/[÷:]/g, '/').replace(/\s/g, '').replace(/[.×*]/g, '')
   const numberFrom = (value) => Number(String(value || '').replace(',', '.').match(/-?\d+(\.\d+)?/)?.[0])
@@ -7351,26 +7872,89 @@ function Lesson25ElectricJourney() {
 
   const checkObservation = () => {
     const correct = normalizeText(answers.observation || '').includes('nhieu') || normalizeText(answers.observation || '').includes('lon')
-    setFeedback('observation', correct, 'Đúng. Cùng thời gian, công suất lớn hơn làm điện năng tiêu thụ nhiều hơn.', 'Gợi ý: nhớ lại điều hòa 2638 W tiêu thụ nhiều hơn quạt.')
+    setFeedback('observation', correct, 'Đúng. Trong cùng một khoảng thời gian, thiết bị có công suất lớn hơn sẽ tiêu thụ nhiều điện năng hơn.', 'Gợi ý: có thể điền “nhiều hơn” hoặc “lớn hơn”.')
     if (correct) completeStep(0)
+  }
+
+  const checkEnergyForms = () => {
+    const forms = answers.energyForms || {}
+    const correct = forms.light && forms.heat && forms.motion && !forms.none
+    setFeedback('energyForms', correct, 'Đúng. Điện năng có thể chuyển hóa thành quang năng, nhiệt năng, cơ năng hoặc các dạng năng lượng khác tùy thiết bị.', 'Gợi ý: hãy chọn các dạng năng lượng xuất hiện khi đèn sáng, ấm nước nóng lên và quạt quay.')
+    if (correct) completeStep(1)
+  }
+
+  const checkChargeFormula = () => {
+    const value = normalizeFormula(answers.chargeFormula).replace(/^q=/, '')
+    const correct = value === 'it'
+    setFeedback('chargeFormula', correct, 'Đúng. Điện lượng đi qua đoạn mạch trong thời gian t là q = It.', 'Gợi ý: dòng điện càng mạnh thì điện lượng đi qua càng nhiều; thời gian càng lâu thì điện lượng đi qua càng nhiều. Vì vậy q liên hệ với I và t.')
   }
 
   const checkDerive = () => {
     const value = normalizeFormula(answers.derive).replace(/^a=/, '')
-    const correct = value === 'uit' || value === 'uIt'.toLowerCase()
-    setFeedback('derive', correct, 'Chính xác. Từ q = It thay vào A = qU, ta được A = UIt.', 'Gợi ý: từ I = q/t hãy suy ra q = I.t, rồi thay vào A = qU.')
-    if (correct) completeStep(1)
+    const correct = value === 'uit'
+    setFeedback('derive', correct, 'Chính xác. Điện năng tiêu thụ của đoạn mạch được xác định bởi A = UIt.', 'Gợi ý: thay q = It vào A = qU.')
   }
 
-  const checkMeanings = () => {
-    const meanings = answers.meanings || {}
-    const correct =
-      meanings.A === 'energy' &&
-      meanings.U === 'voltage' &&
-      meanings.I === 'current' &&
-      meanings.t === 'time'
-    setFeedback('meanings', correct, 'Đúng. Em đã ghép đúng ý nghĩa các đại lượng trong A = UIt.', 'Hãy ghép A với điện năng/công, U với hiệu điện thế, I với cường độ dòng điện, t với thời gian.')
+  const checkEnergyFormulaTask = () => {
+    const charge = normalizeFormula(answers.chargeFormula).replace(/^q=/, '') === 'it'
+    const energy = normalizeFormula(answers.derive).replace(/^a=/, '') === 'uit'
+    const correct = charge && energy
+    setFeedback('energyFormulaTask', correct, 'Đúng. Em đã suy luận được q = It và A = UIt.', 'Cần hoàn thành đúng cả hai bước: q = It, sau đó A = UIt.')
     if (correct) completeStep(2)
+  }
+
+  const checkMeter = () => {
+    const correct = answers.meterTool === 'meter'
+    setFeedback('meterTool', correct, 'Đúng. Thiết bị dùng để đo điện năng tiêu thụ trong gia đình là công tơ điện.', 'Gợi ý: dụng cụ này thường được lắp ở hệ thống điện gia đình để theo dõi lượng điện tiêu thụ.')
+  }
+
+  const checkKwh = () => {
+    const normalizedValue = normalizeFormula(answers.kwhRelation).replace(/^1kwh=/, '').replace(/^kwh=/, '')
+    const numeric = numberFrom(answers.kwhRelation)
+    const correct = normalizedValue.includes('36') && normalizedValue.includes('10^6') || Math.abs(numeric - 3600000) <= 1
+    setFeedback('kwhRelation', correct, 'Đúng. kWh là đơn vị thường dùng để tính điện năng tiêu thụ trong đời sống.', 'Gợi ý: 1 kWh = 3,6 × 10^6 J.')
+  }
+
+  const checkMeterTask = () => {
+    const correct = answers.meterTool === 'meter' && (normalizeFormula(answers.kwhRelation).includes('10^6') || Math.abs(numberFrom(answers.kwhRelation) - 3600000) <= 1)
+    setFeedback('meterTask', correct, 'Đúng. Em đã xác định được công tơ điện và đơn vị kWh.', 'Cần chọn công tơ điện và hoàn thành 1 kWh = 3,6 × 10^6 J.')
+    if (correct) completeStep(3)
+  }
+
+  const checkPowerConceptTask = () => {
+    const blank = normalizeText(answers.powerBlank || '')
+    const correct = answers.powerDevice === 'ac' && blank.includes('thoi gian')
+    setFeedback('powerConceptTask', correct, 'Đúng. Vì điều hòa có công suất lớn hơn nên trong cùng thời gian sẽ tiêu thụ nhiều điện năng hơn.', 'Gợi ý: chọn thiết bị 2638 W và điền “thời gian”.')
+    if (correct) completeStep(4)
+  }
+
+  const checkPowerUiFormula = () => {
+    const value = normalizeFormula(answers.powerUiFormula).replace(/^p=/, '')
+    const correct = value === 'ui'
+    setFeedback('powerUiFormula', correct, 'Đúng. Công suất điện được xác định bởi P = UI.', 'Gợi ý: thay A = UIt vào P = A/t, thời gian t được rút gọn.')
+    if (correct) completeStep(5)
+  }
+
+  const checkSavingChoices = () => {
+    const saving = answers.savingChoices || {}
+    const correct = saving.reduceTime && saving.efficient && saving.suitablePower && !saving.alwaysOn
+    setFeedback('savingChoices', correct, 'Đúng. Giảm thời gian sử dụng, chọn thiết bị tiết kiệm điện và dùng công suất phù hợp đều giúp giảm điện năng tiêu thụ.', 'Gợi ý: không chọn phương án bật tất cả thiết bị liên tục.')
+  }
+
+  const checkLedReason = () => {
+    const text = normalizeText(answers.ledReason || '')
+    const correct = (text.includes('cong suat') || text.includes('nho')) && (text.includes('it') || text.includes('tiet kiem') || text.includes('hieu qua'))
+    setFeedback('ledReason', correct, 'Đúng. Việc lựa chọn thiết bị có công suất phù hợp và hiệu quả sử dụng cao giúp tiết kiệm điện năng.', 'Gợi ý: liên hệ đèn LED với công suất nhỏ hơn và điện năng tiêu thụ ít hơn trong cùng thời gian.')
+  }
+
+  const checkSavingTask = () => {
+    const saving = answers.savingChoices || {}
+    const choicesCorrect = saving.reduceTime && saving.efficient && saving.suitablePower && !saving.alwaysOn
+    const text = normalizeText(answers.ledReason || '')
+    const ledCorrect = (text.includes('cong suat') || text.includes('nho')) && (text.includes('it') || text.includes('tiet kiem') || text.includes('hieu qua'))
+    const correct = choicesCorrect && ledCorrect
+    setFeedback('savingTask', correct, 'Đúng. Em đã vận dụng được mối liên hệ giữa công suất, thời gian sử dụng và điện năng tiêu thụ.', 'Cần chọn đủ ba biện pháp tiết kiệm điện và giải thích đèn LED bằng ý công suất/hiệu quả sử dụng.')
+    if (correct) completeStep(6)
   }
 
   const checkNumber = (key, expected, tolerance, good, bad, nextStep) => {
@@ -7380,66 +7964,39 @@ function Lesson25ElectricJourney() {
     if (correct && nextStep !== undefined) completeStep(nextStep)
   }
 
-  const checkText = (key, keywords, good, bad, nextStep) => {
-    const text = normalizeText(answers[key] || '')
-    const correct = keywords.filter((keyword) => text.includes(keyword)).length >= Math.min(2, keywords.length)
-    setFeedback(key, correct, good, bad)
-    if (correct && nextStep !== undefined) completeStep(nextStep)
-  }
-
-  const checkPowerIntro = () => {
-    const correct = answers.powerIntro === 'A'
-    setFeedback('powerIntro', correct, 'Đúng. Thiết bị A dùng điện mạnh hơn vì tiêu thụ cùng 1000 J trong thời gian ngắn hơn.', 'Gợi ý: cùng 1000 J, thiết bị nào tiêu thụ trong thời gian ngắn hơn thì mạnh hơn.')
-    if (correct) completeStep(5)
-  }
-
-  const checkPowerNeed = () => {
-    const correct = answers.powerNeed === 'not-enough'
-    setFeedback('powerNeed', correct, 'Đúng. Chỉ biết điện năng chưa đủ, cần biết điện năng đó tiêu thụ trong bao lâu.', 'Hãy so sánh 1000 J trong 10 s và 1000 J trong 100 s.')
-    if (correct) completeStep(6)
-  }
-
-  const checkPowerFormula = () => {
-    const value = normalizeFormula(answers.powerFormula).replace(/^p=/, '')
-    const correct = value === 'a/t'
-    setFeedback('powerFormula', correct, 'Đúng. Công suất điện P = A/t.', 'Gợi ý: công suất là điện năng tiêu thụ chia cho thời gian.')
-    if (correct) completeStep(7)
-  }
-
-  const checkUnits = () => {
-    const units = answers.units || {}
-    const correct = lesson25UnitPairs.every(([unit, meaning]) => units[meaning] === unit)
-    setFeedback('units', correct, 'Đúng. Em đã ghép đúng các đơn vị thường gặp.', 'Gợi ý: J cho điện năng, W cho công suất, s cho thời gian, V cho hiệu điện thế, A cho cường độ dòng điện.')
-    if (correct) completeStep(8)
-  }
-
   const checkCostChallenge = () => {
     const correct =
       Math.abs(numberFrom(answers.ledCost) - 40) <= 1 &&
       Math.abs(numberFrom(answers.fanCost) - 110) <= 1 &&
       Math.abs(numberFrom(answers.acCost) - 5276) <= 20
     setFeedback('cost', correct, 'Đúng. LED khoảng 40 đồng/giờ, quạt 110 đồng/giờ, điều hòa khoảng 5276 đồng/giờ.', 'Gợi ý: đổi W sang kW rồi nhân 1 giờ và nhân 2000 đồng/kWh.')
-    if (correct) completeStep(10)
   }
 
   const worksheetSteps = [
     'Nhận xét từ video',
-    'Suy luận A = UIt',
-    'Ý nghĩa đại lượng',
-    'Luyện A = UIt',
-    'Giải thích thực tế',
-    'So sánh tốc độ dùng điện',
-    'Vì sao cần công suất',
-    'Hình thành P = A/t',
-    'Ghép đơn vị',
-    'Bài tập công suất',
-    'Thử thách chi phí',
+    'Khái niệm điện năng tiêu thụ',
+    'Công thức điện năng tiêu thụ',
+    'Đơn vị điện năng và công tơ điện',
+    'Khái niệm công suất điện',
+    'Công thức công suất điện',
+    'Vận dụng thực tiễn',
   ]
   const worksheetProgress = Math.round((Math.min(maxStep, worksheetSteps.length) / worksheetSteps.length) * 100)
   const currentQuiz = lesson25NewQuiz[quizIndex]
   const quizDone = quizIndex >= lesson25NewQuiz.length
   const quizScore = Object.values(quizResults).filter(Boolean).length
-  const selfDone = Object.values(answers.checks || {}).filter(Boolean).length
+  const lesson25SelfCriteria = [
+    ['energy-concept', 'Tôi hiểu điện năng tiêu thụ là gì.'],
+    ['energy-formula', 'Tôi vận dụng được công thức A = UIt.'],
+    ['kwh', 'Tôi hiểu ý nghĩa của đơn vị kWh.'],
+    ['meter', 'Tôi biết công tơ điện dùng để làm gì.'],
+    ['power-concept', 'Tôi hiểu công suất điện là gì.'],
+    ['power-formula', 'Tôi vận dụng được công thức P = A/t và P = UI.'],
+    ['power-compare', 'Tôi giải thích được vì sao thiết bị có công suất lớn hơn thường tiêu thụ nhiều điện năng hơn.'],
+    ['saving', 'Tôi biết cách lựa chọn và sử dụng thiết bị điện tiết kiệm điện.'],
+  ]
+  const selfRatingCount = Object.values(answers.selfChecks || {}).filter(Boolean).length
+  const selfReflectionDone = ['unclearContent', 'nextPlan'].every((key) => String(answers[key] || '').trim())
 
   const submitQuiz = () => {
     if (!currentQuiz) return
@@ -7452,8 +8009,21 @@ function Lesson25ElectricJourney() {
       const expected = [...currentQuiz.answer].sort((a, b) => a - b)
       correct = selected.length === expected.length && expected.every((item, index) => item === selected[index])
     }
+    if (currentQuiz.type === 'truefalse') {
+      correct = currentQuiz.statements.every(([id]) => value?.[id] === currentQuiz.answer[id])
+    }
     if (currentQuiz.type === 'match') {
       correct = currentQuiz.pairs.every(([source, target]) => value?.[source] === target)
+    }
+    if (currentQuiz.type === 'group') {
+      correct = currentQuiz.groups.every((group) => {
+        const actual = [...(value?.[group.id] || [])].sort()
+        const expected = [...group.answers].sort()
+        return actual.length === expected.length && expected.every((item, index) => item === actual[index])
+      })
+    }
+    if (currentQuiz.type === 'order') {
+      correct = currentQuiz.answer.length === (value || []).length && currentQuiz.answer.every((item, index) => value[index] === item)
     }
     if (currentQuiz.type === 'blank') correct = normalizeFormula(value).replace(/^a=/, '').replace(/^p=/, '') === normalizeFormula(currentQuiz.answer).replace(/^a=/, '').replace(/^p=/, '')
     if (currentQuiz.type === 'numeric') {
@@ -7485,13 +8055,27 @@ function Lesson25ElectricJourney() {
       <div className="restored-hero lesson25-top">
         <span>Bài 25</span>
         <h1>Năng lượng và công suất điện</h1>
-        <p>Sau video, em tiếp tục tự khám phá công thức, ý nghĩa đại lượng và cách vận dụng vào tiền điện gia đình.</p>
+        <p>Cấu trúc tự học gồm 4 phần: Video khởi động, Phiếu học tập, Quiz và Tự đánh giá.</p>
       </div>
 
       <article className="restored-card lesson25-real-video-card">
         <div className="journey-heading">
-          <span>Video bài học</span>
-          <h2>Khởi động: năng lượng điện trong đời sống</h2>
+          <span>Bài 25</span>
+          <h2>Phần 1. Video khởi động</h2>
+        </div>
+        <div className="lesson22-section-meta lesson25-section-meta" aria-label="Thông tin phần video khởi động">
+          <div>
+            <strong>Mục tiêu</strong>
+            <p>Kích hoạt kiến thức nền và tạo tình huống học tập.</p>
+          </div>
+          <div>
+            <strong>Nhiệm vụ học tập</strong>
+            <p>Quan sát video và trả lời các câu hỏi gợi mở.</p>
+          </div>
+          <div>
+            <strong>Sản phẩm học tập</strong>
+            <p>Câu trả lời hoặc dự đoán ban đầu của học sinh.</p>
+          </div>
         </div>
         <Lesson25InteractiveVideo src="/videos/bai25.mp4" />
         <button className="primary-soft-btn lesson25-start-btn" type="button" onClick={() => setWorksheetOpen(true)}>Chuyển sang phiếu học tập</button>
@@ -7501,120 +8085,275 @@ function Lesson25ElectricJourney() {
         <article className="restored-card lesson25-discovery-sheet lesson22-reveal-block">
           <div className="lesson25-sheet-head">
             <div>
-              <span>Phiếu học tập</span>
+              <span>Bài 25</span>
+              <h2>Phần 2. Phiếu học tập</h2>
             </div>
             <img src={robotImage} alt="Mascot trợ lí học tập" />
+          </div>
+          <div className="lesson22-section-meta lesson25-section-meta" aria-label="Thông tin phần phiếu học tập">
+            <div>
+              <strong>Mục tiêu</strong>
+              <p>Hình thành kiến thức về năng lượng điện, công suất điện và vận dụng vào tình huống sử dụng điện trong thực tế.</p>
+            </div>
+            <div>
+              <strong>Nhiệm vụ học tập</strong>
+              <p>Hoàn thành các nhiệm vụ học tập theo trình tự từ quan sát, nhận xét, suy luận công thức đến vận dụng thực tiễn.</p>
+            </div>
+            <div>
+              <strong>Sản phẩm học tập</strong>
+              <p>Câu trả lời, công thức hoàn thiện, kết luận nhiệm vụ và bảng tổng hợp kiến thức cuối phiếu.</p>
+            </div>
           </div>
           <div className="lesson25-sheet-progress"><span style={{ width: `${worksheetProgress}%` }} /><b>{worksheetProgress}%</b></div>
 
           <div className="lesson25-unlock-list">
-            <section className="lesson25-unlock-card is-open">
-              <header><b>1</b><h3>Hoàn thành nhận xét từ video</h3></header>
-              <p>Thiết bị có công suất càng lớn thì trong cùng một khoảng thời gian sẽ tiêu thụ điện năng càng ________.</p>
-              <div className="answer-row"><input value={answers.observation || ''} onChange={(event) => updateAnswer('observation', event.target.value)} placeholder="Điền từ còn thiếu..." /><button type="button" onClick={checkObservation}>Kiểm tra</button></div>
-              {feedbacks.observation && <p className={`inline-feedback inline-feedback--${feedbacks.observation.type}`}>{feedbacks.observation.message}</p>}
+            <section className="lesson25-task-group">
+              <div className="lesson25-task-heading">
+                <span>Nhiệm vụ 1</span>
+                <h3>Hoàn thành nhận xét từ video</h3>
+              </div>
+              <section className="lesson25-unlock-card is-open">
+                <p>Thiết bị có công suất càng lớn thì trong cùng một khoảng thời gian sẽ tiêu thụ điện năng càng ________.</p>
+                <div className="answer-row"><input value={answers.observation || ''} onChange={(event) => updateAnswer('observation', event.target.value)} placeholder="Điền từ còn thiếu..." /><button type="button" onClick={checkObservation}>Kiểm tra</button></div>
+                {feedbacks.observation && <p className={`inline-feedback inline-feedback--${feedbacks.observation.type}`}>{feedbacks.observation.message}</p>}
+              </section>
             </section>
 
-            {maxStep >= 1 && <section className="lesson25-unlock-card">
-              <header><b>2</b><h3>Tự suy luận công thức điện năng</h3></header>
-              <div className="lesson25-formula-clues"><span>A = qU</span><span>I = q/t</span><span>q = ?</span></div>
-              <p>Hãy thay q theo I và t để tìm công thức điện năng tiêu thụ.</p>
-              <button className="ghost-soft-btn" type="button" onClick={() => showHint('derive', 2)}>Gợi ý</button>
-              {hints.derive > 0 && <div className="hint-panel">{['Từ I = q/t suy ra q = I.t.', 'Thay q = I.t vào A = qU.'][hints.derive - 1]}</div>}
-              <div className="formula-input"><span>A =</span><input value={answers.derive || ''} onChange={(event) => updateAnswer('derive', event.target.value)} placeholder="Không nhập ngay nếu chưa suy luận" /><button type="button" onClick={checkDerive}>Kiểm tra</button></div>
-              {feedbacks.derive && <p className={`inline-feedback inline-feedback--${feedbacks.derive.type}`}>{feedbacks.derive.message}</p>}
-              {feedbacks.derive?.type === 'correct' && <div className="lesson25-formula-reveal">A = UIt</div>}
-            </section>}
-
-            {maxStep >= 2 && <section className="lesson25-unlock-card">
-              <header><b>3</b><h3>Ghép ý nghĩa đại lượng</h3></header>
-              <div className="lesson25-match-grid">
-                {['A', 'U', 'I', 't'].map((symbol) => (
-                  <label key={symbol}><strong>{symbol}</strong><select value={answers.meanings?.[symbol] || ''} onChange={(event) => updateAnswer('meanings', { ...(answers.meanings || {}), [symbol]: event.target.value })}><option value="">Chọn ý nghĩa</option><option value="energy">Điện năng tiêu thụ hoặc công của dòng điện</option><option value="voltage">Hiệu điện thế</option><option value="current">Cường độ dòng điện</option><option value="time">Thời gian sử dụng</option></select></label>
-                ))}
+            {maxStep >= 1 && (
+            <section className="lesson25-task-group">
+              <div className="lesson25-task-heading">
+                <span>Nhiệm vụ 2</span>
+                <h3>Hình thành khái niệm điện năng tiêu thụ</h3>
               </div>
-              <button className="primary-soft-btn" type="button" onClick={checkMeanings}>Kiểm tra ghép cặp</button>
-              {feedbacks.meanings && <p className={`inline-feedback inline-feedback--${feedbacks.meanings.type}`}>{feedbacks.meanings.message}</p>}
-            </section>}
+              <section className="lesson25-unlock-card">
+                <p>Trong video và trong thực tế, dòng điện có thể làm đèn phát sáng, quạt quay, ấm nước nóng lên. Điều đó cho thấy dòng điện mang năng lượng và năng lượng điện có thể chuyển hóa thành các dạng năng lượng khác.</p>
+                <h3>Khi thiết bị điện hoạt động, điện năng có thể chuyển hóa thành những dạng năng lượng nào?</h3>
+                <div className="choice-row choice-row--wrap">
+                  {[
+                    ['light', 'Quang năng'],
+                    ['heat', 'Nhiệt năng'],
+                    ['motion', 'Cơ năng'],
+                    ['none', 'Không chuyển hóa thành dạng năng lượng nào'],
+                  ].map(([key, label]) => (
+                    <label className="soft-checkbox" key={key}>
+                      <input checked={Boolean(answers.energyForms?.[key])} onChange={() => updateAnswer('energyForms', { ...(answers.energyForms || {}), [key]: !answers.energyForms?.[key] })} type="checkbox" />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+                <button className="primary-soft-btn" type="button" onClick={checkEnergyForms}>Kiểm tra</button>
+                {feedbacks.energyForms && <p className={`inline-feedback inline-feedback--${feedbacks.energyForms.type}`}>{feedbacks.energyForms.message}</p>}
+                {feedbacks.energyForms?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Điện năng tiêu thụ của đoạn mạch là năng lượng điện mà đoạn mạch nhận được từ nguồn điện và chuyển hóa thành các dạng năng lượng khác.</span></div>}
+              </section>
+            </section>
+            )}
 
-            {maxStep >= 3 && <section className="lesson25-unlock-card">
-              <header><b>4</b><h3>Hai bài tập cơ bản với A = UIt</h3></header>
-              <div className="lesson25-practice-grid">
-                {[['basic1', 'Thiết bị U = 220 V, I = 2 A dùng 10 s. Tính A (J).', 4400, 'Dùng A = UIt = 220 × 2 × 10.'], ['basic2', 'Đèn U = 12 V, I = 0,5 A dùng 60 s. Tính A (J).', 360, 'Dùng A = 12 × 0,5 × 60.']].map(([key, prompt, expected, hint]) => (
-                  <div className="question-card" key={key}><h4>{prompt}</h4><button className="ghost-soft-btn" type="button" onClick={() => showHint(key, 1)}>Gợi ý</button>{hints[key] && <p className="hint-panel">{hint}</p>}<input value={answers[key] || ''} onChange={(event) => updateAnswer(key, event.target.value)} placeholder="Nhập đáp án..." /><button className="primary-soft-btn" type="button" onClick={() => checkNumber(key, expected, 1, 'Đúng. Em đã áp dụng đúng A = UIt.', 'Kiểm tra lại phép nhân U × I × t.', key === 'basic2' ? 3 : undefined)}>Kiểm tra</button>{feedbacks[key] && <p className={`inline-feedback inline-feedback--${feedbacks[key].type}`}>{feedbacks[key].message}</p>}</div>
-                ))}
+            {maxStep >= 2 && (
+            <section className="lesson25-task-group">
+              <div className="lesson25-task-heading">
+                <span>Nhiệm vụ 3</span>
+                <h3>Hình thành công thức điện năng tiêu thụ</h3>
               </div>
-              {feedbacks.basic1?.type === 'correct' && feedbacks.basic2?.type === 'correct' && <button className="primary-soft-btn" type="button" onClick={() => completeStep(3)}>Mở tình huống tiếp theo</button>}
-            </section>}
+              <section className="lesson25-unlock-card">
+                <p>Trong một đoạn mạch, khi điện tích q dịch chuyển dưới tác dụng của hiệu điện thế U, lực điện thực hiện công: A = qU.</p>
+                <p>Mặt khác, cường độ dòng điện được xác định bởi: I = q/t.</p>
+                <p>Hãy sử dụng hai mối liên hệ trên để tìm công thức điện năng tiêu thụ theo U, I và t.</p>
+                <div className="lesson25-formula-clues"><span>A = qU</span><span>I = q/t</span><span>q = ?</span></div>
+                <button className="ghost-soft-btn" type="button" onClick={() => showHint('derive', 3)}>Gợi ý</button>
+                {hints.derive > 0 && <div className="hint-panel">{['Dòng điện càng mạnh thì điện lượng đi qua càng nhiều.', 'Thời gian càng lâu thì điện lượng đi qua càng nhiều.', 'Vì vậy q liên hệ với I và t.'][hints.derive - 1]}</div>}
+                <h3>Từ công thức I = q/t, điện lượng q được biểu diễn theo I và t như thế nào?</h3>
+                <div className="formula-input"><span>q =</span><input value={answers.chargeFormula || ''} onChange={(event) => updateAnswer('chargeFormula', event.target.value)} placeholder="..." /><button type="button" onClick={checkChargeFormula}>Kiểm tra</button></div>
+                {feedbacks.chargeFormula && <p className={`inline-feedback inline-feedback--${feedbacks.chargeFormula.type}`}>{feedbacks.chargeFormula.message}</p>}
+                <h3>Thay q = It vào A = qU, ta thu được công thức điện năng tiêu thụ là gì?</h3>
+                <div className="formula-input"><span>A =</span><input value={answers.derive || ''} onChange={(event) => updateAnswer('derive', event.target.value)} placeholder="..." /><button type="button" onClick={checkDerive}>Kiểm tra</button></div>
+                {feedbacks.derive && <p className={`inline-feedback inline-feedback--${feedbacks.derive.type}`}>{feedbacks.derive.message}</p>}
+                {feedbacks.derive?.type === 'correct' && <div className="lesson25-formula-reveal">A = UIt</div>}
+                <div className="lesson25-practice-grid">
+                  {[['basic1', 'Thiết bị U = 220 V, I = 2 A dùng 10 s. Tính A (J).', 4400, 'Dùng A = UIt = 220 × 2 × 10.'], ['basic2', 'Đèn U = 12 V, I = 0,5 A dùng 60 s. Tính A (J).', 360, 'Dùng A = 12 × 0,5 × 60.']].map(([key, prompt, expected, hint]) => (
+                    <div className="question-card" key={key}><h4>{prompt}</h4><button className="ghost-soft-btn" type="button" onClick={() => showHint(key, 1)}>Gợi ý</button>{hints[key] && <p className="hint-panel">{hint}</p>}<input value={answers[key] || ''} onChange={(event) => updateAnswer(key, event.target.value)} placeholder="Nhập đáp án..." /><button className="primary-soft-btn" type="button" onClick={() => checkNumber(key, expected, 1, 'Đúng. Em đã áp dụng đúng A = UIt.', 'Kiểm tra lại phép nhân U × I × t.')}>Kiểm tra</button>{feedbacks[key] && <p className={`inline-feedback inline-feedback--${feedbacks[key].type}`}>{feedbacks[key].message}</p>}</div>
+                  ))}
+                </div>
+                <button className="primary-soft-btn" type="button" onClick={checkEnergyFormulaTask}>Hoàn thành nhiệm vụ</button>
+                {feedbacks.energyFormulaTask && <p className={`inline-feedback inline-feedback--${feedbacks.energyFormulaTask.type}`}>{feedbacks.energyFormulaTask.message}</p>}
+              </section>
+            </section>
+            )}
 
-            {maxStep >= 4 && <section className="lesson25-unlock-card">
-              <header><b>5</b><h3>Giải thích bằng lời của em</h3></header>
-              <p>Một điều hòa 2638 W và một quạt điện 55 W cùng hoạt động trong 1 giờ. Vì sao điều hòa tiêu thụ điện năng nhiều hơn?</p>
-              <textarea value={answers.acExplain || ''} onChange={(event) => updateAnswer('acExplain', event.target.value)} placeholder="Viết 2-3 câu..." />
-              <button className="primary-soft-btn" type="button" onClick={() => checkText('acExplain', ['cong suat', 'lon', '2638'], 'Đúng. Em đã dùng ý công suất lớn để giải thích.', 'Gợi ý: so sánh 2638 W với 55 W, cùng thời gian 1 giờ.', 4)}>Kiểm tra</button>
-              {feedbacks.acExplain && <p className={`inline-feedback inline-feedback--${feedbacks.acExplain.type}`}>{feedbacks.acExplain.message}</p>}
-            </section>}
+            {maxStep >= 3 && (
+            <section className="lesson25-task-group">
+              <div className="lesson25-task-heading">
+                <span>Nhiệm vụ 4</span>
+                <h3>Tìm hiểu đơn vị điện năng và công tơ điện</h3>
+              </div>
+              <section className="lesson25-unlock-card">
+                <p>Trong thực tế, điện năng tiêu thụ của gia đình được theo dõi bằng công tơ điện và thường được tính theo đơn vị kWh.</p>
+                <h3>Thiết bị dùng để đo điện năng tiêu thụ trong gia đình là gì?</h3>
+                <div className="choice-row">{[['ammeter', 'Ampe kế'], ['voltmeter', 'Vôn kế'], ['meter', 'Công tơ điện'], ['ohmmeter', 'Ôm kế']].map(([value, label]) => <button className={answers.meterTool === value ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={value} onClick={() => updateAnswer('meterTool', value)}>{label}</button>)}</div>
+                <button className="primary-soft-btn" type="button" onClick={checkMeter}>Kiểm tra câu 1</button>
+                {feedbacks.meterTool && <p className={`inline-feedback inline-feedback--${feedbacks.meterTool.type}`}>{feedbacks.meterTool.message}</p>}
+                <h3>Hoàn thành mối liên hệ đơn vị: 1 kWh = ______ J.</h3>
+                <div className="formula-input"><span>1 kWh =</span><input value={answers.kwhRelation || ''} onChange={(event) => updateAnswer('kwhRelation', event.target.value)} placeholder="..." /><button type="button" onClick={checkKwh}>Kiểm tra câu 2</button></div>
+                {feedbacks.kwhRelation && <p className={`inline-feedback inline-feedback--${feedbacks.kwhRelation.type}`}>{feedbacks.kwhRelation.message}</p>}
+                <button className="primary-soft-btn" type="button" onClick={checkMeterTask}>Hoàn thành nhiệm vụ</button>
+                {feedbacks.meterTask && <p className={`inline-feedback inline-feedback--${feedbacks.meterTask.type}`}>{feedbacks.meterTask.message}</p>}
+              </section>
+            </section>
+            )}
 
-            {maxStep >= 5 && <section className="lesson25-unlock-card">
-              <header><b>6</b><h3>So sánh tốc độ sử dụng điện</h3></header>
-              <p>Thiết bị A tiêu thụ 1000 J trong 10 s. Thiết bị B tiêu thụ 1000 J trong 100 s. Thiết bị nào sử dụng điện mạnh hơn?</p>
-              <div className="choice-row">{[['A', 'Thiết bị A'], ['B', 'Thiết bị B'], ['same', 'Như nhau']].map(([value, label]) => <button className={answers.powerIntro === value ? 'soft-choice soft-choice--active' : 'soft-choice'} key={value} type="button" onClick={() => updateAnswer('powerIntro', value)}>{label}</button>)}</div>
-              <button className="primary-soft-btn" type="button" onClick={checkPowerIntro}>Kiểm tra</button>
-              {feedbacks.powerIntro && <p className={`inline-feedback inline-feedback--${feedbacks.powerIntro.type}`}>{feedbacks.powerIntro.message}</p>}
-            </section>}
+            {maxStep >= 4 && (
+            <section className="lesson25-task-group">
+              <div className="lesson25-task-heading">
+                <span>Nhiệm vụ 5</span>
+                <h3>Hình thành khái niệm công suất điện</h3>
+              </div>
+              <section className="lesson25-unlock-card">
+                <p>Trong video, các thiết bị điện có công suất khác nhau. Cùng hoạt động trong một khoảng thời gian, thiết bị có công suất lớn hơn sẽ tiêu thụ nhiều điện năng hơn.</p>
+                <h3>Hai thiết bị hoạt động trong cùng 1 giờ: quạt điện 55 W và điều hòa 2638 W. Thiết bị nào tiêu thụ nhiều điện năng hơn?</h3>
+                <div className="choice-row">{[['fan', 'Quạt điện 55 W'], ['ac', 'Điều hòa 2638 W']].map(([value, label]) => <button className={answers.powerDevice === value ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={value} onClick={() => updateAnswer('powerDevice', value)}>{label}</button>)}</div>
+                <h3>Công suất điện cho biết lượng điện năng tiêu thụ trong một đơn vị ______.</h3>
+                <input value={answers.powerBlank || ''} onChange={(event) => updateAnswer('powerBlank', event.target.value)} placeholder="Điền từ còn thiếu..." />
+                <button className="primary-soft-btn" type="button" onClick={checkPowerConceptTask}>Kiểm tra</button>
+                {feedbacks.powerConceptTask && <p className={`inline-feedback inline-feedback--${feedbacks.powerConceptTask.type}`}>{feedbacks.powerConceptTask.message}</p>}
+                {feedbacks.powerConceptTask?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Công suất điện là năng lượng điện mà đoạn mạch tiêu thụ trong một đơn vị thời gian.</span></div>}
+              </section>
+            </section>
+            )}
 
-            {maxStep >= 6 && <section className="lesson25-unlock-card">
-              <header><b>7</b><h3>Vậy chỉ biết điện năng đã đủ chưa?</h3></header>
-              <p>Nếu chỉ biết hai thiết bị đều tiêu thụ 1000 J, đã đủ để đánh giá mức độ tiêu thụ điện chưa?</p>
-              <div className="choice-row">{[['enough', 'Đủ'], ['not-enough', 'Chưa đủ, cần biết thời gian'], ['random', 'Không liên quan']].map(([value, label]) => <button className={answers.powerNeed === value ? 'soft-choice soft-choice--active' : 'soft-choice'} key={value} type="button" onClick={() => updateAnswer('powerNeed', value)}>{label}</button>)}</div>
-              <button className="primary-soft-btn" type="button" onClick={checkPowerNeed}>Kiểm tra</button>
-              {feedbacks.powerNeed && <p className={`inline-feedback inline-feedback--${feedbacks.powerNeed.type}`}>{feedbacks.powerNeed.message}</p>}
-            </section>}
+            {maxStep >= 5 && (
+            <section className="lesson25-task-group">
+              <div className="lesson25-task-heading">
+                <span>Nhiệm vụ 6</span>
+                <h3>Hình thành công thức công suất điện</h3>
+              </div>
+              <section className="lesson25-unlock-card">
+                <p>Từ định nghĩa công suất, ta có: P = A/t.</p>
+                <p>Với điện năng tiêu thụ A = UIt, hãy tìm công thức công suất điện theo U và I.</p>
+                <h3>Thay A = UIt vào P = A/t, ta thu được công thức nào?</h3>
+                <div className="formula-input"><span>P =</span><input value={answers.powerUiFormula || ''} onChange={(event) => updateAnswer('powerUiFormula', event.target.value)} placeholder="..." /><button type="button" onClick={checkPowerUiFormula}>Kiểm tra</button></div>
+                {feedbacks.powerUiFormula && <p className={`inline-feedback inline-feedback--${feedbacks.powerUiFormula.type}`}>{feedbacks.powerUiFormula.message}</p>}
+                {feedbacks.powerUiFormula?.type === 'correct' && <><div className="lesson25-formula-reveal">P = UI</div><div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Công suất điện có đơn vị là oát, kí hiệu W.</span></div></>}
+                <div className="lesson25-practice-grid">{[
+                  ['powerBasic', 'Cơ bản: A = 600 J, t = 20 s. Tính P (W).', 30, ['Dùng P = A/t.', 'P = 600/20.']],
+                  ['powerMedium', 'Trung bình: thiết bị P = 500 W chạy 12 phút. Tính A (J).', 360000, ['Đổi 12 phút = 720 s.', 'A = P.t.']],
+                  ['powerReal', 'Vận dụng: quạt 55 W dùng 4 giờ. Tính điện năng (Wh).', 220, ['Dùng A = P.t nếu P tính W và t tính giờ.', 'A = 55 × 4.']],
+                ].map(([key, prompt, expected, hintList]) => <div className="question-card" key={key}><h4>{prompt}</h4><button className="ghost-soft-btn" type="button" onClick={() => showHint(key, hintList.length)}>Gợi ý</button>{hints[key] > 0 && <ol className="hint-panel">{hintList.slice(0, hints[key]).map((hint) => <li key={hint}>{hint}</li>)}</ol>}<input value={answers[key] || ''} onChange={(event) => updateAnswer(key, event.target.value)} placeholder="Nhập đáp án..." /><button className="primary-soft-btn" type="button" onClick={() => checkNumber(key, expected, expected > 1000 ? 1000 : 1, 'Đúng. Em đã xử lí đúng công thức và đơn vị.', 'Xem lại gợi ý từng bước.')}>Kiểm tra</button>{feedbacks[key] && <p className={`inline-feedback inline-feedback--${feedbacks[key].type}`}>{feedbacks[key].message}</p>}</div>)}</div>
+              </section>
+            </section>
+            )}
 
-            {maxStep >= 7 && <section className="lesson25-unlock-card">
-              <header><b>8</b><h3>Hình thành công suất điện</h3></header>
-              <p>Công suất điện cho biết điện năng tiêu thụ trong một đơn vị thời gian. Hãy hoàn thành:</p>
-              <div className="formula-input"><span>P =</span><input value={answers.powerFormula || ''} onChange={(event) => updateAnswer('powerFormula', event.target.value)} placeholder="..." /><button type="button" onClick={checkPowerFormula}>Kiểm tra</button></div>
-              {feedbacks.powerFormula && <p className={`inline-feedback inline-feedback--${feedbacks.powerFormula.type}`}>{feedbacks.powerFormula.message}</p>}
-              {feedbacks.powerFormula?.type === 'correct' && <div className="lesson25-formula-reveal">P = A/t</div>}
-            </section>}
-
-            {maxStep >= 8 && <section className="lesson25-unlock-card">
-              <header><b>9</b><h3>Ghép đơn vị</h3></header>
-              <div className="lesson25-match-grid">{lesson25UnitPairs.map(([, meaning]) => <label key={meaning}><strong>{meaning}</strong><select value={answers.units?.[meaning] || ''} onChange={(event) => updateAnswer('units', { ...(answers.units || {}), [meaning]: event.target.value })}><option value="">Chọn đơn vị</option>{lesson25UnitPairs.map(([item]) => <option value={item} key={item}>{item}</option>)}</select></label>)}</div>
-              <button className="primary-soft-btn" type="button" onClick={checkUnits}>Kiểm tra đơn vị</button>
-              {feedbacks.units && <p className={`inline-feedback inline-feedback--${feedbacks.units.type}`}>{feedbacks.units.message}</p>}
-            </section>}
-
-            {maxStep >= 9 && <section className="lesson25-unlock-card">
-              <header><b>10</b><h3>Ba bài tập công suất điện</h3></header>
-              <div className="lesson25-practice-grid">{[
-                ['powerBasic', 'Cơ bản: A = 600 J, t = 20 s. Tính P (W).', 30, ['Dùng P = A/t.', 'P = 600/20.']],
-                ['powerMedium', 'Trung bình: thiết bị P = 500 W chạy 12 phút. Tính A (J).', 360000, ['Đổi 12 phút = 720 s.', 'A = P.t.']],
-                ['powerReal', 'Vận dụng: quạt 55 W dùng 4 giờ. Tính điện năng (Wh).', 220, ['Dùng A = P.t nếu P tính W và t tính giờ.', 'A = 55 × 4.']],
-              ].map(([key, prompt, expected, hintList]) => <div className="question-card" key={key}><h4>{prompt}</h4><button className="ghost-soft-btn" type="button" onClick={() => showHint(key, hintList.length)}>Gợi ý</button>{hints[key] > 0 && <ol className="hint-panel">{hintList.slice(0, hints[key]).map((hint) => <li key={hint}>{hint}</li>)}</ol>}<input value={answers[key] || ''} onChange={(event) => updateAnswer(key, event.target.value)} placeholder="Nhập đáp án..." /><button className="primary-soft-btn" type="button" onClick={() => checkNumber(key, expected, expected > 1000 ? 1000 : 1, 'Đúng. Em đã xử lí đúng công thức và đơn vị.', 'Xem lại gợi ý từng bước.')}>Kiểm tra</button>{feedbacks[key] && <p className={`inline-feedback inline-feedback--${feedbacks[key].type}`}>{feedbacks[key].message}</p>}</div>)}</div>
-              {['powerBasic', 'powerMedium', 'powerReal'].every((key) => feedbacks[key]?.type === 'correct') && <button className="primary-soft-btn" type="button" onClick={() => completeStep(9)}>Mở thử thách thực tế</button>}
-            </section>}
-
-            {maxStep >= 10 && <section className="lesson25-unlock-card" id="lesson25-final-question">
-              <header><b>11</b><h3>Thử thách thực tế cuối bài</h3></header>
-              <p>Giá điện 2000 đồng/kWh. Tính chi phí dùng trong 1 giờ.</p>
-              <div className="lesson25-cost-table"><span>LED 20 W</span><span>Quạt 55 W</span><span>Điều hòa 2638 W</span></div>
-              <button className="ghost-soft-btn" type="button" onClick={() => showHint('cost', 3)}>Gợi ý nhiều cấp độ</button>
-              {hints.cost > 0 && <ol className="hint-panel">{['Đổi W sang kW: chia cho 1000.', 'Trong 1 giờ, số kWh bằng kW × 1.', 'Chi phí = kWh × 2000 đồng.'].slice(0, hints.cost).map((hint) => <li key={hint}>{hint}</li>)}</ol>}
-              <div className="lesson25-practice-grid">{[['ledCost', 'LED (đồng)'], ['fanCost', 'Quạt (đồng)'], ['acCost', 'Điều hòa (đồng)']].map(([key, label]) => <label key={key}><span>{label}</span><input value={answers[key] || ''} onChange={(event) => updateAnswer(key, event.target.value)} /></label>)}</div>
-              <button className="primary-soft-btn" type="button" onClick={checkCostChallenge}>Kiểm tra chi phí</button>
-              {feedbacks.cost && <p className={`inline-feedback inline-feedback--${feedbacks.cost.type}`}>{feedbacks.cost.message}</p>}
-            </section>}
+            {maxStep >= 6 && (
+            <section className="lesson25-task-group">
+              <div className="lesson25-task-heading">
+                <span>Nhiệm vụ 7</span>
+                <h3>Vận dụng thực tiễn và tiết kiệm điện</h3>
+              </div>
+              <section className="lesson25-unlock-card" id="lesson25-final-question">
+                <p>Hóa đơn điện tăng phụ thuộc vào điện năng tiêu thụ. Điện năng tiêu thụ lại phụ thuộc vào công suất thiết bị và thời gian sử dụng.</p>
+                <h3>Nếu muốn giảm điện năng tiêu thụ, em có thể làm gì?</h3>
+                <div className="choice-row choice-row--wrap">
+                  {[
+                    ['reduceTime', 'Giảm thời gian sử dụng thiết bị khi không cần thiết'],
+                    ['efficient', 'Chọn thiết bị tiết kiệm điện'],
+                    ['suitablePower', 'Sử dụng thiết bị có công suất phù hợp'],
+                    ['alwaysOn', 'Bật tất cả thiết bị liên tục'],
+                  ].map(([key, label]) => (
+                    <label className="soft-checkbox" key={key}>
+                      <input checked={Boolean(answers.savingChoices?.[key])} onChange={() => updateAnswer('savingChoices', { ...(answers.savingChoices || {}), [key]: !answers.savingChoices?.[key] })} type="checkbox" />
+                      <span>{label}</span>
+                    </label>
+                  ))}
+                </div>
+                <button className="primary-soft-btn" type="button" onClick={checkSavingChoices}>Kiểm tra câu 1</button>
+                {feedbacks.savingChoices && <p className={`inline-feedback inline-feedback--${feedbacks.savingChoices.type}`}>{feedbacks.savingChoices.message}</p>}
+                <h3>Vì sao đèn LED thường tiết kiệm điện hơn đèn sợi đốt?</h3>
+                <textarea value={answers.ledReason || ''} onChange={(event) => updateAnswer('ledReason', event.target.value)} placeholder="Trả lời ngắn..." />
+                <button className="primary-soft-btn" type="button" onClick={checkLedReason}>Kiểm tra câu 2</button>
+                {feedbacks.ledReason && <p className={`inline-feedback inline-feedback--${feedbacks.ledReason.type}`}>{feedbacks.ledReason.message}</p>}
+                <p>Giá điện 2000 đồng/kWh. Tính chi phí dùng trong 1 giờ.</p>
+                <div className="lesson25-cost-table"><span>LED 20 W</span><span>Quạt 55 W</span><span>Điều hòa 2638 W</span></div>
+                <button className="ghost-soft-btn" type="button" onClick={() => showHint('cost', 3)}>Gợi ý nhiều cấp độ</button>
+                {hints.cost > 0 && <ol className="hint-panel">{['Đổi W sang kW: chia cho 1000.', 'Trong 1 giờ, số kWh bằng kW × 1.', 'Chi phí = kWh × 2000 đồng.'].slice(0, hints.cost).map((hint) => <li key={hint}>{hint}</li>)}</ol>}
+                <div className="lesson25-practice-grid">{[['ledCost', 'LED (đồng)'], ['fanCost', 'Quạt (đồng)'], ['acCost', 'Điều hòa (đồng)']].map(([key, label]) => <label key={key}><span>{label}</span><input value={answers[key] || ''} onChange={(event) => updateAnswer(key, event.target.value)} /></label>)}</div>
+                <button className="primary-soft-btn" type="button" onClick={checkCostChallenge}>Kiểm tra chi phí</button>
+                {feedbacks.cost && <p className={`inline-feedback inline-feedback--${feedbacks.cost.type}`}>{feedbacks.cost.message}</p>}
+                <button className="primary-soft-btn" type="button" onClick={checkSavingTask}>Hoàn thành nhiệm vụ</button>
+                {feedbacks.savingTask && <p className={`inline-feedback inline-feedback--${feedbacks.savingTask.type}`}>{feedbacks.savingTask.message}</p>}
+              </section>
+            </section>
+            )}
           </div>
 
-          {maxStep >= 11 && <button className="primary-soft-btn lesson25-open-quiz" type="button" onClick={() => completeStep(11)}>Mở quiz ôn tập 15 câu</button>}
+          {maxStep >= 7 && (
+            <section className="lesson25-worksheet-summary">
+              <div className="lesson25-task-heading">
+                <span>Tổng kết</span>
+                <h3>TỔNG HỢP KIẾN THỨC</h3>
+              </div>
+              <div className="lesson25-summary-grid">
+                <section>
+                  <h4>1. Điện năng tiêu thụ</h4>
+                  <p>Điện năng tiêu thụ của đoạn mạch là năng lượng điện mà đoạn mạch nhận được từ nguồn điện và chuyển hóa thành các dạng năng lượng khác.</p>
+                  <p>Điện năng tiêu thụ bằng công của lực điện.</p>
+                  <strong>A = UIt</strong>
+                  <p>A là điện năng tiêu thụ, đơn vị J. U là hiệu điện thế, đơn vị V. I là cường độ dòng điện, đơn vị A. t là thời gian, đơn vị s.</p>
+                </section>
+                <section>
+                  <h4>2. Đơn vị điện năng trong thực tế</h4>
+                  <p>Ngoài đơn vị J, điện năng tiêu thụ trong đời sống thường được tính bằng kWh.</p>
+                  <p>1 kWh = 3,6 × 10^6 J.</p>
+                  <p>Công tơ điện dùng để đo điện năng tiêu thụ.</p>
+                </section>
+                <section>
+                  <h4>3. Công suất điện</h4>
+                  <p>Công suất điện cho biết điện năng tiêu thụ trong một đơn vị thời gian.</p>
+                  <strong>P = A/t = UI</strong>
+                  <p>P là công suất điện, đơn vị W.</p>
+                </section>
+                <section>
+                  <h4>4. Liên hệ thực tế</h4>
+                  <p>Thiết bị có công suất lớn hơn thường tiêu thụ nhiều điện năng hơn trong cùng thời gian.</p>
+                  <p>Thời gian sử dụng càng lâu thì điện năng tiêu thụ càng lớn.</p>
+                  <p>Chọn thiết bị tiết kiệm điện và sử dụng hợp lí giúp giảm hóa đơn điện.</p>
+                </section>
+              </div>
+              <button className="primary-soft-btn lesson25-open-quiz" type="button" onClick={() => completeStep(7)}>Hoàn thành Phiếu học tập và chuyển sang Quiz</button>
+            </section>
+          )}
         </article>
       )}
 
-      {maxStep >= 12 && (
+      {(PREVIEW_ALL_LESSON_PARTS || maxStep >= 8) && (
         <article className="review-quest-card lesson25-review">
-          <div className="review-quest-header"><div><span className="review-quest-kicker"><b>⚡</b> Thử thách</span><h2>Trở thành chuyên gia tiết kiệm điện</h2><p>Hoàn thành 15 nhiệm vụ để nhận huy hiệu cuối bài.</p></div><div className="review-score-orb"><strong>{quizScore}</strong><span>điểm</span></div></div>
+          <div className="review-quest-header"><div><span className="review-quest-kicker"><b>⚡</b> Bài 25</span><h2>Phần 3. Quiz</h2></div></div>
+          <div className="lesson22-section-meta lesson25-section-meta lesson25-section-meta--quiz" aria-label="Thông tin phần quiz">
+            <div>
+              <strong>Mục tiêu</strong>
+              <ul>
+                <li>Củng cố kiến thức đã hình thành trong Phiếu học tập.</li>
+                <li>Giúp học sinh tự kiểm tra mức độ hiểu bài.</li>
+                <li>Chuẩn bị cho hoạt động tự đánh giá.</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Nhiệm vụ học tập</strong>
+              <ul>
+                <li>Hoàn thành toàn bộ câu hỏi Quiz.</li>
+                <li>Xem phản hồi sau mỗi câu trả lời.</li>
+                <li>Xác định nội dung còn chưa nắm vững.</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Sản phẩm học tập</strong>
+              <ul>
+                <li>Kết quả Quiz.</li>
+                <li>Điểm số đạt được.</li>
+                <li>Danh sách câu trả lời đúng và sai.</li>
+              </ul>
+            </div>
+          </div>
+          <div className="lesson25-quiz-score-row">
+            <div className="review-score-orb"><strong>{quizScore}</strong><span>điểm</span></div>
+          </div>
           <div className="review-progress"><span style={{ width: `${(Object.keys(quizResults).length / lesson25NewQuiz.length) * 100}%` }} /></div>
           {!quizDone ? (
             <section className={`quest-question ${quizSubmitted && !quizResults[currentQuiz.id] ? 'quest-question--wrong' : ''}`} key={currentQuiz.id}>
@@ -7633,6 +8372,29 @@ function Lesson25ElectricJourney() {
                 <div className="quest-options">
                   {currentQuiz.options.map((option, index) => (
                     <button className={quizAnswers[currentQuiz.id]?.[index] ? 'quest-option quest-option--active' : 'quest-option'} disabled={quizSubmitted} type="button" key={option} onClick={() => setQuizAnswers((current) => ({ ...current, [currentQuiz.id]: { ...(current[currentQuiz.id] || {}), [index]: !current[currentQuiz.id]?.[index] } }))}><span />{option}</button>
+                  ))}
+                </div>
+              )}
+
+              {currentQuiz.type === 'truefalse' && (
+                <div className="lesson25-truefalse">
+                  {currentQuiz.statements.map(([id, statement]) => (
+                    <div className="lesson25-truefalse-row" key={id}>
+                      <p>{statement}</p>
+                      <div className="choice-row">
+                        {[[true, 'Đúng'], [false, 'Sai']].map(([value, label]) => (
+                          <button
+                            className={quizAnswers[currentQuiz.id]?.[id] === value ? 'soft-choice soft-choice--active' : 'soft-choice'}
+                            disabled={quizSubmitted}
+                            key={label}
+                            type="button"
+                            onClick={() => setQuizAnswers((current) => ({ ...current, [currentQuiz.id]: { ...(current[currentQuiz.id] || {}), [id]: value } }))}
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
               )}
@@ -7678,6 +8440,87 @@ function Lesson25ElectricJourney() {
                 </div>
               )}
 
+              {currentQuiz.type === 'group' && (
+                <div className="lesson25-drag-groups lesson25-quiz-groups">
+                  <div className="lesson25-drag-bank">
+                    {currentQuiz.items.filter((item) => !Object.values(quizAnswers[currentQuiz.id] || {}).flat().includes(item)).map((item) => (
+                      <button
+                        className={selectedQuizMatch === item ? 'is-selected' : ''}
+                        disabled={quizSubmitted}
+                        draggable={!quizSubmitted}
+                        key={item}
+                        type="button"
+                        onClick={() => setSelectedQuizMatch(item)}
+                        onDragStart={(event) => event.dataTransfer.setData('text/plain', item)}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="lesson25-group-columns">
+                    {currentQuiz.groups.map((group) => {
+                      const placeItem = (item) => {
+                        if (!item || quizSubmitted) return
+                        setQuizAnswers((current) => {
+                          const previous = current[currentQuiz.id] || {}
+                          const next = Object.fromEntries(Object.entries(previous).map(([key, values]) => [key, values.filter((value) => value !== item)]))
+                          next[group.id] = [...(next[group.id] || []), item]
+                          return { ...current, [currentQuiz.id]: next }
+                        })
+                        setSelectedQuizMatch('')
+                      }
+                      return (
+                        <div className="lesson25-drop-column" key={group.id} onDragOver={(event) => event.preventDefault()} onDrop={(event) => placeItem(event.dataTransfer.getData('text/plain'))}>
+                          <strong>{group.title}</strong>
+                          <button disabled={quizSubmitted} type="button" onClick={() => placeItem(selectedQuizMatch)}>{selectedQuizMatch ? `Thả "${selectedQuizMatch}" vào đây` : 'Chọn hoặc kéo thiết bị vào đây'}</button>
+                          {(quizAnswers[currentQuiz.id]?.[group.id] || []).map((item) => (
+                            <button
+                              className="lesson25-placed-item"
+                              disabled={quizSubmitted}
+                              key={item}
+                              type="button"
+                              onClick={() => setQuizAnswers((current) => ({ ...current, [currentQuiz.id]: { ...(current[currentQuiz.id] || {}), [group.id]: (current[currentQuiz.id]?.[group.id] || []).filter((value) => value !== item) } }))}
+                            >
+                              {item}
+                            </button>
+                          ))}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {currentQuiz.type === 'order' && (
+                <div className="quest-match lesson25-order-quiz">
+                  <div className="quest-match-bank">
+                    {currentQuiz.items.filter((item) => !(quizAnswers[currentQuiz.id] || []).includes(item)).map((item) => (
+                      <button className={selectedQuizMatch === item ? 'is-selected' : ''} disabled={quizSubmitted} draggable={!quizSubmitted} key={item} type="button" onClick={() => setSelectedQuizMatch(item)} onDragStart={(event) => event.dataTransfer.setData('text/plain', item)}>{item}</button>
+                    ))}
+                  </div>
+                  <div className="quest-match-targets">
+                    {currentQuiz.answer.map((_, index) => {
+                      const assigned = quizAnswers[currentQuiz.id]?.[index]
+                      const placeItem = (item) => {
+                        if (!item || quizSubmitted) return
+                        setQuizAnswers((current) => {
+                          const previous = [...(current[currentQuiz.id] || [])].filter((value) => value !== item)
+                          previous[index] = item
+                          return { ...current, [currentQuiz.id]: previous }
+                        })
+                        setSelectedQuizMatch('')
+                      }
+                      return (
+                        <button className={assigned ? 'quest-match-target is-filled' : 'quest-match-target'} disabled={quizSubmitted} key={index} type="button" onClick={() => placeItem(selectedQuizMatch)} onDragOver={(event) => event.preventDefault()} onDrop={(event) => placeItem(event.dataTransfer.getData('text/plain'))}>
+                          <strong>Bước {index + 1}</strong>
+                          <span>{assigned || 'Kéo/chọn thẻ vào đây'}</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
               {(currentQuiz.type === 'blank' || currentQuiz.type === 'numeric' || currentQuiz.type === 'scenario') && (
                 <div className="quest-write">
                   <textarea disabled={quizSubmitted} value={quizAnswers[currentQuiz.id] || ''} onChange={(event) => setQuizAnswers((current) => ({ ...current, [currentQuiz.id]: event.target.value }))} placeholder="Nhập câu trả lời..." />
@@ -7698,40 +8541,60 @@ function Lesson25ElectricJourney() {
             <section className="quest-summary">
               <span>Nhiệm vụ hoàn thành!</span>
               <h3>{quizScore}/{lesson25NewQuiz.length} câu đúng</h3>
-              <p>{quizScore >= 12 ? '🏅 Chuyên gia điện năng' : quizScore >= 9 ? '🥈 Nhà quản lý điện năng' : '📚 Hãy xem lại bài học và thử lại.'}</p>
+              <p>Điểm số: {quizScore * 10}/{lesson25NewQuiz.length * 10}</p>
+              <p>Tỉ lệ hoàn thành: {Math.round((quizScore / lesson25NewQuiz.length) * 100)}%</p>
+              <p>{quizScore >= 8 ? 'Em đã nắm vững kiến thức của bài học.' : quizScore >= 5 ? 'Em đã hiểu phần lớn nội dung bài học. Hãy xem lại những câu chưa chính xác.' : 'Em nên xem lại Phiếu học tập và phần Tổng hợp kiến thức trước khi thực hiện lại Quiz.'}</p>
+              <div className="lesson25-quiz-review-list">
+                {lesson25NewQuiz.map((question, index) => (
+                  <span className={quizResults[question.id] ? 'is-correct' : 'is-wrong'} key={question.id}>
+                    Câu {index + 1}: {quizResults[question.id] ? 'Đúng' : 'Sai'}
+                  </span>
+                ))}
+              </div>
             </section>
           )}
         </article>
       )}
 
       {selfOpen && (
-        <article className="restored-card self-check lesson25-self-review lesson22-reveal-block">
-          <h3>Tự đánh giá cuối bài</h3>
-          <p className="lesson25-self-note">Phần này không chấm điểm. Em chọn mức phù hợp nhất với cảm nhận của mình sau khi hoàn thành quiz.</p>
-          <div className="lesson25-self-mood">
-            {[
-              ['very-clear', '😊', 'Em hiểu rất rõ bài học.'],
-              ['mostly-clear', '🙂', 'Em hiểu phần lớn nội dung.'],
-              ['not-sure', '😐', 'Em còn một vài phần chưa chắc chắn.'],
-              ['review-needed', '😟', 'Em cần xem lại bài học.'],
-            ].map(([key, icon, label]) => (
-              <button className={answers.mood === key ? 'lesson25-mood-btn is-selected' : 'lesson25-mood-btn'} key={key} type="button" onClick={() => updateAnswer('mood', key)}>
-                <span>{icon}</span>
-                <strong>{label}</strong>
-              </button>
-            ))}
-          </div>
-          {[
-            ['bill', 'Em giải thích được vì sao tiền điện tăng.'],
-            ['energy', 'Em tính được điện năng tiêu thụ bằng A = UIt.'],
-            ['power', 'Em tính được công suất điện bằng P = A/t.'],
-            ['label', 'Em đọc được thông số công suất trên thiết bị điện.'],
-            ['saving-device', 'Em biết lựa chọn thiết bị tiết kiệm điện.'],
-            ['saving', 'Em có thể đề xuất biện pháp tiết kiệm điện cho gia đình.'],
-            ['next', 'Em sẵn sàng chuyển sang bài học tiếp theo.'],
-          ].map(([key, label]) => <label className="soft-checkbox" key={key}><input checked={Boolean(answers.checks?.[key])} onChange={() => updateAnswer('checks', { ...(answers.checks || {}), [key]: !answers.checks?.[key] })} type="checkbox" /><span>{label}</span></label>)}
-          {answers.mood && selfDone === 7 && <div className="lesson25-final-card"><strong>Bạn đã hoàn thành hành trình khám phá Năng lượng và công suất điện.</strong></div>}
-        </article>
+        <UnifiedSelfAssessment
+          checks={answers.selfChecks || {}}
+          className="lesson25-self-review"
+          description="Đối chiếu kết quả học tập với yêu cầu của bài Năng lượng và công suất điện."
+          meta={{
+            objective: 'Tự nhận biết mức độ hoàn thành sau video, phiếu học tập và quiz.',
+            task: 'Đánh dấu các năng lực đã đạt, xem lại phần còn yếu và lưu kết quả học tập.',
+            product: 'Nội dung tự đánh giá của học sinh.',
+          }}
+          completionItems={[
+            ['watchedVideo', 'Tôi đã xem video khởi động.'],
+            ['answeredGuide', 'Tôi đã trả lời câu hỏi định hướng.'],
+            ['completedWorksheet', 'Tôi đã hoàn thành phiếu học tập.'],
+            ['completedQuiz', 'Tôi đã hoàn thành Quiz.'],
+          ]}
+          difficultyItems={[
+            ['hardEnergy', 'Khái niệm điện năng tiêu thụ.'],
+            ['hardEnergyFormula', 'Công thức A = UIt.'],
+            ['hardKwh', 'Đơn vị kW.h.'],
+            ['hardPower', 'Công suất điện.'],
+            ['hardBill', 'Bài toán hóa đơn điện.'],
+          ]}
+          doneMessage={selfRatingCount === lesson25SelfCriteria.length && selfReflectionDone ? 'Bạn đã hoàn thành hành trình khám phá Năng lượng và công suất điện.' : ''}
+          onPlanChange={(value) => updateAnswer('nextPlan', value)}
+          onReflectionChange={(value) => updateAnswer('unclearContent', value)}
+          onToggleCheck={(key) => updateAnswer('selfChecks', { ...(answers.selfChecks || {}), [key]: !answers.selfChecks?.[key] })}
+          reflectionPlan={answers.nextPlan || ''}
+          reflectionQuestion={answers.unclearContent || ''}
+          understandingItems={[
+            ['energy-concept', 'Tôi hiểu điện năng tiêu thụ là gì.'],
+            ['energy-formula', 'Tôi vận dụng được công thức A = UIt.'],
+            ['kwh', 'Tôi hiểu ý nghĩa của đơn vị kW.h.'],
+            ['meter', 'Tôi biết công tơ điện dùng để làm gì.'],
+            ['power-concept', 'Tôi hiểu công suất điện là gì.'],
+            ['power-formula', 'Tôi vận dụng được công thức P = A/t và P = UI.'],
+            ['saving', 'Tôi biết cách sử dụng thiết bị điện tiết kiệm điện.'],
+          ]}
+        />
       )}
     </section>
   )
@@ -7759,7 +8622,7 @@ const lesson26ReviewQuestions = [
   {
     id: 'circuit',
     type: 'single',
-    badge: 'Lắp mạch',
+    badge: 'Trắc nghiệm lựa chọn',
     prompt: 'Trong thí nghiệm đo suất điện động và điện trở trong, cách mắc nào đúng?',
     options: [
       { id: 'right', text: 'Ampe kế nối tiếp với mạch, vôn kế song song hai cực nguồn' },
@@ -7770,76 +8633,87 @@ const lesson26ReviewQuestions = [
     explain: 'Ampe kế đo dòng điện nên mắc nối tiếp. Vôn kế đo hiệu điện thế giữa hai cực nguồn nên mắc song song.',
   },
   {
-    id: 'data',
-    type: 'multi',
-    badge: 'Dữ liệu',
-    prompt: 'Những đại lượng nào cần ghi lại để vẽ đồ thị U-I?',
-    options: [
-      { id: 'u', text: 'Hiệu điện thế U' },
-      { id: 'i', text: 'Cường độ dòng điện I' },
-      { id: 'r', text: 'Điện trở ngoài R' },
-      { id: 'color', text: 'Màu dây nối' },
+    id: 'truefalse',
+    type: 'truefalse',
+    badge: 'Đúng - Sai',
+    prompt: 'Đánh dấu đúng hoặc sai cho các nhận định về thí nghiệm.',
+    statements: [
+      { id: 'ammeter', text: 'Ampe kế được mắc nối tiếp với mạch.' },
+      { id: 'voltmeter', text: 'Vôn kế được mắc song song với hai cực nguồn.' },
+      { id: 'oneMeasure', text: 'Chỉ đo một lần hiệu điện thế là đủ để xác định cả suất điện động và điện trở trong.' },
     ],
-    answer: ['i', 'r', 'u'],
-    explain: 'Bảng đo cần R, U và I. Đồ thị dùng cặp U-I để nhận ra quan hệ tuyến tính của nguồn điện.',
+    answer: { ammeter: true, voltmeter: true, oneMeasure: false },
+    explain: 'Cần mắc đúng ampe kế, vôn kế và thu thập các cặp số đo U, I để xử lí kết quả.',
   },
   {
-    id: 'relation',
-    type: 'single',
-    badge: 'Đồ thị',
-    prompt: 'Khi I tăng, U ở mạch ngoài thường thay đổi như thế nào?',
-    options: [
-      { id: 'up', text: 'U tăng' },
-      { id: 'down', text: 'U giảm' },
-      { id: 'same', text: 'U không đổi' },
-    ],
-    answer: 'down',
-    explain: 'Theo U = E - rI, khi dòng điện I tăng thì phần hao hụt rI tăng, nên U giảm.',
+    id: 'blank',
+    type: 'blank',
+    badge: 'Điền khuyết',
+    prompt: 'Khi kéo dài đồ thị U-I đến I = 0, giá trị điện áp tại giao điểm với trục U cho biết ______ của pin.',
+    answerKeywords: ['suat dien dong', 'suất điện động'],
+    explain: 'Khi I = 0, giá trị điện áp trên đồ thị được dùng để xác định suất điện động của pin.',
   },
   {
-    id: 'emf',
-    type: 'single',
-    badge: 'Suất điện động',
-    prompt: 'Kéo dài đường thẳng U-I đến I = 0, giao điểm với trục U cho biết đại lượng nào?',
+    id: 'match',
+    type: 'match',
+    badge: 'Ghép đôi',
+    prompt: 'Ghép dụng cụ với chức năng phù hợp.',
     options: [
-      { id: 'e', text: 'Suất điện động E của nguồn' },
-      { id: 'r', text: 'Điện trở ngoài của mạch' },
-      { id: 'i', text: 'Cường độ dòng điện cực đại' },
+      { id: 'measureU', text: 'Đo hiệu điện thế' },
+      { id: 'measureI', text: 'Đo cường độ dòng điện' },
+      { id: 'changeI', text: 'Thay đổi dòng điện qua mạch' },
     ],
-    answer: 'e',
-    explain: 'Khi I = 0 thì U = E, nên giao điểm với trục U chính là suất điện động của nguồn.',
+    pairs: [
+      { id: 'voltmeter', source: 'Vôn kế', answer: 'measureU' },
+      { id: 'ammeter', source: 'Ampe kế', answer: 'measureI' },
+      { id: 'rheostat', source: 'Biến trở', answer: 'changeI' },
+    ],
+    explain: 'Vôn kế đo U, ampe kế đo I, biến trở giúp thay đổi dòng điện qua mạch.',
   },
   {
-    id: 'old-battery',
-    type: 'single',
-    badge: 'Pin cũ',
-    prompt: 'Vì sao pin cũ vẫn còn điện nhưng thiết bị hoạt động yếu hơn?',
-    options: [
-      { id: 'internal', text: 'Điện trở trong của pin thường lớn hơn' },
-      { id: 'wire', text: 'Dây nối trong thiết bị dài hơn' },
-      { id: 'voltmeter', text: 'Vôn kế làm pin yếu đi' },
+    id: 'drag',
+    type: 'drag',
+    badge: 'Kéo thả',
+    prompt: 'Phân loại các dụng cụ theo vai trò trong thí nghiệm.',
+    groups: [
+      { id: 'source', text: 'Nguồn điện' },
+      { id: 'meter', text: 'Dụng cụ đo' },
+      { id: 'circuit', text: 'Hoàn thiện mạch' },
     ],
-    answer: 'internal',
-    explain: 'Điện trở trong lớn làm hao hụt điện áp bên trong nguồn nhiều hơn, nên thiết bị nhận được hiệu điện thế nhỏ hơn.',
+    items: [
+      { id: 'pin', text: 'Pin điện hóa', answer: 'source' },
+      { id: 'v', text: 'Vôn kế', answer: 'meter' },
+      { id: 'a', text: 'Ampe kế', answer: 'meter' },
+      { id: 'switch', text: 'Công tắc', answer: 'circuit' },
+      { id: 'wire', text: 'Dây nối', answer: 'circuit' },
+    ],
+    explain: 'Pin là nguồn điện, vôn kế và ampe kế là dụng cụ đo, công tắc và dây nối giúp hoàn thiện mạch.',
   },
   {
-    id: 'calculate',
-    type: 'numeric',
-    badge: 'Tính nhanh',
-    prompt: 'Một pin có E = 1,50 V. Khi I = 0,10 A thì U = 1,45 V. Tính điện trở trong r.',
-    suffix: 'Ω',
-    answer: 0.5,
-    explain: 'Từ U = E - rI suy ra r = (E - U) / I = (1,50 - 1,45) / 0,10 = 0,50 Ω.',
+    id: 'order',
+    type: 'order',
+    badge: 'Sắp xếp quy trình',
+    prompt: 'Sắp xếp quy trình lắp mạch đo theo thứ tự hợp lí.',
+    steps: [
+      { id: 'pin', text: 'Kéo pin vào vùng làm việc.' },
+      { id: 'ammeter', text: 'Mắc ampe kế nối tiếp với mạch.' },
+      { id: 'resistor', text: 'Mắc điện trở nối tiếp với ampe kế.' },
+      { id: 'voltmeter', text: 'Mắc vôn kế song song hai đầu nguồn.' },
+      { id: 'wire', text: 'Nối dây để tạo thành mạch kín.' },
+    ],
+    answer: ['pin', 'ammeter', 'resistor', 'voltmeter', 'wire'],
+    explain: 'Quy trình cần bắt đầu từ nguồn, mắc các phần tử chính, đặt vôn kế song song hai đầu nguồn rồi nối dây tạo mạch kín.',
   },
 ]
 
 const lesson26SelfChecks = [
-  ['circuit', 'Em lắp được mạch đo với ampe kế nối tiếp và vôn kế song song'],
-  ['measure', 'Em biết nhập và kiểm tra số đo R, U, I'],
-  ['graph', 'Em đọc được đồ thị U-I từ dữ liệu thực nghiệm'],
-  ['emf', 'Em xác định được suất điện động từ giao điểm I = 0'],
-  ['resistance', 'Em hiểu điện trở trong làm U giảm khi I tăng'],
-  ['compare', 'Em giải thích được vì sao pin cũ hoạt động yếu hơn'],
+  ['tools', 'Nhận biết được các dụng cụ thí nghiệm.'],
+  ['functions', 'Nêu được chức năng của các dụng cụ.'],
+  ['procedure', 'Mô tả được quy trình đo.'],
+  ['dataGraph', 'Đọc được bảng số liệu và đồ thị.'],
+  ['emf', 'Xác định được suất điện động của pin.'],
+  ['resistance', 'Xác định được điện trở trong của pin.'],
+  ['meaning', 'Giải thích được ý nghĩa của các đại lượng đo được.'],
 ]
 
 const createLesson26Rows = (prefix) =>
@@ -7850,11 +8724,218 @@ const createLesson26Rows = (prefix) =>
     i: '',
   }))
 
+const lesson26IntroImages = {
+  pinA: '/images/bai26/pin-a.png',
+  pinB: '/images/bai26/pin-b.png',
+  denpinA: '/images/bai26/denpin-a.png',
+  denpinB: '/images/bai26/denpin-b.png',
+}
+
+function Lesson26IntroAsset({ alt, className = '', name, src }) {
+  const [missing, setMissing] = useState(false)
+
+  if (missing) {
+    return (
+      <div className={`lesson26-intro-placeholder ${className}`} role="img" aria-label={alt}>
+        {/* Thay placeholder bằng ảnh thật trong public/images/bai26/ với đúng tên file hiển thị bên dưới. */}
+        <span>{name}</span>
+      </div>
+    )
+  }
+
+  return <img className={className} src={src} alt={alt} onError={() => setMissing(true)} />
+}
+
+function Lesson26SectionHeader({ meta, title }) {
+  return (
+    <div className="lesson26-section-head">
+      <div className="journey-heading lesson26-section-title">
+        <span>Bài 26</span>
+        <h2>{title}</h2>
+      </div>
+      <div className="lesson22-section-meta lesson26-section-meta" aria-label={`Thông tin học tập ${title}`}>
+        <div>
+          <strong>Mục tiêu</strong>
+          <p>{meta.objective}</p>
+        </div>
+        <div>
+          <strong>Nhiệm vụ học tập</strong>
+          <p>{meta.task}</p>
+        </div>
+        <div>
+          <strong>Sản phẩm học tập</strong>
+          <p>{meta.product}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function InteractiveIntroBai26({ onStartWorksheet }) {
+  const [slideIndex, setSlideIndex] = useState(0)
+  const [selectedAnswer, setSelectedAnswer] = useState('')
+  const currentSlide = slideIndex + 1
+  const introTimes = ['0:03', '0:06', '0:09', '0:12', '0:15', '0:18']
+  const questionAnswered = Boolean(selectedAnswer)
+
+  const goNext = () => {
+    setSlideIndex((current) => Math.min(current + 1, 5))
+  }
+
+  const goBack = () => {
+    setSlideIndex((current) => Math.max(current - 1, 0))
+  }
+
+  const chooseAnswer = (value) => {
+    setSelectedAnswer(value)
+    playLessonTone(value === 'c' ? 'correct' : 'wrong')
+  }
+
+  return (
+    <article className="lesson26-intro-card">
+      <div className="journey-heading lesson26-intro-heading">
+        <span>Bài 26</span>
+        <h2>Phần 1. Video khởi động</h2>
+      </div>
+
+      <div className="lesson22-section-meta lesson26-intro-meta" aria-label="Thông tin phần video khởi động">
+        <div>
+          <strong>Mục tiêu</strong>
+          <p>Nhận biết tình huống thực tiễn dẫn tới nhu cầu đánh giá chất lượng của pin điện hóa.</p>
+        </div>
+        <div>
+          <strong>Nhiệm vụ học tập</strong>
+          <p>Quan sát video và trả lời các câu hỏi dẫn dắt.</p>
+        </div>
+        <div>
+          <strong>Sản phẩm học tập</strong>
+          <p>Dự đoán ban đầu về các đại lượng cần đo để đánh giá chất lượng của pin.</p>
+        </div>
+      </div>
+
+      <div className="lesson26-intro-player" aria-label={`Video tương tác cảnh ${currentSlide} trên 6`}>
+        <div className="lesson26-intro-topbar">
+          <div className="lesson26-intro-progress" aria-hidden="true">
+            <i style={{ width: `${(currentSlide / 6) * 100}%` }} />
+          </div>
+          <span className="lesson26-intro-time">{introTimes[slideIndex]} / 0:18</span>
+        </div>
+
+        <div className={`lesson26-intro-slide lesson26-intro-slide--${currentSlide}`} key={slideIndex}>
+          {slideIndex === 0 && (
+            <section className="lesson26-intro-scene lesson26-intro-scene--batteries">
+              <div className="lesson26-intro-battery-pair">
+                <div>
+                  <Lesson26IntroAsset className="lesson26-intro-img lesson26-intro-img--battery" src={lesson26IntroImages.pinA} alt="Pin A" name="pin-a.png" />
+                  <strong>Pin A</strong>
+                  <span>1,5 V</span>
+                </div>
+                <div>
+                  <Lesson26IntroAsset className="lesson26-intro-img lesson26-intro-img--battery" src={lesson26IntroImages.pinB} alt="Pin B" name="pin-b.png" />
+                  <strong>Pin B</strong>
+                  <span>1,5 V</span>
+                </div>
+              </div>
+              <h3>Hai viên pin đều ghi 1,5 V.</h3>
+            </section>
+          )}
+
+          {slideIndex === 1 && (
+            <section className="lesson26-intro-scene lesson26-intro-scene--test is-strong">
+              <div className="lesson26-intro-test-row">
+                <div className="lesson26-intro-labeled-img">
+                  <Lesson26IntroAsset className="lesson26-intro-img lesson26-intro-img--battery" src={lesson26IntroImages.pinA} alt="Pin A" name="pin-a.png" />
+                  <strong>Pin A</strong>
+                </div>
+                <div className="lesson26-intro-device">
+                  <Lesson26IntroAsset className="lesson26-intro-img lesson26-intro-img--flashlight" src={lesson26IntroImages.denpinA} alt="Đèn pin sáng mạnh khi dùng Pin A" name="denpin-a.png" />
+                </div>
+              </div>
+              <h3>Pin A giúp đèn sáng mạnh.</h3>
+            </section>
+          )}
+
+          {slideIndex === 2 && (
+            <section className="lesson26-intro-scene lesson26-intro-scene--test is-weak">
+              <div className="lesson26-intro-test-row">
+                <div className="lesson26-intro-labeled-img">
+                  <Lesson26IntroAsset className="lesson26-intro-img lesson26-intro-img--battery" src={lesson26IntroImages.pinB} alt="Pin B" name="pin-b.png" />
+                  <strong>Pin B</strong>
+                </div>
+                <div className="lesson26-intro-device">
+                  <Lesson26IntroAsset className="lesson26-intro-img lesson26-intro-img--flashlight" src={lesson26IntroImages.denpinB} alt="Đèn pin sáng yếu khi dùng Pin B" name="denpin-b.png" />
+                </div>
+              </div>
+              <h3>Pin B khiến đèn sáng yếu hơn.</h3>
+            </section>
+          )}
+
+          {slideIndex === 3 && (
+            <section className="lesson26-intro-scene lesson26-intro-scene--problem">
+              <h3>Hai viên pin đều ghi 1,5 V nhưng khả năng hoạt động khác nhau. Vì sao lại như vậy?</h3>
+              <p>Chỉ quan sát thông số ghi trên vỏ pin có đủ để đánh giá chất lượng của pin không?</p>
+            </section>
+          )}
+
+          {slideIndex === 4 && (
+            <section className="lesson26-intro-scene lesson26-intro-scene--question">
+              <h3>Làm thế nào để đánh giá chính xác chất lượng của pin?</h3>
+              <div className="lesson26-intro-options">
+                {[
+                  ['a', 'A. Chỉ cần nhìn thông số 1,5 V ghi trên vỏ pin.'],
+                  ['b', 'B. Chỉ cần đo một lần hiệu điện thế của pin.'],
+                  ['c', 'C. Cần thực hiện thí nghiệm để xác định các đại lượng đặc trưng của nguồn điện.'],
+                ].map(([value, label]) => (
+                  <button
+                    className={selectedAnswer === value ? 'is-selected' : ''}
+                    key={value}
+                    type="button"
+                    onClick={() => chooseAnswer(value)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              {questionAnswered && (
+                <p className={selectedAnswer === 'c' ? 'lesson26-intro-feedback is-correct' : 'lesson26-intro-feedback'}>
+                  {selectedAnswer === 'c'
+                    ? 'Chính xác. Để đánh giá chất lượng của nguồn điện, cần thực hiện thí nghiệm để xác định các đại lượng đặc trưng của nguồn điện.'
+                    : 'Chưa chính xác. Chỉ nhìn thông số trên vỏ pin hoặc chỉ đo một đại lượng chưa đủ để đánh giá đầy đủ chất lượng của pin.'}
+                </p>
+              )}
+            </section>
+          )}
+
+          {slideIndex === 5 && (
+            <section className="lesson26-intro-scene lesson26-intro-scene--handoff">
+              <h3>Hãy cùng thực hiện thí nghiệm để tìm hiểu.</h3>
+              <ul>
+                <li>Suất điện động của pin.</li>
+                <li>Điện trở trong của pin.</li>
+              </ul>
+              <p>Hãy bắt đầu Phiếu học tập để nhận diện dụng cụ, thiết kế phương án đo, thu thập số liệu và xử lí kết quả.</p>
+            </section>
+          )}
+        </div>
+
+        <div className="lesson26-intro-controls">
+          <button type="button" onClick={goBack} disabled={slideIndex === 0}>Quay lại</button>
+          {slideIndex < 3 && <button type="button" onClick={goNext}>Tiếp tục</button>}
+          {slideIndex === 3 && <button type="button" onClick={goNext}>Tiếp tục</button>}
+          {slideIndex === 4 && <button type="button" onClick={goNext} disabled={!questionAnswered}>Tiếp tục</button>}
+          {slideIndex === 5 && <button type="button" onClick={onStartWorksheet}>KHÁM PHÁ THÍ NGHIỆM</button>}
+        </div>
+      </div>
+    </article>
+  )
+}
+
 function Lesson26FinalReview() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [results, setResults] = useState({})
   const [selfChecks, setSelfChecks] = useState({})
+  const [selfReflection, setSelfReflection] = useState({ question: '', plan: '' })
   const activeQuestion = lesson26ReviewQuestions[activeIndex]
   const answeredCount = Object.keys(results).length
   const score = Object.values(results).filter(Boolean).length
@@ -7873,6 +8954,22 @@ function Lesson26FinalReview() {
       const selected = Object.keys(value || {}).filter((key) => value[key]).sort()
       const correct = [...question.answer].sort()
       return selected.length === correct.length && correct.every((item, index) => item === selected[index])
+    }
+    if (question.type === 'truefalse') {
+      return question.statements.every((statement) => value?.[statement.id] === question.answer[statement.id])
+    }
+    if (question.type === 'blank') {
+      const normalized = normalizeText(value || '')
+      return question.answerKeywords.some((keyword) => normalized.includes(normalizeText(keyword)))
+    }
+    if (question.type === 'match') {
+      return question.pairs.every((pair) => value?.[pair.id] === pair.answer)
+    }
+    if (question.type === 'drag') {
+      return question.items.every((item) => value?.[item.id] === item.answer)
+    }
+    if (question.type === 'order') {
+      return question.answer.length === (value || []).length && question.answer.every((id, index) => value[index] === id)
     }
     if (question.type === 'numeric') {
       const numeric = Number(String(value || '').replace(',', '.').match(/-?\d+(\.\d+)?/)?.[0])
@@ -7896,10 +8993,18 @@ function Lesson26FinalReview() {
   return (
     <>
       <article className="review-quest-card lesson26-review-card">
+        <Lesson26SectionHeader
+          title="Phần 3. Quiz"
+          meta={{
+            objective: 'Củng cố kiến thức vừa hình thành.',
+            task: 'Hoàn thành các câu hỏi tương tác.',
+            product: 'Kết quả trả lời và điểm số.',
+          }}
+        />
         <div className="review-quest-header">
           <div>
-            <span className="review-quest-kicker"><b>AI</b> Quiz ôn tập cuối bài</span>
-            <h2>Kiểm tra nhanh sau thí nghiệm pin điện hoá</h2>
+            <span className="review-quest-kicker"><b>AI</b> Kiểm tra tương tác</span>
+            <h2>Kiểm tra nhanh sau thí nghiệm pin điện hóa</h2>
             <p>Trả lời từng câu để tự kiểm tra cách lắp mạch, xử lí số liệu và đọc đồ thị U-I.</p>
           </div>
           <div className="review-score-orb">
@@ -7962,6 +9067,111 @@ function Lesson26FinalReview() {
               </div>
             )}
 
+            {activeQuestion.type === 'blank' && (
+              <div className="quest-write">
+                <textarea
+                  disabled={currentResult !== undefined}
+                  value={answers[activeQuestion.id] || ''}
+                  onChange={(event) => updateAnswer(activeQuestion.id, event.target.value)}
+                  placeholder="Điền cụm từ còn thiếu..."
+                />
+              </div>
+            )}
+
+            {activeQuestion.type === 'truefalse' && (
+              <div className="lesson26-quiz-rows">
+                {activeQuestion.statements.map((statement) => (
+                  <div className="lesson26-quiz-row" key={statement.id}>
+                    <p>{statement.text}</p>
+                    <div>
+                      {[true, false].map((value) => (
+                        <button
+                          className={answers[activeQuestion.id]?.[statement.id] === value ? 'is-selected' : ''}
+                          disabled={currentResult !== undefined}
+                          key={String(value)}
+                          type="button"
+                          onClick={() => updateAnswer(activeQuestion.id, { ...(answers[activeQuestion.id] || {}), [statement.id]: value })}
+                        >
+                          {value ? 'Đúng' : 'Sai'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeQuestion.type === 'match' && (
+              <div className="lesson26-match-grid">
+                {activeQuestion.pairs.map((pair) => (
+                  <label key={pair.id}>
+                    <span>{pair.source}</span>
+                    <select
+                      disabled={currentResult !== undefined}
+                      value={answers[activeQuestion.id]?.[pair.id] || ''}
+                      onChange={(event) => updateAnswer(activeQuestion.id, { ...(answers[activeQuestion.id] || {}), [pair.id]: event.target.value })}
+                    >
+                      <option value="">Chọn chức năng...</option>
+                      {activeQuestion.options.map((option) => <option key={option.id} value={option.id}>{option.text}</option>)}
+                    </select>
+                  </label>
+                ))}
+              </div>
+            )}
+
+            {activeQuestion.type === 'drag' && (
+              <div className="lesson26-drag-grid">
+                {activeQuestion.items.map((item) => (
+                  <div className="lesson26-drag-item" key={item.id}>
+                    <strong>{item.text}</strong>
+                    <div>
+                      {activeQuestion.groups.map((group) => (
+                        <button
+                          className={answers[activeQuestion.id]?.[item.id] === group.id ? 'is-selected' : ''}
+                          disabled={currentResult !== undefined}
+                          key={group.id}
+                          type="button"
+                          onClick={() => updateAnswer(activeQuestion.id, { ...(answers[activeQuestion.id] || {}), [item.id]: group.id })}
+                        >
+                          {group.text}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeQuestion.type === 'order' && (
+              <div className="lesson26-order-task">
+                <div className="lesson26-order-picked">
+                  {(answers[activeQuestion.id] || []).map((id, index) => {
+                    const step = activeQuestion.steps.find((item) => item.id === id)
+                    return <span key={`${id}-${index}`}>{index + 1}. {step?.text}</span>
+                  })}
+                  {!(answers[activeQuestion.id] || []).length && <em>Chọn lần lượt các bước bên dưới.</em>}
+                </div>
+                <div className="lesson26-order-bank">
+                  {activeQuestion.steps.map((step) => {
+                    const picked = (answers[activeQuestion.id] || []).includes(step.id)
+                    return (
+                      <button
+                        disabled={currentResult !== undefined || picked}
+                        key={step.id}
+                        type="button"
+                        onClick={() => updateAnswer(activeQuestion.id, [...(answers[activeQuestion.id] || []), step.id])}
+                      >
+                        {step.text}
+                      </button>
+                    )
+                  })}
+                </div>
+                {currentResult === undefined && Boolean((answers[activeQuestion.id] || []).length) && (
+                  <button className="ghost-soft-btn" type="button" onClick={() => updateAnswer(activeQuestion.id, [])}>Làm lại thứ tự</button>
+                )}
+              </div>
+            )}
+
             {currentResult !== undefined && (
               <div className={currentResult ? 'quest-feedback quest-feedback--correct' : 'quest-feedback quest-feedback--wrong'}>
                 <strong>{currentResult ? 'Chính xác' : 'Chưa đúng'}</strong>
@@ -7987,23 +9197,44 @@ function Lesson26FinalReview() {
         )}
       </article>
 
-      <article className="restored-card self-check lesson26-self-review">
-        <div className="lesson26-self-head">
-          <span>Tự đánh giá</span>
-          <h3>Nhận xét mức độ hoàn thành bài thực hành</h3>
-          <p>Đánh dấu những việc em đã tự làm được sau khi hoàn thành phòng lab.</p>
-        </div>
-        <div className="lesson26-self-progress" aria-label={`Đã tự đánh giá ${checkedCount} trên ${lesson26SelfChecks.length} tiêu chí`}>
-          <span style={{ width: `${(checkedCount / lesson26SelfChecks.length) * 100}%` }} />
-        </div>
-        {lesson26SelfChecks.map(([key, label]) => (
-          <label className="soft-checkbox" key={key}>
-            <input checked={Boolean(selfChecks[key])} onChange={() => setSelfChecks((current) => ({ ...current, [key]: !current[key] }))} type="checkbox" />
-            <span>{label}</span>
-          </label>
-        ))}
-        <strong>{checkedCount}/{lesson26SelfChecks.length} tiêu chí đã hoàn thành</strong>
-      </article>
+      <UnifiedSelfAssessment
+        checks={selfChecks}
+        className="lesson26-self-review"
+        description="Đối chiếu kết quả học tập với yêu cầu của bài thực hành đo suất điện động và điện trở trong của pin điện hoá."
+        meta={{
+          objective: 'Tự nhận biết mức độ hoàn thành sau video, phiếu học tập và quiz.',
+          task: 'Đánh dấu các năng lực đã đạt, xem lại phần còn yếu và lưu kết quả học tập.',
+          product: 'Nội dung tự đánh giá của học sinh.',
+        }}
+        completionItems={[
+          ['watchedVideo', 'Tôi đã xem video khởi động.'],
+          ['answeredGuide', 'Tôi đã trả lời câu hỏi định hướng.'],
+          ['completedWorksheet', 'Tôi đã hoàn thành phiếu học tập.'],
+          ['completedQuiz', 'Tôi đã hoàn thành Quiz.'],
+        ]}
+        difficultyItems={[
+          ['hardTools', 'Nhận biết dụng cụ thí nghiệm.'],
+          ['hardCircuit', 'Mắc mạch đo đúng cách.'],
+          ['hardData', 'Ghi bảng số liệu U và I.'],
+          ['hardGraph', 'Vẽ và đọc đồ thị U-I.'],
+          ['hardResult', 'Tính suất điện động và điện trở trong.'],
+        ]}
+        doneMessage={checkedCount >= 11 && selfReflection.question.trim() && selfReflection.plan.trim() ? 'Bạn đã hoàn thành phiếu tự đánh giá Bài 26.' : ''}
+        onPlanChange={(value) => setSelfReflection((current) => ({ ...current, plan: value }))}
+        onReflectionChange={(value) => setSelfReflection((current) => ({ ...current, question: value }))}
+        onToggleCheck={(key) => setSelfChecks((current) => ({ ...current, [key]: !current[key] }))}
+        reflectionPlan={selfReflection.plan}
+        reflectionQuestion={selfReflection.question}
+        understandingItems={[
+          ['tools', 'Tôi nhận biết được các dụng cụ thí nghiệm.'],
+          ['functions', 'Tôi nêu được chức năng của các dụng cụ.'],
+          ['procedure', 'Tôi mô tả được quy trình đo.'],
+          ['dataGraph', 'Tôi đọc được bảng số liệu và đồ thị.'],
+          ['emf', 'Tôi xác định được suất điện động của pin.'],
+          ['resistance', 'Tôi xác định được điện trở trong của pin.'],
+          ['meaning', 'Tôi giải thích được ý nghĩa của các đại lượng đo được.'],
+        ]}
+      />
     </>
   )
 }
@@ -8016,7 +9247,10 @@ function Lesson26BatteryLab() {
   const [answerImageMissing, setAnswerImageMissing] = useState(false)
   const [newBatteryRows, setNewBatteryRows] = useState(() => createLesson26Rows('new-battery'))
   const [oldBatteryRows, setOldBatteryRows] = useState(() => createLesson26Rows('old-battery'))
-  const [lineDrawn, setLineDrawn] = useState(false)
+  const [resistanceSelections, setResistanceSelections] = useState({
+    new: { mId: '', nId: '' },
+    old: { mId: '', nId: '' },
+  })
   const [relationAnswer, setRelationAnswer] = useState('')
   const [extendedLine, setExtendedLine] = useState(false)
   const [compareAnswer, setCompareAnswer] = useState('')
@@ -8042,17 +9276,36 @@ function Lesson26BatteryLab() {
   const oldMeasurements = parseRows(oldBatteryRows, 'old')
   const validMeasurements = [...newMeasurements, ...oldMeasurements]
   const enoughData = validMeasurements.length >= 3
+  const createFit = (items) => {
+    if (items.length < 2) return null
+    const sumI = items.reduce((total, item) => total + item.iValue, 0)
+    const sumU = items.reduce((total, item) => total + item.uValue, 0)
+    const sumII = items.reduce((total, item) => total + item.iValue * item.iValue, 0)
+    const sumIU = items.reduce((total, item) => total + item.iValue * item.uValue, 0)
+    const denominator = items.length * sumII - sumI * sumI
+    if (Math.abs(denominator) < 0.000001) return null
+    const slope = (items.length * sumIU - sumI * sumU) / denominator
+    const intercept = (sumU - slope * sumI) / items.length
+    return { intercept, slope }
+  }
+  const newFit = createFit(newMeasurements)
+  const oldFit = createFit(oldMeasurements)
   const iValues = validMeasurements.map((item) => item.iValue)
-  const uValues = validMeasurements.map((item) => item.uValue)
+  const uValues = [
+    ...validMeasurements.map((item) => item.uValue),
+    ...[newFit?.intercept, oldFit?.intercept].filter((value) => Number.isFinite(value)),
+  ]
   const iMin = iValues.length ? Math.min(...iValues, 0) : 0
-  const iMax = iValues.length ? Math.max(...iValues, 100) : 100
+  const iMax = iValues.length ? Math.max(...iValues, 0.1) : 0.1
   const uMin = uValues.length ? Math.min(...uValues) - 0.03 : 1.35
   const uMax = uValues.length ? Math.max(...uValues) + 0.03 : 1.65
+  const mapI = (value) => 70 + ((value - iMin) / Math.max(1, iMax - iMin)) * 390
+  const mapU = (value) => 240 - ((value - uMin) / Math.max(0.01, uMax - uMin)) * 175
   const mapToPoints = (items) =>
     items.map((item) => ({
       ...item,
-      x: 70 + ((item.iValue - iMin) / Math.max(1, iMax - iMin)) * 390,
-      y: 240 - ((item.uValue - uMin) / Math.max(0.01, uMax - uMin)) * 175,
+      x: mapI(item.iValue),
+      y: mapU(item.uValue),
     }))
   const newPoints = mapToPoints(newMeasurements)
   const oldPoints = mapToPoints(oldMeasurements)
@@ -8065,6 +9318,90 @@ function Lesson26BatteryLab() {
   }
   const newTrendPath = createTrendPath(newPoints)
   const oldTrendPath = createTrendPath(oldPoints)
+  const createU0ExtensionPath = (items, fit) => {
+    if (!fit || items.length < 2) return ''
+    const sortedItems = [...items].sort((a, b) => a.iValue - b.iValue)
+    return `M${mapI(0)} ${mapU(fit.intercept)}L${mapI(sortedItems[0].iValue)} ${mapU(sortedItems[0].uValue)}`
+  }
+  const newU0Path = createU0ExtensionPath(newMeasurements, newFit)
+  const oldU0Path = createU0ExtensionPath(oldMeasurements, oldFit)
+
+  const selectResistancePoint = (series, point) => {
+    setResistanceSelections((current) => {
+      const seriesSelection = current[series] || { mId: '', nId: '' }
+      const nextSeriesSelection =
+        !seriesSelection.mId || seriesSelection.nId
+          ? { mId: point.id, nId: '' }
+          : seriesSelection.mId === point.id
+            ? { mId: point.id, nId: '' }
+            : { ...seriesSelection, nId: point.id }
+
+      return {
+        ...current,
+        [series]: nextSeriesSelection,
+      }
+    })
+  }
+
+  const handleResistancePointKey = (event, series, point) => {
+    if (event.key !== 'Enter' && event.key !== ' ') {
+      return
+    }
+
+    event.preventDefault()
+    selectResistancePoint(series, point)
+  }
+
+  const getResistancePointClass = (series, pointId) => {
+    const selection = resistanceSelections[series] || {}
+
+    if (selection.mId === pointId) {
+      return ' data-dot--selected data-dot--m'
+    }
+
+    if (selection.nId === pointId) {
+      return ' data-dot--selected data-dot--n'
+    }
+
+    return ''
+  }
+
+  const getResistanceSelection = (series) => {
+    const seriesPoints = series === 'new' ? newPoints : oldPoints
+    const selection = resistanceSelections[series] || {}
+
+    return {
+      m: seriesPoints.find((point) => point.id === selection.mId) || null,
+      n: seriesPoints.find((point) => point.id === selection.nId) || null,
+    }
+  }
+
+  const formatLesson26Value = (value, unit) => Number.isFinite(value) ? `${value.toFixed(2)} ${unit}` : '...'
+
+  const renderInternalResistanceFormula = (series) => {
+    const { m, n } = getResistanceSelection(series)
+    const denominator = n && m ? n.iValue - m.iValue : null
+    const resistance =
+      m && n && Math.abs(denominator) > 0.000001
+        ? Math.abs((m.uValue - n.uValue) / denominator)
+        : null
+
+    return (
+      <section className="lesson26-resistance-formula" aria-label={`Công thức tính điện trở trong của ${series === 'new' ? 'pin mới' : 'pin cũ'}`}>
+        <b>r = (UM - UN) / (IN - IM)</b>
+        <p>Bấm lần lượt 2 điểm đo trên đồ thị: điểm 1 là M, điểm 2 là N.</p>
+        <span>UM = {formatLesson26Value(m?.uValue, 'V')}</span>
+        <span>IM = {formatLesson26Value(m?.iValue, 'A')}</span>
+        <span>UN = {formatLesson26Value(n?.uValue, 'V')}</span>
+        <span>IN = {formatLesson26Value(n?.iValue, 'A')}</span>
+        {resistance === null ? (
+          <em>r = ... Ω</em>
+        ) : (
+          <strong>r = {resistance.toFixed(2)} Ω</strong>
+        )}
+      </section>
+    )
+  }
 
   const updateMeasurement = (setRows, rowId, field, value) => {
     setRows((current) =>
@@ -8111,13 +9448,13 @@ function Lesson26BatteryLab() {
   const renderMeasurementTable = (title, tone, rows, setRows, prefix) => (
     <div className={`lesson26-edit-table lesson26-edit-table--${tone}`}>
       <strong>{title}</strong>
-      <div><span>Lần đo</span><span>R (Ω)</span><span>U (V)</span><span>I (mA)</span></div>
+      <div><span>Lần đo</span><span>R (Ω)</span><span>U (V)</span><span>I (A)</span></div>
       {rows.map((item, index) => (
         <div key={item.id}>
           <span>{index + 1}</span>
           <input value={item.r} inputMode="decimal" onChange={(event) => updateMeasurement(setRows, item.id, 'r', event.target.value)} aria-label={`${title} điện trở lần đo ${index + 1}`} />
           <input value={item.u} inputMode="decimal" onChange={(event) => updateMeasurement(setRows, item.id, 'u', event.target.value)} aria-label={`${title} hiệu điện thế lần đo ${index + 1}`} />
-          <input value={item.i} inputMode="decimal" onChange={(event) => updateMeasurement(setRows, item.id, 'i', event.target.value)} aria-label={`${title} cường độ dòng điện lần đo ${index + 1}`} />
+          <input value={item.i} inputMode="decimal" onChange={(event) => updateMeasurement(setRows, item.id, 'i', event.target.value)} aria-label={`${title} cường độ dòng điện đơn vị ampe lần đo ${index + 1}`} />
         </div>
       ))}
       <button type="button" onClick={() => addMeasurementRow(setRows, prefix)}>Thêm dòng đo</button>
@@ -8128,23 +9465,26 @@ function Lesson26BatteryLab() {
     <section className={finished ? 'lesson26-lab lesson26-lab--finished' : 'lesson26-lab'}>
       <div className="lesson26-bg" aria-hidden="true"><i /><i /><i /><i /><i /></div>
 
-      {!started ? (
-        <article className="lesson26-hero">
-          <div className="lesson26-hero-copy">
-            <span>Bài 26</span>
-            <h1>Tại sao pin cũ vẫn còn điện nhưng thiết bị hoạt động yếu hơn?</h1>
-            <p className="lesson26-delayed">Liệu có cách nào kiểm tra được trạng thái của pin bằng thí nghiệm?</p>
-            <button type="button" onClick={() => setStarted(true)}>Bắt đầu khám phá</button>
-          </div>
-          <div className="lesson26-real-scene" aria-hidden="true">
-            <div className="lesson26-battery lesson26-battery--new"><b>PIN MỚI</b><i /></div>
-            <div className="lesson26-battery lesson26-battery--old"><b>PIN CŨ</b><i /></div>
-            <div className="lesson26-remote"><span /><span /><span /><span /></div>
-            <div className="lesson26-toycar"><i /><b /><em /></div>
-          </div>
-        </article>
-      ) : (
+      {(!started || PREVIEW_ALL_LESSON_PARTS) && (
+        <InteractiveIntroBai26
+          onStartWorksheet={() => {
+            setStarted(true)
+            window.setTimeout(() => toolsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120)
+          }}
+        />
+      )}
+
+      {(started || PREVIEW_ALL_LESSON_PARTS) && (
         <>
+        <article className="lesson26-worksheet-unified">
+          <Lesson26SectionHeader
+            title="Phần 2. Phiếu học tập"
+            meta={{
+              objective: 'Tìm hiểu cách xác định suất điện động và điện trở trong của pin điện hóa bằng thí nghiệm.',
+              task: 'Thực hiện các hoạt động quan sát, phân tích dụng cụ, thiết kế phương án và xử lí kết quả thí nghiệm.',
+              product: 'Phiếu học tập hoàn chỉnh và kết luận về suất điện động, điện trở trong của pin.',
+            }}
+          />
           <div className="lesson26-timeline" aria-label="Hành trình khám phá">
             {[
               ['quan sát', toolsRef],
@@ -8167,7 +9507,7 @@ function Lesson26BatteryLab() {
 
           <article className="lesson26-workbench" ref={toolsRef}>
             <div className="lesson26-bench-head">
-              <span>AI physics lab</span>
+              <span>Nhiệm vụ 1. Khám phá dụng cụ thí nghiệm</span>
               <h2>Bàn thí nghiệm đã mở, từng dụng cụ đang được đặt vào đúng vị trí.</h2>
             </div>
             <div className="lesson26-tool-grid">
@@ -8182,7 +9522,13 @@ function Lesson26BatteryLab() {
           </article>
 
           <article className="lesson26-question-card" ref={quantityPromptRef}>
+            <span className="lesson26-task-label">Nhiệm vụ 2. Chuẩn bị mạch điện thí nghiệm</span>
             <h2>Muốn biết pin hoạt động mạnh hay yếu, ta cần đo các đại lượng nào?</h2>
+            <div className="lesson26-thinking-prompts">
+              <span>Cần đo những đại lượng nào?</span>
+              <span>Tại sao cần đo U và I?</span>
+              <span>Có thể đo trực tiếp suất điện động và điện trở trong hay không?</span>
+            </div>
             <div className="lesson26-choice-row">
               {[
                 ['u', 'U'],
@@ -8233,7 +9579,7 @@ function Lesson26BatteryLab() {
             <article className="lesson26-data-card" ref={dataLabRef}>
               <div className="lesson26-data-head">
                 <div>
-                  <span>Dữ liệu thực nghiệm</span>
+                  <span>Nhiệm vụ 3. Thu thập số liệu và vẽ đồ thị</span>
                   <h2>Nhập các số đo U và I, đồ thị sẽ hiện ngay bên cạnh.</h2>
                 </div>
               </div>
@@ -8267,17 +9613,35 @@ function Lesson26BatteryLab() {
                             </div>
                           ))}
                         </div>
+                        <div className="lesson26-phet-mode-note">
+                          <strong>Lưu ý</strong>
+                          <span>Trong mô phỏng PhET bên dưới, chọn chế độ <b>Lab</b> để mở khu vực lắp mạch.</span>
+                        </div>
                         <div className="lesson26-guide-steps">
                           {[
-                            'Kéo pin vào vùng làm việc.',
-                            'Mắc ampe kế nối tiếp với mạch.',
-                            'Mắc điện trở nối tiếp với ampe kế.',
-                            'Mắc vôn kế song song hai đầu nguồn.',
-                            'Nối dây để tạo thành mạch kín.',
+                            { text: 'Kéo pin vào vùng làm việc, chỉnh hiệu điện thế của pin về giá trị 1,5 V.' },
+                            { text: 'Mắc ampe kế nối tiếp với mạch.' },
+                            { text: 'Mắc điện trở nối tiếp với ampe kế.' },
+                            { text: 'Mắc vôn kế song song hai đầu nguồn.' },
+                            { text: 'Nối dây để tạo thành mạch kín.' },
+                            { text: 'Đặt giá trị điện trở ngoài ban đầu là 50 Ω.' },
+                            { text: 'Kéo thanh Battery Resistance trong PhET lên giá trị 1 Ω.', note: 'Ấn vào Advanced để mở thanh trên' },
+                            { text: 'Đóng công tắc hoặc nối kín mạch.' },
+                            {
+                              text: 'Đọc và ghi giá trị vào bảng bên dưới:',
+                              details: ['Hiệu điện thế U trên vôn kế.', 'Cường độ dòng điện I trên ampe kế.'],
+                            },
+                            { text: 'Ngắt mạch.' },
+                            { text: 'Giảm dần giá trị điện trở ngoài R và lặp lại phép đo ít nhất 5 lần, đồng thời ghi vào bảng bên dưới.' },
+                            { text: 'Tương tự như thế với pin cũ bằng cách kéo thanh Battery Resistance trong PhET lên giá trị lớn nhất và đặt giá trị hiệu điện thế của pin là 1,2 V để mô phỏng pin cũ.' },
                           ].map((step, index) => (
-                            <div className="lesson26-guide-step" style={{ '--i': index }} key={step}>
+                            <div className="lesson26-guide-step" style={{ '--i': index }} key={step.text}>
                               <b>{index + 1}</b>
-                              <p>{step}</p>
+                              <div>
+                                <p>{step.text}</p>
+                                {step.note && <small>{step.note}</small>}
+                                {step.details && <ul>{step.details.map((detail) => <li key={detail}>{detail}</li>)}</ul>}
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -8317,13 +9681,47 @@ function Lesson26BatteryLab() {
                     <div className="lesson26-table-graph">
                       <svg className="lesson26-chart lesson26-chart--compact" viewBox="0 0 520 300" role="img" aria-label="Đồ thị U theo I từ bảng nhập liệu">
                         <path className="axis" d="M70 245H470M70 245V45" />
-                        <text x="462" y="270">I</text>
+                        <text x="438" y="270">I (A)</text>
                         <text x="42" y="55">U</text>
                         <path className="grid" d="M70 200H470M70 155H470M70 110H470M160 245V45M250 245V45M340 245V45M430 245V45" />
-                        {newPoints.map((point, index) => <circle className="data-dot data-dot--new" style={{ '--delay': `${index * 80}ms` }} cx={point.x} cy={point.y} r="7" key={point.id} />)}
-                        {oldPoints.map((point, index) => <circle className="data-dot data-dot--old" style={{ '--delay': `${index * 80}ms` }} cx={point.x} cy={point.y} r="7" key={point.id} />)}
+                        {newPoints.map((point, index) => (
+                          <circle
+                            aria-label={`Chọn điểm pin mới: U = ${point.uValue.toFixed(2)} V, I = ${point.iValue.toFixed(2)} A`}
+                            className={`data-dot data-dot--new${getResistancePointClass('new', point.id)}`}
+                            cx={point.x}
+                            cy={point.y}
+                            key={point.id}
+                            onClick={() => selectResistancePoint('new', point)}
+                            onKeyDown={(event) => handleResistancePointKey(event, 'new', point)}
+                            r="7"
+                            role="button"
+                            style={{ '--delay': `${index * 80}ms` }}
+                            tabIndex="0"
+                          />
+                        ))}
+                        {oldPoints.map((point, index) => (
+                          <circle
+                            aria-label={`Chọn điểm pin cũ: U = ${point.uValue.toFixed(2)} V, I = ${point.iValue.toFixed(2)} A`}
+                            className={`data-dot data-dot--old${getResistancePointClass('old', point.id)}`}
+                            cx={point.x}
+                            cy={point.y}
+                            key={point.id}
+                            onClick={() => selectResistancePoint('old', point)}
+                            onKeyDown={(event) => handleResistancePointKey(event, 'old', point)}
+                            r="7"
+                            role="button"
+                            style={{ '--delay': `${index * 80}ms` }}
+                            tabIndex="0"
+                          />
+                        ))}
                         {newTrendPath && <path className="trend-line trend-line--live trend-line--new" d={newTrendPath} />}
                         {oldTrendPath && <path className="trend-line trend-line--live trend-line--old" d={oldTrendPath} />}
+                        {newU0Path && <path className="extend-line extend-line--new" d={newU0Path} />}
+                        {oldU0Path && <path className="extend-line extend-line--old" d={oldU0Path} />}
+                        {newFit && <circle className="emf-point emf-point--new" cx={mapI(0)} cy={mapU(newFit.intercept)} r="8" />}
+                        {oldFit && <circle className="emf-point emf-point--old" cx={mapI(0)} cy={mapU(oldFit.intercept)} r="8" />}
+                        {newFit && <text className="emf-label emf-label--new" x="84" y={Math.max(24, mapU(newFit.intercept) - 8)}>U0 mới</text>}
+                        {oldFit && <text className="emf-label emf-label--old" x="84" y={Math.min(268, mapU(oldFit.intercept) + 18)}>U0 cũ</text>}
                         <g className="chart-legend">
                           <circle className="data-dot--new" cx="330" cy="36" r="6" />
                           <text x="342" y="41">Pin mới</text>
@@ -8332,6 +9730,28 @@ function Lesson26BatteryLab() {
                         </g>
                         {!points.length && <text className="chart-placeholder" x="138" y="150">Nhập U và I để vẽ đồ thị</text>}
                       </svg>
+                      <section className="lesson26-emf-result-card" aria-label="Kết quả tự động xác định suất điện động từ giao điểm U0">
+                        {newFit || oldFit ? (
+                          <>
+                            {newFit && (
+                              <article>
+                                <span>Pin mới</span>
+                                <strong>E = U0 = {newFit.intercept.toFixed(2)} V</strong>
+                                {renderInternalResistanceFormula('new')}
+                              </article>
+                            )}
+                            {oldFit && (
+                              <article>
+                                <span>Pin cũ</span>
+                                <strong>E = U0 = {oldFit.intercept.toFixed(2)} V</strong>
+                                {renderInternalResistanceFormula('old')}
+                              </article>
+                            )}
+                          </>
+                        ) : (
+                          <p>Nhập ít nhất 2 cặp giá trị U, I cho một pin để tự động kéo dài đường đồ thị đến trục U và xác định E = U0.</p>
+                        )}
+                      </section>
                     </div>
                   </div>
                 </div>
@@ -8340,34 +9760,7 @@ function Lesson26BatteryLab() {
           )}
 
           {enoughData && (
-            <article className="lesson26-graph-card" ref={graphPromptRef}>
-              <div className="lesson26-graph-copy">
-                <h2>Liệu giữa U và I có mối liên hệ nào không?</h2>
-                <p>Các điểm đo đang tự hiện lên. Hãy tìm đường đi gần đúng của chúng.</p>
-                <button type="button" onClick={() => setLineDrawn(true)}>Vẽ đường gần đúng</button>
-              </div>
-              <svg className={lineDrawn ? 'lesson26-chart lesson26-chart--line' : 'lesson26-chart'} viewBox="0 0 520 300" role="img" aria-label="Đồ thị U theo I">
-                <path className="axis" d="M70 245H470M70 245V45" />
-                <text x="462" y="270">I</text>
-                <text x="42" y="55">U</text>
-                <path className="grid" d="M70 200H470M70 155H470M70 110H470M160 245V45M250 245V45M340 245V45M430 245V45" />
-                {newPoints.map((point, index) => <circle className="data-dot data-dot--new" style={{ '--delay': `${index * 130}ms` }} cx={point.x} cy={point.y} r="7" key={point.id} />)}
-                {oldPoints.map((point, index) => <circle className="data-dot data-dot--old" style={{ '--delay': `${index * 130}ms` }} cx={point.x} cy={point.y} r="7" key={point.id} />)}
-                {lineDrawn && newTrendPath && <path className="trend-line trend-line--new" d={newTrendPath} />}
-                {lineDrawn && oldTrendPath && <path className="trend-line trend-line--old" d={oldTrendPath} />}
-                {extendedLine && (
-                  <>
-                    <path className="extend-line" d="M70 55L82 60" />
-                    <circle className="emf-point" cx="70" cy="55" r="10" />
-                    <text className="emf-label" x="84" y="50">U = ℰ</text>
-                  </>
-                )}
-              </svg>
-            </article>
-          )}
-
-          {lineDrawn && (
-            <article className="lesson26-insight-card">
+            <article className="lesson26-insight-card" ref={graphPromptRef}>
               <h2>Khi cường độ dòng điện tăng, hiệu điện thế mạch ngoài thay đổi như thế nào?</h2>
               <div className="lesson26-choice-row">
                 {[
@@ -8427,6 +9820,7 @@ function Lesson26BatteryLab() {
           {compareAnswer && (
             <>
               <article className="lesson26-finish-card">
+                <span className="lesson26-task-label">Nhiệm vụ 4. Kết luận kiến thức</span>
                 <h2>Hôm nay bạn vừa hoàn thành một thí nghiệm vật lí thực sự.</h2>
                 <div>
                   {lesson26Completion.map((item) => <span key={item}>✓ {item}</span>)}
@@ -8439,9 +9833,19 @@ function Lesson26BatteryLab() {
                 <div><Icon name="document" /><strong>laptop</strong></div>
                 <p>Các thiết bị hiện đại đều cần nguồn điện có suất điện động phù hợp và điện trở trong nhỏ để hoạt động hiệu quả.</p>
               </article>
-              <Lesson26FinalReview />
+              <article className="lesson26-learned-card">
+                <h2>EM ĐÃ HỌC ĐƯỢC</h2>
+                <ul>
+                  <li>Suất điện động của pin được xác định từ giá trị điện áp khi dòng điện bằng 0.</li>
+                  <li>Điện trở trong đặc trưng cho sự cản trở dòng điện bên trong nguồn điện.</li>
+                  <li>Có thể xác định suất điện động và điện trở trong thông qua thí nghiệm đo U và I.</li>
+                  <li>Đồ thị U-I giúp xác định các đại lượng đặc trưng của nguồn điện.</li>
+                </ul>
+              </article>
             </>
           )}
+        </article>
+        {(PREVIEW_ALL_LESSON_PARTS || compareAnswer) && <Lesson26FinalReview />}
         </>
       )}
     </section>
@@ -9504,6 +10908,7 @@ function SelfStudyMenuContent({ content, studyData, onOpenLesson, onStartExercis
 function FeatureDialog({ content, onClose, onAction, onOpenLesson, onStartExercise, studyData }) {
   const isRestoredLesson = content.lessonId === 'cuong-do-dong-dien' || content.lessonId === 'dien-tro-dinh-luat-om' || content.lessonId === 'nguon-dien' || content.lessonId === 'nang-luong-cong-suat-dien' || content.lessonId === 'thuc-hanh-pin-dien-hoa'
   const isSelfStudyMenu = ['overview', 'lessons', 'games', 'review', 'profile', 'formulas'].includes(content.featureKey)
+  const showsLegacyLessonExtras = !isSelfStudyMenu && !isRestoredLesson
 
   return (
     <section className={isRestoredLesson ? 'feature-dialog feature-dialog--lesson' : isSelfStudyMenu ? 'feature-dialog feature-dialog--self-menu' : 'feature-dialog'} aria-live="polite" aria-label={content.title}>
@@ -9547,7 +10952,7 @@ function FeatureDialog({ content, onClose, onAction, onOpenLesson, onStartExerci
       {content.lessonId === 'nguon-dien' && <Lesson24StructuredLessonV2 />}
       {content.lessonId === 'nang-luong-cong-suat-dien' && <Lesson25ElectricJourney />}
       {content.lessonId === 'thuc-hanh-pin-dien-hoa' && <Lesson26BatteryLab />}
-      {!isSelfStudyMenu && content.lessonId !== 'nguon-dien' && content.lessonId !== 'dien-tro-dinh-luat-om' && content.lessonId !== 'nang-luong-cong-suat-dien' && content.lessonId !== 'thuc-hanh-pin-dien-hoa' && content.branches?.length > 0 && (
+      {showsLegacyLessonExtras && content.branches?.length > 0 && (
         <div className="lesson-branches">
           <strong>Nhánh học tập của bài</strong>
           <div>
@@ -9559,7 +10964,7 @@ function FeatureDialog({ content, onClose, onAction, onOpenLesson, onStartExerci
           </div>
         </div>
       )}
-      {!isSelfStudyMenu && content.lessonId !== 'nguon-dien' && content.lessonId !== 'dien-tro-dinh-luat-om' && content.lessonId !== 'nang-luong-cong-suat-dien' && content.lessonId !== 'thuc-hanh-pin-dien-hoa' && content.actions?.length > 0 && (
+      {showsLegacyLessonExtras && content.actions?.length > 0 && (
         <div className="dialog-actions">
           {content.actions.map((action) => (
             <button key={action} type="button" onClick={() => onAction(action)}>
@@ -10404,9 +11809,6 @@ function App() {
             <section className="mindmap-section">
               <div className="section-heading">
                 <h2>SƠ ĐỒ TƯ DUY CHƯƠNG IV</h2>
-                <button type="button" onClick={() => showLessonMindmap(mindmapTopic.id)}>
-                  Xem chi tiết
-                </button>
               </div>
               <div className="mindmap">
                 <button
@@ -10475,7 +11877,7 @@ function App() {
             </section>
 
             <section className="lessons-section">
-              <h2>{`${topics.length} BÀI HỌC TRONG CHƯƠNG`}</h2>
+              <h2>{`${topics.length} bài học trong chương`}</h2>
               <div className="lesson-grid">
                 {topics.map((topic) => {
                   const progress = getTopicProgress(memory, topic.id)
