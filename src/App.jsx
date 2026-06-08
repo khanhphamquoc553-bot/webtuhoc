@@ -218,7 +218,7 @@ const lessonBlueprints = [
     steps: [
       'Khởi động: thiết bị nào làm hóa đơn điện tăng nhanh?',
       'Khám phá: công suất cho biết tốc độ tiêu thụ điện năng.',
-      'Hình thành: W = UIt và P = W/t = UI.',
+      'Hình thành: W = UIt và P = A/t = UI.',
       'So sánh: LED sáng tương đương nhưng tiêu thụ ít hơn đèn sợi đốt.',
       'Vận dụng: tính tiền điện từ kW.h.',
       'Tóm tắt: chọn thiết bị và thời gian dùng quyết định chi phí.',
@@ -9907,7 +9907,7 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
 
   const normalizeFormula = (value) => normalizeText(String(value || '')).replace(/[∆Δδ]/g, 'delta').replace(/[÷:]/g, '/').replace(/\s/g, '').replace(/[.×*]/g, '')
   const isEnergyWorkFormula = (value) => normalizeFormula(value).replace(/^a=/, '').split('').sort().join('') === 'itu'
-  const numberFrom = (value) => Number(String(value || '').replace(',', '.').match(/-?\d+(\.\d+)?/)?.[0])
+  const numberFrom = (value) => Number(String(value || '').replace(/(\d)\s+(?=\d)/g, '$1').replace(',', '.').match(/-?\d+(\.\d+)?/)?.[0])
   const completeStep = (step) => setMaxStep((current) => Math.max(current, step + 1))
   const setFeedback = (key, correct, good, bad) => {
     setFeedbacks((current) => ({ ...current, [key]: { type: correct ? 'correct' : 'wrong', message: correct ? good : bad } }))
@@ -9990,9 +9990,6 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
     if (correct) completeStep(3)
   }
 
-  const isPowerFormulaCorrect = () => normalizeFormula(answers.powerFormula || '').replace(/^p=/, '').split('').sort().join('') === 'iu'
-  const isPowerSummaryCorrect = () => ['speed', 'larger', 'led', 'formula'].every((key) => answers.powerSummary?.[key])
-
   const checkPowerDevice = () => {
     const correct = answers.powerDevice === 'ac'
     setFeedback('powerDevice', correct, 'Đúng! Trong cùng một khoảng thời gian, thiết bị có công suất lớn hơn sẽ tiêu thụ nhiều điện năng hơn.', 'Gợi ý: so sánh công suất 55 W và 2638 W.')
@@ -10001,11 +9998,6 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
   const checkPowerMeaning = () => {
     const correct = answers.powerMeaning === 'energy-time'
     setFeedback('powerMeaning', correct, 'Chính xác! Công suất điện là lượng điện năng mà đoạn mạch tiêu thụ trong một đơn vị thời gian.', 'Gợi ý: công suất điện liên hệ với lượng điện năng tiêu thụ trong mỗi đơn vị thời gian.')
-  }
-
-  const checkPowerFormulaTask = () => {
-    const correct = isPowerFormulaCorrect()
-    setFeedback('powerFormula', correct, 'Đúng! Công suất điện được xác định bởi: P = W/t = UI.', 'Gợi ý: thay W = UIt vào P = W/t rồi rút gọn t.')
   }
 
   const checkRatedPower = () => {
@@ -10034,29 +10026,13 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
   }
 
   const checkIncandescentMoney = () => {
-    const correct = Math.abs(numberFrom(answers.incandescentMoney) - 30000) <= 100
-    setFeedback('incandescentMoney', correct, 'Đúng. Tiền điện của đèn sợi đốt là 15 × 2000 = 30000 đồng.', 'Gợi ý: lấy điện năng tiêu thụ nhân với giá điện.')
+    const correct = numberFrom(answers.incandescentMoney) === 30000
+    setFeedback('incandescentMoney', correct, '✅ Chính xác! Đèn sợi đốt tiêu thụ 15 kWh điện năng. Với giá điện 2000 đồng cho mỗi kWh: Tiền điện = 15 × 2000 = 30 000 đồng.', 'Gợi ý: lấy điện năng tiêu thụ nhân với giá điện.')
   }
 
   const checkLedMoney = () => {
-    const correct = Math.abs(numberFrom(answers.ledMoney) - 6000) <= 100
-    setFeedback('ledMoney', correct, 'Đúng. Tiền điện của đèn LED là 3 × 2000 = 6000 đồng.', 'Gợi ý: lấy 3 kWh nhân với 2000 đồng/kWh.')
-  }
-
-  const checkPowerConceptTask = () => {
-    const correct =
-      answers.powerDevice === 'ac' &&
-      answers.powerMeaning === 'energy-time' &&
-      isPowerFormulaCorrect() &&
-      answers.ratedPower === 'rated' &&
-      answers.lowerPowerLamp === 'led' &&
-      Math.abs(numberFrom(answers.lampUseTime) - 150) <= 0.1 &&
-      Math.abs(numberFrom(answers.incandescentEnergy) - 15) <= 0.1 &&
-      Math.abs(numberFrom(answers.ledEnergy) - 3) <= 0.1 &&
-      Math.abs(numberFrom(answers.incandescentMoney) - 30000) <= 100 &&
-      Math.abs(numberFrom(answers.ledMoney) - 6000) <= 100 &&
-      isPowerSummaryCorrect()
-    setFeedback('powerConceptTask', correct, 'Hoàn thành! Hiểu công suất điện giúp chúng ta lựa chọn và sử dụng thiết bị điện tiết kiệm, hiệu quả hơn trong thực tế.', 'Cần hoàn thành đúng các bước khám phá và chọn đủ bốn kết luận đúng.')
+    const correct = numberFrom(answers.ledMoney) === 6000
+    setFeedback('ledMoney', correct, '✅ Chính xác! Đèn LED tiêu thụ 3 kWh điện năng. Với giá điện 2000 đồng cho mỗi kWh: Tiền điện = 3 × 2000 = 6 000 đồng.', 'Gợi ý: lấy điện năng tiêu thụ nhân với giá điện.')
     if (correct) completeStep(4)
   }
 
@@ -10077,7 +10053,7 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
     ['kwh', 'Tôi hiểu ý nghĩa của đơn vị kWh.'],
     ['meter', 'Tôi biết công tơ điện dùng để làm gì.'],
     ['power-concept', 'Tôi hiểu công suất điện là gì.'],
-    ['power-formula', 'Tôi suy luận được công thức P = W/t = UI.'],
+    ['power-formula', 'Tôi suy luận được công thức P = A/t = UI.'],
     ['power-compare', 'Tôi giải thích được vì sao thiết bị có công suất lớn hơn thường tiêu thụ nhiều điện năng hơn.'],
     ['power-saving', 'Tôi so sánh được mức tiêu thụ và tiền điện của đèn sợi đốt với đèn LED.'],
   ]
@@ -10497,7 +10473,7 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                         type="button"
                         onClick={() => {
                           updateAnswer('powerDevice', value)
-                          setFeedbacks((current) => ({ ...current, powerDevice: '', powerMeaning: '', powerFormula: '', ratedPower: '', lowerPowerLamp: '', powerConceptTask: '' }))
+                          setFeedbacks((current) => ({ ...current, powerDevice: '', powerMeaning: '', ratedPower: '', lowerPowerLamp: '' }))
                         }}
                       >
                         {label}
@@ -10514,7 +10490,7 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                     <h3>Khám phá ý nghĩa công suất điện</h3>
                     <div className="lesson25-power-formula-panel">
                       <p>Ở bài trước ta đã biết:</p>
-                      <strong>W = UIt</strong>
+                      <strong>W = A = UIt</strong>
                       <p>Trong đó W là điện năng tiêu thụ của đoạn mạch.</p>
                       <p>Nếu xét lượng điện năng tiêu thụ trong mỗi đơn vị thời gian thì ta có một đại lượng mới gọi là công suất điện.</p>
                     </div>
@@ -10531,7 +10507,7 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                           type="button"
                           onClick={() => {
                             updateAnswer('powerMeaning', value)
-                            setFeedbacks((current) => ({ ...current, powerMeaning: '', powerFormula: '', powerConceptTask: '' }))
+                            setFeedbacks((current) => ({ ...current, powerMeaning: '' }))
                           }}
                         >
                           {label}
@@ -10543,41 +10519,10 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                   </article>
                 )}
                 {feedbacks.powerMeaning?.type === 'correct' && (
-                  <article className="lesson25-power-step">
-                    <span>Bước 3</span>
-                    <h3>Xây dựng công thức công suất điện</h3>
-                    <div className="lesson25-power-formula-panel">
-                      <p>Theo định nghĩa:</p>
-                      <strong>P = W/t</strong>
-                      <p>Biết:</p>
-                      <strong>W = UIt</strong>
-                    </div>
-                    <h3>Thay W = UIt vào công thức trên để tìm công thức công suất điện.</h3>
-                    <div className="formula-input">
-                      <span>P =</span>
-                      <input
-                        value={answers.powerFormula || ''}
-                        onChange={(event) => {
-                          updateAnswer('powerFormula', event.target.value)
-                          setFeedbacks((current) => ({ ...current, powerFormula: '', ratedPower: '', powerConceptTask: '' }))
-                        }}
-                        placeholder="?"
-                      />
-                      <button type="button" onClick={checkPowerFormulaTask}>Kiểm tra</button>
-                    </div>
-                    {feedbacks.powerFormula && <p className={`inline-feedback inline-feedback--${feedbacks.powerFormula.type}`}>{feedbacks.powerFormula.message}</p>}
-                  </article>
-                )}
-                {feedbacks.powerFormula?.type === 'correct' && (
                   <>
                     <div className="lesson25-power-knowledge">
-                      <strong>Công suất điện</strong>
-                      <b>P = W/t = UI</b>
-                      <p><span>P</span> công suất điện (W)</p>
-                      <p><span>W</span> điện năng tiêu thụ (J)</p>
-                      <p><span>t</span> thời gian (s)</p>
-                      <p><span>U</span> hiệu điện thế (V)</p>
-                      <p><span>I</span> cường độ dòng điện (A)</p>
+                      <strong>Kết luận công thức công suất điện</strong>
+                      <b>P = A/t = UI</b>
                       <em>Đơn vị của công suất điện là oát (W).</em>
                     </div>
                     <article className="lesson25-power-step">
@@ -10597,7 +10542,7 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                             type="button"
                             onClick={() => {
                               updateAnswer('ratedPower', value)
-                              setFeedbacks((current) => ({ ...current, ratedPower: '', lowerPowerLamp: '', powerConceptTask: '' }))
+                              setFeedbacks((current) => ({ ...current, ratedPower: '', lowerPowerLamp: '' }))
                             }}
                           >
                             {label}
@@ -10639,11 +10584,11 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                         <button
                           className={answers.lowerPowerLamp === value ? 'soft-choice soft-choice--active' : 'soft-choice'}
                           key={value}
-                          type="button"
-                          onClick={() => {
-                            updateAnswer('lowerPowerLamp', value)
-                            setFeedbacks((current) => ({ ...current, lowerPowerLamp: '', lampUseTime: '', powerConceptTask: '' }))
-                          }}
+                            type="button"
+                            onClick={() => {
+                              updateAnswer('lowerPowerLamp', value)
+                              setFeedbacks((current) => ({ ...current, lowerPowerLamp: '', lampUseTime: '' }))
+                            }}
                         >
                           {label}
                         </button>
@@ -10677,39 +10622,44 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                         )}
                         {feedbacks.ledEnergy?.type === 'correct' && (
                           <label>
-                            <span>Câu hỏi 5: Tiền điện của đèn sợi đốt là 15 × 2000 = ?</span>
-                            <input value={answers.incandescentMoney || ''} onChange={(event) => updateAnswer('incandescentMoney', event.target.value)} placeholder="... đồng" />
+                            <span>
+                              Câu hỏi 5: Tiền điện được tính theo công thức:
+                              <br />
+                              Tiền điện = Điện năng tiêu thụ × Giá điện.
+                              <br />
+                              Biết rằng:
+                              <br />
+                              - Điện năng tiêu thụ của đèn sợi đốt: 15 kWh.
+                              <br />
+                              - Giá điện: 2000 đồng/kWh.
+                              <br />
+                              Hãy tính số tiền điện phải trả cho đèn sợi đốt.
+                            </span>
+                            <input value={answers.incandescentMoney || ''} onChange={(event) => updateAnswer('incandescentMoney', event.target.value)} placeholder="Tiền điện = ... đồng" />
                             <button className="primary-soft-btn" type="button" onClick={checkIncandescentMoney}>Kiểm tra câu 5</button>
                             {feedbacks.incandescentMoney && <p className={`inline-feedback inline-feedback--${feedbacks.incandescentMoney.type}`}>{feedbacks.incandescentMoney.message}</p>}
                           </label>
                         )}
                         {feedbacks.incandescentMoney?.type === 'correct' && (
                           <label>
-                            <span>Câu hỏi 6: Tiền điện của đèn LED là 3 × 2000 = ?</span>
-                            <input value={answers.ledMoney || ''} onChange={(event) => updateAnswer('ledMoney', event.target.value)} placeholder="... đồng" />
+                            <span>
+                              Câu hỏi 6: Tiền điện được tính theo công thức:
+                              <br />
+                              Tiền điện = Điện năng tiêu thụ × Giá điện.
+                              <br />
+                              Biết rằng:
+                              <br />
+                              - Điện năng tiêu thụ của đèn LED: 3 kWh.
+                              <br />
+                              - Giá điện: 2000 đồng/kWh.
+                              <br />
+                              Hãy tính số tiền điện phải trả cho đèn LED.
+                            </span>
+                            <input value={answers.ledMoney || ''} onChange={(event) => updateAnswer('ledMoney', event.target.value)} placeholder="Tiền điện = ... đồng" />
                             <button className="primary-soft-btn" type="button" onClick={checkLedMoney}>Kiểm tra câu 6</button>
                             {feedbacks.ledMoney && <p className={`inline-feedback inline-feedback--${feedbacks.ledMoney.type}`}>{feedbacks.ledMoney.message}</p>}
                           </label>
                         )}
-                      </div>
-                    )}
-                    {feedbacks.ledMoney?.type === 'correct' && (
-                      <div className="lesson25-power-final">
-                        <h3>Tổng kết</h3>
-                        {[
-                          ['speed', 'Công suất điện cho biết tốc độ tiêu thụ điện năng.'],
-                          ['larger', 'Thiết bị có công suất lớn hơn tiêu thụ điện năng nhanh hơn.'],
-                          ['led', 'Đèn LED tiết kiệm điện hơn đèn sợi đốt.'],
-                          ['formula', 'Công suất điện được tính bằng: P = W/t = UI'],
-                        ].map(([key, label]) => (
-                          <label className="soft-checkbox" key={key}>
-                            <input checked={Boolean(answers.powerSummary?.[key])} onChange={() => updateAnswer('powerSummary', { ...(answers.powerSummary || {}), [key]: !answers.powerSummary?.[key] })} type="checkbox" />
-                            <span>{label}</span>
-                          </label>
-                        ))}
-                        <button className="primary-soft-btn" type="button" onClick={checkPowerConceptTask}>Hoàn thành nhiệm vụ</button>
-                        {feedbacks.powerConceptTask && <p className={`inline-feedback inline-feedback--${feedbacks.powerConceptTask.type}`}>{feedbacks.powerConceptTask.message}</p>}
-                        {feedbacks.powerConceptTask?.type === 'correct' && <p className="lesson25-power-message">Hiểu công suất điện giúp chúng ta lựa chọn và sử dụng thiết bị điện tiết kiệm, hiệu quả hơn trong thực tế.</p>}
                       </div>
                     )}
                   </article>
@@ -10731,8 +10681,8 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                   <h4>1. Điện năng tiêu thụ</h4>
                   <p>Điện năng tiêu thụ của đoạn mạch là năng lượng điện mà đoạn mạch nhận được từ nguồn điện và chuyển hóa thành các dạng năng lượng khác.</p>
                   <p>Điện năng tiêu thụ bằng công của lực điện.</p>
-                  <strong>A = UIt</strong>
-                  <p>A là điện năng tiêu thụ, đơn vị J. U là hiệu điện thế, đơn vị V. I là cường độ dòng điện, đơn vị A. t là thời gian, đơn vị s.</p>
+                  <strong>W = A = UIt</strong>
+                  <p>W là điện năng tiêu thụ, A là công của lực điện, đơn vị J. U là hiệu điện thế, đơn vị V. I là cường độ dòng điện, đơn vị A. t là thời gian, đơn vị s.</p>
                 </section>
                 <section>
                   <h4>2. Đơn vị điện năng trong thực tế</h4>
@@ -10743,7 +10693,7 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                 <section>
                   <h4>3. Công suất điện</h4>
                   <p>Công suất điện cho biết điện năng tiêu thụ trong một đơn vị thời gian.</p>
-                  <strong>P = W/t = UI</strong>
+                  <strong>P = A/t = UI</strong>
                   <p>P là công suất điện, đơn vị W.</p>
                 </section>
               </div>
@@ -11022,7 +10972,7 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
             ['kwh', 'Tôi hiểu ý nghĩa của đơn vị kW.h.'],
             ['meter', 'Tôi biết công tơ điện dùng để làm gì.'],
             ['power-concept', 'Tôi hiểu công suất điện là gì.'],
-            ['power-formula', 'Tôi suy luận được công thức P = W/t = UI.'],
+            ['power-formula', 'Tôi suy luận được công thức P = A/t = UI.'],
             ['power-saving', 'Tôi so sánh được mức tiêu thụ và tiền điện của đèn sợi đốt với đèn LED.'],
           ]}
         />
