@@ -3906,12 +3906,6 @@ const resistanceCauseSituations = [
   },
 ]
 
-const wireMaterialOptions = {
-  copper: { label: 'Đồng', resistance: 1.7, collisions: 'Thấp' },
-  iron: { label: 'Sắt', resistance: 9.7, collisions: 'Trung bình' },
-  nichrome: { label: 'Nichrome', resistance: 110, collisions: 'Cao' },
-}
-
 const lesson23SelfAssessment = [
   {
     title: 'Bản chất dòng điện',
@@ -4352,6 +4346,10 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
   const [conductorChoice, setConductorChoice] = useState('')
   const [electronFlowChoice, setElectronFlowChoice] = useState('')
   const [resistanceQuestion, setResistanceQuestion] = useState('')
+  const [ratioMeasurementCount, setRatioMeasurementCount] = useState(0)
+  const [ratiosCalculated, setRatiosCalculated] = useState(false)
+  const [ratioObservation, setRatioObservation] = useState('')
+  const [showResistanceConfetti, setShowResistanceConfetti] = useState(false)
   const [activeTestConductor, setActiveTestConductor] = useState('r1')
   const [liveVoltage, setLiveVoltage] = useState(1)
   const [experimentRows, setExperimentRows] = useState({ r1: [], r2: [] })
@@ -4364,34 +4362,16 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
   const [draggedKeyword, setDraggedKeyword] = useState('')
   const [statementSlots, setStatementSlots] = useState({})
   const [causeSituationAnswers, setCauseSituationAnswers] = useState({})
-  const [factorPrediction, setFactorPrediction] = useState('')
-  const [wireLength, setWireLength] = useState(2)
-  const [hasChangedLength, setHasChangedLength] = useState(false)
-  const [lengthFinding, setLengthFinding] = useState('')
-  const [wireArea, setWireArea] = useState(2)
-  const [hasChangedArea, setHasChangedArea] = useState(false)
-  const [areaFinding, setAreaFinding] = useState('')
-  const [wireMaterial, setWireMaterial] = useState('copper')
-  const [hasChangedMaterial, setHasChangedMaterial] = useState(false)
-  const [materialFinding, setMaterialFinding] = useState('')
-  const [temperaturePrediction, setTemperaturePrediction] = useState('')
-  const [metalTemperature, setMetalTemperature] = useState(20)
-  const [hasHeatedMetal, setHasHeatedMetal] = useState(false)
-  const [ionMotionFinding, setIonMotionFinding] = useState('')
-  const [collisionFinding, setCollisionFinding] = useState('')
-  const [metalResistanceFinding, setMetalResistanceFinding] = useState('')
-  const [showColdCurve, setShowColdCurve] = useState(true)
-  const [showHotCurve, setShowHotCurve] = useState(true)
-  const [curveFinding, setCurveFinding] = useState('')
-  const [bulbVoltage, setBulbVoltage] = useState(1)
-  const [hasAdjustedBulb, setHasAdjustedBulb] = useState(false)
-  const [bulbCurveFinding, setBulbCurveFinding] = useState('')
+  const [temperatureCardStep, setTemperatureCardStep] = useState(1)
+  const [filamentShapeFinding, setFilamentShapeFinding] = useState('')
+  const [showFilamentHint, setShowFilamentHint] = useState(false)
+  const [filamentApplyFinding, setFilamentApplyFinding] = useState('')
+  const [showTemperatureHint, setShowTemperatureHint] = useState(false)
   const [ntcTemperature, setNtcTemperature] = useState(20)
   const [hasHeatedNtc, setHasHeatedNtc] = useState(false)
   const [ntcFinding, setNtcFinding] = useState('')
-  const [ptcTemperature, setPtcTemperature] = useState(20)
-  const [hasHeatedPtc, setHasHeatedPtc] = useState(false)
-  const [ptcFinding, setPtcFinding] = useState('')
+  const [showNtcHint, setShowNtcHint] = useState(false)
+  const [thermistorCompareFinding, setThermistorCompareFinding] = useState('')
   const [competencyRatings, setCompetencyRatings] = useState({})
   const [reflectionText, setReflectionText] = useState('')
   const [overallUnderstanding, setOverallUnderstanding] = useState('')
@@ -4402,7 +4382,21 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
   })
 
   const hasElectronFlowInsight = electronFlowChoice === 'decrease'
-  const isConceptRevealed = conductorChoice === 'hard' && hasElectronFlowInsight && resistanceQuestion === 'not-same'
+  const isBarrierExplored = conductorChoice === 'hard' && hasElectronFlowInsight && resistanceQuestion === 'not-same'
+  const isConceptRevealed = ratioObservation === 'constant'
+  const ratioExperimentData = [
+    { attempt: 1, voltage: 2, current: 0.4 },
+    { attempt: 2, voltage: 4, current: 0.8 },
+    { attempt: 3, voltage: 6, current: 1.2 },
+  ]
+  const visibleRatioRows = ratioExperimentData.slice(0, ratioMeasurementCount)
+  const ratioActivitySteps = [
+    isBarrierExplored,
+    ratioMeasurementCount >= 3,
+    ratiosCalculated,
+    ratioObservation === 'constant',
+  ]
+  const ratioActivityProgress = Math.round((ratioActivitySteps.filter(Boolean).length / ratioActivitySteps.length) * 100)
   const r1PointsComplete = experimentRows.r1.length >= 4
   const hasR1Conclusion = lineShapeChoice === 'straight' && doublingChoice === 'double'
   const r2PointsComplete = experimentRows.r2.length >= 4
@@ -4460,6 +4454,27 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
     playLessonTone(value === correct ? 'correct' : 'wrong')
   }
 
+  const collectRatioMeasurement = () => {
+    setRatioMeasurementCount((current) => Math.min(current + 1, ratioExperimentData.length))
+    playLessonTone('correct')
+  }
+
+  const calculateRatios = () => {
+    setRatiosCalculated(true)
+    playLessonTone('correct')
+  }
+
+  const chooseRatioObservation = (value) => {
+    setRatioObservation(value)
+    const isCorrect = value === 'constant'
+    playLessonTone(isCorrect ? 'correct' : 'wrong')
+
+    if (isCorrect) {
+      setShowResistanceConfetti(true)
+      window.setTimeout(() => setShowResistanceConfetti(false), 2800)
+    }
+  }
+
   const placeKeyword = (slotId, keywordId = draggedKeyword) => {
     if (!keywordId && statementSlots[slotId]) {
       setStatementSlots((current) => {
@@ -4485,43 +4500,14 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
   }
 
   const causeSituationsComplete = resistanceCauseSituations.every((scenario) => causeSituationAnswers[scenario.id] === scenario.answer)
-  const hasFactorPrediction = factorPrediction === 'all'
-  const hasLengthFinding = lengthFinding === 'more'
-  const hasAreaFinding = areaFinding === 'easier'
-  const hasMaterialFinding = materialFinding === 'different'
-  const lengthResistance = (1.7 * wireLength).toFixed(1)
-  const areaResistance = (8.5 / wireArea).toFixed(1)
-  const selectedMaterial = wireMaterialOptions[wireMaterial]
-  const wireFactorsComplete = hasMaterialFinding
-  const ionsUnderstood = ionMotionFinding === 'stronger'
-  const collisionsUnderstood = collisionFinding === 'more'
-  const metalTemperatureUnderstood = metalResistanceFinding === 'increase'
-  const curvesUnderstood = curveFinding === 'resistance-up'
-  const bulbUnderstood = bulbCurveFinding === 'temperature'
+  const filamentUnderstood = filamentShapeFinding === 'curved'
+  const temperatureConclusionUnderstood = filamentApplyFinding === 'increase'
   const ntcUnderstood = ntcFinding === 'decrease'
-  const ptcUnderstood = ptcFinding === 'increase'
-  const temperatureJourneyComplete = ptcUnderstood
-  const metalResistance = (4 * (1 + 0.004 * (metalTemperature - 20))).toFixed(2)
-  const metalCollisions = Math.round(5 + (metalTemperature - 20) * 0.16)
-  const electronsPerSecond = Math.round(44 - (metalTemperature - 20) * 0.22)
-  const bulbHeat = Math.round(24 + bulbVoltage * 208)
-  const bulbThermalFactor = 0.04 + (bulbVoltage / 6) * 0.12
-  const getBulbCurrent = (voltage) => voltage / (2.4 + bulbThermalFactor * voltage * voltage)
-  const bulbResistance = (2.4 + bulbThermalFactor * bulbVoltage * bulbVoltage).toFixed(1)
-  const bulbCurrent = getBulbCurrent(bulbVoltage)
-  const bulbChartX = (voltage) => 44 + (voltage / 6) * 314
-  const bulbChartY = (current) => 222 - current * 104
-  const bulbCurvePath = Array.from({ length: 25 }, (_, index) => {
-    const voltage = (index / 24) * 6
-    return `${index === 0 ? 'M' : 'L'} ${bulbChartX(voltage).toFixed(1)} ${bulbChartY(getBulbCurrent(voltage)).toFixed(1)}`
-  }).join(' ')
+  const thermistorCompareUnderstood = thermistorCompareFinding === 'opposite'
+  const temperatureJourneyComplete = temperatureConclusionUnderstood && ntcUnderstood && thermistorCompareUnderstood
   const ntcResistance = (ntcTemperature <= 50
     ? 10 - ((ntcTemperature - 20) / 30) * 6
     : 4 - ((ntcTemperature - 50) / 30) * 2.5).toFixed(1)
-  const ptcResistance = (ptcTemperature <= 50
-    ? 200 + ((ptcTemperature - 20) / 30) * 600
-    : 800 + ((ptcTemperature - 50) / 30) * 2200)
-  const ptcResistanceLabel = ptcResistance >= 1000 ? `${(ptcResistance / 1000).toFixed(1)} kΩ` : `${Math.round(ptcResistance)} Ω`
 
   const answerCauseSituation = (scenario, answerIndex) => {
     setCauseSituationAnswers((current) => ({ ...current, [scenario.id]: answerIndex }))
@@ -4537,7 +4523,6 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
     isOhmReady,
     isStatementComplete,
     causeSituationsComplete,
-    wireFactorsComplete,
     temperatureJourneyComplete,
   ]
   const worksheetCompletedCount = worksheetMilestones.filter(Boolean).length
@@ -4663,11 +4648,6 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
             />
           </div>
         </div>
-        {lesson23UnlockedParts.worksheet && (
-          <button className="primary-soft-btn lesson23-framework-next" type="button" onClick={() => discoveryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
-            Tiếp tục Phiếu học tập
-          </button>
-        )}
       </article>}
 
       {lesson23UnlockedParts.worksheet && isWorksheetPart && (
@@ -4692,6 +4672,7 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
           <span>Nhiệm vụ 1</span>
           <h3>Khám phá điện trở</h3>
         </div>
+        <h4 className="lesson23-step-title">Bước 1: Khám phá mức độ cản trở</h4>
         <div className="conductor-grid">
           {[
             ['easy', 'Vật dẫn A', '46'],
@@ -4741,7 +4722,100 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
             </>
           )}
         </div>
-        {isConceptRevealed && <div className="formula-reveal lesson23-reveal"><span>Mức độ cản trở dòng điện của vật dẫn được gọi là điện trở.</span></div>}
+        {isBarrierExplored && <div className="formula-reveal lesson23-reveal lesson23-reveal--barrier"><span>Các vật dẫn cản trở dòng điện ở những mức độ khác nhau.</span></div>}
+
+        {isBarrierExplored && (
+          <section className="lesson23-ratio-discovery" aria-label="Bước 2 tìm đại lượng đặc trưng cho mức độ cản trở dòng điện">
+            {showResistanceConfetti && (
+              <div className="lesson23-confetti" aria-hidden="true">
+                {Array.from({ length: 18 }, (_, index) => <i key={index} style={{ '--i': index }} />)}
+              </div>
+            )}
+            <div className="lesson23-step-heading">
+              <span>Bước 2</span>
+              <h3>Tìm đại lượng đặc trưng cho mức độ cản trở dòng điện</h3>
+              <p>Ở nhiệm vụ trước, em đã nhận thấy các vật dẫn cản trở dòng điện ở những mức độ khác nhau. Vậy làm thế nào để xác định và so sánh mức độ cản trở đó? Hãy thực hiện thí nghiệm dưới đây.</p>
+            </div>
+
+            <div className="lesson23-ratio-progress" aria-label={`Tiến trình hoạt động: ${ratioActivityProgress}%`}>
+              <div>
+                <strong>Tiến trình hoạt động</strong>
+                <span>{ratioActivitySteps.filter(Boolean).length}/{ratioActivitySteps.length} bước</span>
+              </div>
+              <i><b style={{ width: `${ratioActivityProgress}%` }} /></i>
+            </div>
+
+            <article className="lesson23-ratio-card">
+              <div className="lesson23-ratio-card__header">
+                <div>
+                  <span>Thí nghiệm với vật dẫn X</span>
+                  <strong>Khảo sát mối liên hệ giữa U và I</strong>
+                </div>
+                <button className="primary-soft-btn" type="button" onClick={collectRatioMeasurement} disabled={ratioMeasurementCount >= ratioExperimentData.length}>
+                  {ratioMeasurementCount >= ratioExperimentData.length ? 'Đã đủ 3 phép đo' : 'Thực hiện phép đo'}
+                </button>
+              </div>
+
+              <div className="lesson23-ratio-table-wrap">
+                <table className={ratiosCalculated ? 'lesson23-ratio-table lesson23-ratio-table--calculated' : 'lesson23-ratio-table'}>
+                  <thead>
+                    <tr>
+                      <th>Lần đo</th>
+                      <th>U (V)</th>
+                      <th>I (A)</th>
+                      <th>U/I</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {visibleRatioRows.length === 0 && (
+                      <tr className="lesson23-ratio-empty">
+                        <td colSpan="4">Nhấn “Thực hiện phép đo” để thu thập số liệu.</td>
+                      </tr>
+                    )}
+                    {visibleRatioRows.map((row) => (
+                      <tr className="lesson23-ratio-row" key={row.attempt}>
+                        <td>Lần {row.attempt}</td>
+                        <td>{row.voltage}</td>
+                        <td>{row.current.toLocaleString('vi-VN')}</td>
+                        <td>{ratiosCalculated ? row.voltage / row.current : '?'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {ratioMeasurementCount >= ratioExperimentData.length && !ratiosCalculated && (
+                <button className="primary-soft-btn lesson23-ratio-calc" type="button" onClick={calculateRatios}>Tính U/I</button>
+              )}
+            </article>
+
+            {ratiosCalculated && (
+              <article className="question-card lesson23-ratio-question">
+                <h3>Em có nhận xét gì về giá trị U/I của vật dẫn X?</h3>
+                <div className="choice-row">
+                  <button className={ratioObservation === 'increase' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => chooseRatioObservation('increase')}>A. U/I tăng dần</button>
+                  <button className={ratioObservation === 'decrease' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => chooseRatioObservation('decrease')}>B. U/I giảm dần</button>
+                  <button className={ratioObservation === 'constant' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => chooseRatioObservation('constant')}>C. U/I không đổi</button>
+                </div>
+                {ratioObservation && ratioObservation !== 'constant' && <p className="inline-feedback inline-feedback--wrong">Hãy so sánh ba giá trị ở cột U/I vừa tính được.</p>}
+              </article>
+            )}
+
+            {isConceptRevealed && (
+              <>
+                <article className="lesson23-resistance-message">
+                  <strong>Giá trị U/I là một hằng số được kí hiệu là R, có R = U/I.</strong>
+                  <p>=&gt; I = U/R cho thấy với cùng 1 hiệu điện thế, R càng lớn thì cường độ dòng điện I càng nhỏ. Điều này chứng tỏ sự cản trở dịch chuyển của các điện tích trong dây dẫn càng lớn.</p>
+                </article>
+
+                <article className="lesson23-final-conclusion">
+                  <p>Vậy <strong>R</strong> là đại lượng đặc trưng cho mức độ cản trở dòng điện của vật dẫn và được gọi là <strong>điện trở</strong>.</p>
+                  <p>Đơn vị là <strong>ôm (ohm)</strong>, kí hiệu là <strong>Ω</strong>.</p>
+                </article>
+              </>
+            )}
+          </section>
+        )}
       </article>
 
       {isConceptRevealed && (
@@ -4874,21 +4948,31 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
               )}
               {slopeChoice === 'r1' && (
                 <div className="question-card">
-                  <h3>Điện trở nào làm dòng điện tăng dễ hơn khi tăng U?</h3>
+                  <h3>Độ dốc của đường đặc trưng vôn-ampe liên quan đến điện trở như thế nào?</h3>
                   <div className="choice-row">
-                    <button className={conductionChoice === 'smaller' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setConductionChoice, 'smaller', 'smaller')}>Điện trở nhỏ hơn</button>
-                    <button className={conductionChoice === 'larger' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setConductionChoice, 'larger', 'smaller')}>Điện trở lớn hơn</button>
+                    <button className={conductionChoice === 'larger' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setConductionChoice, 'larger', 'smaller')}>A. Đường càng dốc thì điện trở càng lớn.</button>
+                    <button className={conductionChoice === 'smaller' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setConductionChoice, 'smaller', 'smaller')}>B. Đường càng dốc thì điện trở càng nhỏ.</button>
                   </div>
-                  {conductionChoice === 'larger' && <p className="inline-feedback inline-feedback--wrong">Đường dốc hơn cho I lớn hơn tại cùng U. Hãy suy luận lại mức cản trở.</p>}
-                  {conductionChoice === 'smaller' && <p className="inline-feedback inline-feedback--correct">Đúng. Điện trở càng nhỏ thì dòng điện tăng càng nhanh.</p>}
+                  {conductionChoice === 'larger' && <p className="inline-feedback inline-feedback--wrong">Hãy dùng hệ thức k = I/U = 1/R để suy luận lại.</p>}
+                  {conductionChoice === 'smaller' && <p className="inline-feedback inline-feedback--correct">Đúng. Vì k = 1/R nên độ dốc càng lớn thì điện trở càng nhỏ.</p>}
                 </div>
               )}
               {isOhmReady && (
                 <div className="slope-conclusion">
-                  <strong>Độ dốc của đường đặc trưng vôn-ampe cho biết mức độ dẫn điện của vật dẫn.</strong>
-                  <b>k = I / U = 1 / R</b>
-                  <span>Đường càng dốc → k càng lớn → R càng nhỏ.</span>
-                  <span>Đường càng thoải → k càng nhỏ → R càng lớn.</span>
+                  <h3>Đường đặc trưng vôn-ampe của điện trở</h3>
+                  <div className="slope-formula-block" aria-label="Công thức đường đặc trưng vôn-ampe của điện trở">
+                    <span>I = kU</span>
+                    <span>k = <em>I</em>/<em>U</em> = 1/<em>R</em></span>
+                  </div>
+                  <div className="slope-explanation">
+                    <p>Đường đặc trưng vôn-ampe của điện trở là đường thẳng đi qua gốc tọa độ.</p>
+                    <p>Độ dốc của đường thẳng được xác định bởi: <strong>k = I/U = 1/R</strong>.</p>
+                    <p><strong>k</strong> là hệ số không đổi gọi là độ dẫn điện.</p>
+                  </div>
+                  <div className="slope-summary">
+                    <p>Đường càng dốc → k càng lớn → R càng nhỏ.</p>
+                    <p>Đường càng thoải → k càng nhỏ → R càng lớn.</p>
+                  </div>
                 </div>
               )}
             </div>
@@ -4995,179 +5079,175 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
                   <span>Tạp chất nhiều <b>→</b> điện trở tăng</span>
                 </div>
                 <div className="cause-conclusion">
-                  Điện trở xuất hiện do sự mất trật tự của mạng tinh thể làm electron bị cản trở khi chuyển động.
+                  Dao động nhiệt của các ion trong mạng tinh thể cản trở chuyển động của các electron tự do là nguyên nhân chính gây ra điện trở của kim loại.
                 </div>
               </>
             )}
           </article>
 
           {causeSituationsComplete && (
-            <article className="lesson23-flow wire-factor-discovery" id="lesson23-wire-factors">
-              <div className="lesson23-task-heading">
-                <span>Nhiệm vụ 5</span>
-                <h3>Khám phá các yếu tố ảnh hưởng đến điện trở</h3>
-              </div>
-              <p>Điều gì làm mức cản trở mạnh hay yếu?</p>
-              <span className="cause-observe-intro">Ta đã biết các vật dẫn khác nhau có mức cản trở dòng điện khác nhau. Vậy những yếu tố nào làm điện trở của một dây dẫn tăng hoặc giảm?</span>
-              <div className="question-card factor-entry-question">
-                <h3>Điều gì có thể làm điện trở của dây dẫn thay đổi?</h3>
-                <div className="choice-row">
-                  {[
-                    ['length', 'Chiều dài dây'],
-                    ['area', 'Tiết diện dây'],
-                    ['material', 'Vật liệu dây'],
-                    ['all', 'Cả 3 yếu tố trên'],
-                  ].map(([value, label]) => (
-                    <button className={factorPrediction === value ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={value} onClick={() => checkSoftAnswer(setFactorPrediction, value, 'all')}>{label}</button>
-                  ))}
-                </div>
-                {factorPrediction && factorPrediction !== 'all' && <p className="inline-feedback inline-feedback--wrong">Hãy suy nghĩ xem ngoài yếu tố em chọn, hình dạng và chất làm dây có thể ảnh hưởng không.</p>}
-                {hasFactorPrediction && <p className="inline-feedback inline-feedback--correct">Đúng. Điện trở của dây dẫn phụ thuộc vào chiều dài, tiết diện và vật liệu làm dây.</p>}
-              </div>
-
-              {hasFactorPrediction && (
-                <section className="factor-stage factor-stage--length">
-                  <div className="factor-stage-heading"><span>Khảo sát 1</span><h3>Chiều dài dây dẫn</h3><small>Giữ nguyên vật liệu và tiết diện.</small></div>
-                  <div className="factor-sim-grid">
-                    <div className="factor-wire-panel">
-                      <div className="factor-wire-scene factor-wire-scene--length" style={{ '--wire-span': `${35 + wireLength * 12}%`, '--drift': `${2.4 + wireLength * 0.18}s` }}>
-                        <span className="factor-wire" />
-                        <b /><b /><b />
-                      </div>
-                      <label className="factor-slider">
-                        <span>Chiều dài dây <strong>{wireLength} m</strong></span>
-                        <input type="range" min="1" max="5" step="1" value={wireLength} onChange={(event) => { setWireLength(Number(event.target.value)); setHasChangedLength(true) }} />
-                      </label>
-                    </div>
-                    <div className="factor-realtime">
-                      <div><span>Quãng đường electron</span><strong>{wireLength <= 2 ? 'Ngắn' : wireLength <= 3 ? 'Tăng' : 'Dài'}</strong></div>
-                      <div><span>Va chạm</span><strong>{wireLength <= 2 ? 'Ít' : wireLength <= 3 ? 'Tăng' : 'Nhiều'}</strong></div>
-                      <div><span>Điện trở R</span><strong>{lengthResistance} Ω</strong></div>
-                    </div>
-                  </div>
-                  {hasChangedLength && (
-                    <div className="question-card">
-                      <h3>Khi dây dẫn dài hơn, điều gì xảy ra với electron?</h3>
-                      <div className="choice-row">
-                        {[
-                          ['more', 'Va chạm nhiều hơn'],
-                          ['less', 'Va chạm ít hơn'],
-                          ['same', 'Không thay đổi'],
-                        ].map(([value, label]) => <button className={lengthFinding === value ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={value} onClick={() => checkSoftAnswer(setLengthFinding, value, 'more')}>{label}</button>)}
-                      </div>
-                      {lengthFinding && !hasLengthFinding && <p className="inline-feedback inline-feedback--wrong">Hãy kéo dây dài hơn và quan sát chỉ báo va chạm, điện trở R.</p>}
-                      {hasLengthFinding && <p className="inline-feedback inline-feedback--correct">Đúng. Dây càng dài, electron càng dễ va chạm nên điện trở tăng.</p>}
-                    </div>
-                  )}
-                  {hasLengthFinding && <div className="factor-conclusion">Chiều dài dây dẫn tăng <b>→</b> điện trở tăng.</div>}
-                </section>
-              )}
-
-              {hasLengthFinding && (
-                <section className="factor-stage factor-stage--area">
-                  <div className="factor-stage-heading"><span>Khảo sát 2</span><h3>Tiết diện dây dẫn</h3><small>Giữ nguyên chiều dài và vật liệu.</small></div>
-                  <div className="factor-sim-grid">
-                    <div className="factor-wire-panel">
-                      <div className="factor-wire-scene factor-wire-scene--area" style={{ '--wire-height': `${24 + wireArea * 11}px`, '--drift': `${3 - wireArea * 0.24}s` }}>
-                        <span className="factor-wire" />
-                        <i className="factor-cross-section" />
-                        <b /><b /><b /><b />
-                      </div>
-                      <label className="factor-slider">
-                        <span>Tiết diện dây <strong>{wireArea} mm²</strong></span>
-                        <input type="range" min="1" max="5" step="1" value={wireArea} onChange={(event) => { setWireArea(Number(event.target.value)); setHasChangedArea(true) }} />
-                      </label>
-                    </div>
-                    <div className="factor-realtime">
-                      <div><span>Không gian di chuyển</span><strong>{wireArea <= 2 ? 'Hẹp' : wireArea <= 3 ? 'Tăng' : 'Rộng'}</strong></div>
-                      <div><span>Mức cản trở</span><strong>{wireArea <= 2 ? 'Cao' : wireArea <= 3 ? 'Giảm' : 'Thấp'}</strong></div>
-                      <div><span>Điện trở R</span><strong>{areaResistance} Ω</strong></div>
-                    </div>
-                  </div>
-                  {hasChangedArea && (
-                    <div className="question-card">
-                      <h3>Khi dây dẫn có tiết diện lớn hơn, electron sẽ di chuyển như thế nào?</h3>
-                      <div className="choice-row">
-                        {[
-                          ['easier', 'Dễ hơn'],
-                          ['harder', 'Khó hơn'],
-                          ['same', 'Không thay đổi'],
-                        ].map(([value, label]) => <button className={areaFinding === value ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={value} onClick={() => checkSoftAnswer(setAreaFinding, value, 'easier')}>{label}</button>)}
-                      </div>
-                      {areaFinding && !hasAreaFinding && <p className="inline-feedback inline-feedback--wrong">Hãy tăng tiết diện và đối chiếu mức cản trở với giá trị R.</p>}
-                      {hasAreaFinding && <p className="inline-feedback inline-feedback--correct">Đúng. Tiết diện lớn giúp electron di chuyển dễ hơn nên điện trở giảm.</p>}
-                    </div>
-                  )}
-                  {hasAreaFinding && <div className="factor-conclusion">Tiết diện dây dẫn tăng <b>→</b> điện trở giảm.</div>}
-                </section>
-              )}
-
-              {hasAreaFinding && (
-                <section className="factor-stage factor-stage--material">
-                  <div className="factor-stage-heading"><span>Khảo sát 3</span><h3>Vật liệu làm dây</h3><small>Giữ nguyên chiều dài và tiết diện.</small></div>
-                  <div className="material-switch">
-                    {Object.entries(wireMaterialOptions).map(([id, item]) => (
-                      <button className={wireMaterial === id ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={id} onClick={() => { setWireMaterial(id); setHasChangedMaterial(true) }}>{item.label}</button>
-                    ))}
-                  </div>
-                  <div className="factor-sim-grid">
-                    <div className="factor-wire-panel">
-                      <div className={`factor-wire-scene factor-wire-scene--material factor-wire-scene--${wireMaterial}`} style={{ '--drift': wireMaterial === 'copper' ? '2.1s' : wireMaterial === 'iron' ? '2.8s' : '3.5s' }}>
-                        <span className="factor-wire" />
-                        <i /><i /><i />
-                        <b /><b /><b />
-                      </div>
-                    </div>
-                    <div className="factor-realtime">
-                      <div><span>Vật liệu</span><strong>{selectedMaterial.label}</strong></div>
-                      <div><span>Va chạm electron</span><strong>{selectedMaterial.collisions}</strong></div>
-                      <div><span>Điện trở R</span><strong>{selectedMaterial.resistance} Ω</strong></div>
-                    </div>
-                  </div>
-                  {hasChangedMaterial && (
-                    <div className="question-card">
-                      <h3>Tại sao các vật liệu khác nhau lại có điện trở khác nhau?</h3>
-                      <div className="choice-row">
-                        {[
-                          ['different', 'Vì mức cản trở electron khác nhau'],
-                          ['generated', 'Vì electron tự sinh thêm'],
-                          ['automatic', 'Vì dòng điện tự thay đổi'],
-                        ].map(([value, label]) => <button className={materialFinding === value ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={value} onClick={() => checkSoftAnswer(setMaterialFinding, value, 'different')}>{label}</button>)}
-                      </div>
-                      {materialFinding && !hasMaterialFinding && <p className="inline-feedback inline-feedback--wrong">Hãy chuyển giữa các vật liệu và quan sát số va chạm cùng R.</p>}
-                      {hasMaterialFinding && <p className="inline-feedback inline-feedback--correct">Đúng. Mỗi vật liệu cản trở electron khác nhau nên điện trở khác nhau.</p>}
-                    </div>
-                  )}
-                  {hasMaterialFinding && <div className="factor-conclusion">Vật liệu khác nhau <b>→</b> điện trở khác nhau.</div>}
-                </section>
-              )}
-
-              {wireFactorsComplete && (
-                <div className="factor-final-summary">
-                  <strong>Tổng kết</strong>
-                  <div>
-                    <span>Dây dài hơn <b>→</b> điện trở tăng</span>
-                    <span>Tiết diện lớn hơn <b>→</b> điện trở giảm</span>
-                    <span>Vật liệu khác nhau <b>→</b> điện trở khác nhau</span>
-                  </div>
-                  <p className="factor-resistance-formula">R = <span className="factor-fraction"><b><em>ρ</em><em>l</em></b><b>S</b></span></p>
-                  <div className="factor-symbols">
-                    <span><b>l</b> chiều dài dây dẫn</span>
-                    <span><b>S</b> tiết diện dây dẫn</span>
-                    <span><b>ρ</b> điện trở suất của vật liệu</span>
-                  </div>
-                  <p className="factor-final-conclusion">Điện trở của dây dẫn phụ thuộc vào chiều dài, tiết diện và vật liệu làm dây.</p>
-                </div>
-              )}
-            </article>
-          )}
-
-          {wireFactorsComplete && (
             <article className="lesson23-flow temperature-discovery" id="lesson23-temperature">
               <div className="lesson23-task-heading">
-                <span>Nhiệm vụ 6</span>
+                <span>Nhiệm vụ 5</span>
                 <h3>Ảnh hưởng của nhiệt độ đến điện trở</h3>
               </div>
+              <p>Quan sát đường đặc trưng vôn-ampe và bảng số liệu để rút ra nhận xét về sự phụ thuộc của điện trở vào nhiệt độ.</p>
+
+              <section className="temperature-sgk-card">
+                <div className="temperature-sgk-head">
+                  <span>Card 1</span>
+                  <h3>Dây tóc nóng lên, điện trở có đổi không?</h3>
+                  <p>Mục tiêu: quan sát đường đặc trưng vôn-ampe của đèn sợi đốt và nhận ra điện trở của đèn sợi đốt không phải luôn không đổi.</p>
+                </div>
+                <div className="filament-sgk-layout">
+                  <div className="filament-sgk-visual">
+                    <div className="filament-sgk-bulb">
+                      <img alt="Bóng đèn sợi đốt" src={bongDenImage} />
+                      <span>Dây tóc nóng lên và phát sáng</span>
+                    </div>
+                    <svg className="filament-sgk-chart" viewBox="0 0 460 300" role="img" aria-label="Đường đặc trưng vôn-ampe của đèn sợi đốt">
+                      <line x1="56" y1="248" x2="420" y2="248" />
+                      <line x1="56" y1="248" x2="56" y2="36" />
+                      <text x="405" y="278">U</text>
+                      <text x="25" y="48">I</text>
+                      <path className="filament-sgk-guide" d="M56 248 L398 74" />
+                      <path className="filament-sgk-curve" d="M56 248 C110 202 154 174 205 153 C265 128 328 113 398 104" />
+                      <circle cx="205" cy="153" r="6" />
+                      <circle cx="398" cy="104" r="6" />
+                    </svg>
+                  </div>
+                  <div className="temperature-observe-box">
+                    <strong>Nội dung quan sát</strong>
+                    <p>Khi dòng điện chạy qua đèn sợi đốt, dây tóc nóng lên và phát sáng. Lúc này nhiệt độ của dây tóc tăng.</p>
+                    <ul>
+                      <li>Quan sát đồ thị I - U của đèn sợi đốt.</li>
+                      <li>Nhận xét đồ thị có phải là đường thẳng hay không.</li>
+                      <li>So sánh sự thay đổi của I khi U tăng.</li>
+                      <li>Dự đoán điện trở của dây tóc khi đèn sáng mạnh hơn.</li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="question-card">
+                  <h3>Đồ thị I - U của đèn sợi đốt có dạng đường thẳng không?</h3>
+                  <div className="choice-row">
+                    <button className={filamentShapeFinding === 'straight' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setFilamentShapeFinding, 'straight', 'curved')}>Có, là đường thẳng</button>
+                    <button className={filamentShapeFinding === 'curved' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setFilamentShapeFinding, 'curved', 'curved')}>Không, là đường cong</button>
+                  </div>
+                  <div className="temperature-card-actions">
+                    <button className="ghost-soft-btn" type="button" onClick={() => setShowFilamentHint((current) => !current)}>Xem gợi ý</button>
+                    <button className="primary-soft-btn" type="button" onClick={() => checkSoftAnswer(setFilamentShapeFinding, filamentShapeFinding || 'straight', 'curved')}>Kiểm tra</button>
+                    {filamentUnderstood && <button className="primary-soft-btn" type="button" onClick={() => setTemperatureCardStep(Math.max(temperatureCardStep, 2))}>Tiếp tục</button>}
+                  </div>
+                  {showFilamentHint && <p className="inline-feedback">Hãy so sánh đường cong màu cam với đường thẳng mờ đi qua gốc tọa độ.</p>}
+                  {filamentShapeFinding === 'straight' && <p className="inline-feedback inline-feedback--wrong">Quan sát lại: đường biểu diễn không trùng với một đường thẳng.</p>}
+                  {filamentUnderstood && <p className="inline-feedback inline-feedback--correct">Đường đặc trưng vôn-ampe của đèn sợi đốt không phải là đường thẳng. Điều đó cho thấy điện trở của dây tóc bóng đèn thay đổi khi nhiệt độ thay đổi.</p>}
+                </div>
+              </section>
+
+              {temperatureCardStep >= 2 && (
+                <section className="temperature-sgk-card">
+                  <div className="temperature-sgk-head">
+                    <span>Card 2</span>
+                    <h3>Nhiệt độ tăng thì điện trở thay đổi ra sao?</h3>
+                    <p>Mục tiêu: rút ra kết luận điện trở dây tóc bóng đèn tăng khi nhiệt độ tăng.</p>
+                  </div>
+                  <div className="temperature-flow">
+                    <span>Dòng điện chạy qua dây tóc</span><b>→</b><span>dây tóc nóng lên</span><b>→</b><span>nhiệt độ tăng</span><b>→</b><span>điện trở của dây tóc tăng</span>
+                  </div>
+                  <div className="question-card">
+                    <h3>Khi nhiệt độ của dây tóc bóng đèn tăng, điện trở của dây tóc ______.</h3>
+                    <div className="choice-row">
+                      {[
+                        ['increase', 'tăng'],
+                        ['decrease', 'giảm'],
+                        ['same', 'không đổi'],
+                      ].map(([value, label]) => (
+                        <button className={filamentApplyFinding === value ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={value} onClick={() => checkSoftAnswer(setFilamentApplyFinding, value, 'increase')}>{label}</button>
+                      ))}
+                    </div>
+                    <div className="temperature-card-actions">
+                      <button className="ghost-soft-btn" type="button" onClick={() => setShowTemperatureHint((current) => !current)}>Xem gợi ý</button>
+                      <button className="primary-soft-btn" type="button" onClick={() => checkSoftAnswer(setFilamentApplyFinding, filamentApplyFinding || 'same', 'increase')}>Kiểm tra</button>
+                      {temperatureConclusionUnderstood && <button className="primary-soft-btn" type="button" onClick={() => setTemperatureCardStep(Math.max(temperatureCardStep, 3))}>Tiếp tục</button>}
+                    </div>
+                    {showTemperatureHint && <p className="inline-feedback">Vì khi hiệu điện thế tăng, dòng điện làm dây tóc nóng hơn, khiến điện trở của dây tóc thay đổi.</p>}
+                    {filamentApplyFinding && !temperatureConclusionUnderstood && <p className="inline-feedback inline-feedback--wrong">Hãy đối chiếu với sơ đồ phía trên và đường cong I - U của đèn sợi đốt.</p>}
+                    {temperatureConclusionUnderstood && <p className="inline-feedback inline-feedback--correct">Điện trở của dây tóc bóng đèn phụ thuộc vào nhiệt độ. Khi nhiệt độ tăng, điện trở của dây tóc tăng.</p>}
+                  </div>
+                </section>
+              )}
+
+              {temperatureCardStep >= 3 && (
+                <section className="temperature-sgk-card">
+                  <div className="temperature-sgk-head">
+                    <span>Card 3</span>
+                    <h3>Điện trở nhiệt: khi nhiệt độ thay đổi, điện trở thay đổi rõ rệt</h3>
+                    <p>Mục tiêu: biết điện trở nhiệt là linh kiện có điện trở thay đổi rõ rệt theo nhiệt độ và phân biệt được NTC, PTC.</p>
+                  </div>
+                  <div className="thermistor-type-grid">
+                    <article>
+                      <img src={ntcThermistorImage} alt="Điện trở nhiệt NTC" />
+                      <span>NTC</span>
+                      <strong>Negative Temperature Coefficient</strong>
+                      <p>Nhiệt độ tăng → điện trở giảm</p>
+                    </article>
+                    <article>
+                      <img src={ptcThermistorImage} alt="Điện trở nhiệt PTC" />
+                      <span>PTC</span>
+                      <strong>Positive Temperature Coefficient</strong>
+                      <p>Nhiệt độ tăng → điện trở tăng</p>
+                    </article>
+                  </div>
+                  <div className="ntc-sgk-lab">
+                    <div>
+                      <strong>Khảo sát NTC</strong>
+                      <label className="thermal-slider">
+                        <span>Nhiệt độ <strong>{ntcTemperature} °C</strong></span>
+                        <input type="range" min="20" max="80" value={ntcTemperature} onChange={(event) => { const nextTemperature = Number(event.target.value); setNtcTemperature(nextTemperature); setHasHeatedNtc(nextTemperature > 20) }} />
+                      </label>
+                      <div className="simple-resistance-readout">
+                        <span>Điện trở NTC</span>
+                        <strong>{ntcResistance} kΩ</strong>
+                      </div>
+                    </div>
+                    <table>
+                      <thead><tr><th>Nhiệt độ</th><th>Điện trở NTC</th></tr></thead>
+                      <tbody>
+                        <tr><td>20 °C</td><td>10 kΩ</td></tr>
+                        <tr><td>50 °C</td><td>4 kΩ</td></tr>
+                        <tr><td>80 °C</td><td>1,5 kΩ</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="question-card">
+                    <h3>Khi nhiệt độ tăng, điện trở NTC thay đổi như thế nào?</h3>
+                    <div className="choice-row">
+                      <button className={ntcFinding === 'increase' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setNtcFinding, 'increase', 'decrease')}>Tăng</button>
+                      <button className={ntcFinding === 'decrease' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setNtcFinding, 'decrease', 'decrease')}>Giảm</button>
+                    </div>
+                    <div className="temperature-card-actions">
+                      <button className="ghost-soft-btn" type="button" onClick={() => setShowNtcHint((current) => !current)}>Xem gợi ý</button>
+                      <button className="primary-soft-btn" type="button" onClick={() => checkSoftAnswer(setNtcFinding, ntcFinding || 'increase', 'decrease')}>Kiểm tra</button>
+                    </div>
+                    {showNtcHint && <p className="inline-feedback">Ở nhiệt độ thấp, điện trở NTC lớn; khi nhiệt độ tăng, giá trị điện trở trong bảng giảm.</p>}
+                    {hasHeatedNtc && !ntcFinding && <p className="inline-feedback">Hãy quan sát giá trị điện trở khi kéo nhiệt độ từ thấp lên cao.</p>}
+                    {ntcFinding === 'increase' && <p className="inline-feedback inline-feedback--wrong">Hãy đối chiếu bảng số liệu: 10 kΩ, 4 kΩ, 1,5 kΩ.</p>}
+                    {ntcUnderstood && <p className="inline-feedback inline-feedback--correct">Đúng. Với NTC, nhiệt độ tăng thì điện trở giảm.</p>}
+                  </div>
+                  {ntcUnderstood && (
+                    <div className="question-card">
+                      <h3>PTC khác NTC ở điểm nào?</h3>
+                      <div className="choice-row">
+                        <button className={thermistorCompareFinding === 'same' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setThermistorCompareFinding, 'same', 'opposite')}>Cả hai đều giảm điện trở khi nhiệt độ tăng</button>
+                        <button className={thermistorCompareFinding === 'opposite' ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" onClick={() => checkSoftAnswer(setThermistorCompareFinding, 'opposite', 'opposite')}>NTC giảm, PTC tăng điện trở khi nhiệt độ tăng</button>
+                      </div>
+                      {thermistorCompareFinding === 'same' && <p className="inline-feedback inline-feedback--wrong">Hãy đọc lại đặc điểm của hai thẻ NTC và PTC.</p>}
+                      {thermistorCompareUnderstood && <p className="inline-feedback inline-feedback--correct">Điện trở nhiệt là linh kiện có điện trở thay đổi rõ rệt theo nhiệt độ. Với NTC, nhiệt độ tăng thì điện trở giảm. Với PTC, nhiệt độ tăng thì điện trở tăng.</p>}
+                    </div>
+                  )}
+                </section>
+              )}
+              {false && <>
               <p>Nhiệt độ có làm điện trở thay đổi không?</p>
               <div className="thermal-scenarios" aria-label="Các tình huống vật dẫn nóng lên trong thực tế">
                 <div className="thermal-scenario thermal-scenario--charger"><i /><strong>Dây sạc nóng lên khi sạc nhanh</strong></div>
@@ -5463,6 +5543,7 @@ function Lesson23OhmLesson({ activePart = 'before' }) {
                   )}
                 </section>
               )}
+              </>}
             </article>
           )}
 
@@ -6686,101 +6767,92 @@ const lesson24WorksheetCards = [
   },
   {
     id: 'internal',
-    title: 'Điện trở trong',
-    lead: 'Pin mới và pin đã sử dụng lâu làm đèn sáng khác nhau.',
+    title: 'Điện trở trong của nguồn điện',
+    lead: 'Suy luận từ dòng điện trong mạch kín để hình thành khái niệm điện trở trong.',
     questions: [
       {
         id: 'q1',
-        prompt: 'Tại sao pin dùng lâu thường làm đèn sáng yếu hơn?',
-        options: ['Điện trở trong tăng', 'Dây dẫn dài hơn', 'Electron biến mất'],
-        answer: 'Điện trở trong tăng',
-        conclusion: 'Bên trong nguồn điện tồn tại điện trở trong.',
+        prompt: 'Trong mạch kín, dòng điện đi qua những phần nào?',
+        options: ['Chỉ bóng đèn', 'Chỉ dây dẫn ngoài', 'Cả mạch ngoài và bên trong nguồn điện'],
+        answer: 'Cả mạch ngoài và bên trong nguồn điện',
+        conclusion: 'Dòng điện chạy qua cả mạch ngoài và bên trong nguồn điện.',
       },
       {
         id: 'q2',
-        prompt: 'Kí hiệu điện trở trong là gì?',
-        options: ['r', 'R', 'U'],
-        answer: 'r',
-        conclusion: 'Điện trở trong được kí hiệu là r nhỏ.',
+        prompt: 'Điện trở của nguồn điện được gọi là gì?',
+        options: ['Điện trở mạch ngoài', 'Điện trở trong', 'Hiệu điện thế'],
+        answer: 'Điện trở trong',
+        conclusion: 'Nguồn điện cũng có điện trở; điện trở đó gọi là điện trở trong và kí hiệu là r.',
       },
     ],
   },
   {
     id: 'voltage',
-    title: 'Hiệu điện thế giữa hai cực nguồn',
-    lead: 'So sánh nguồn khi mạch hở và khi mạch kín.',
+    title: 'Ảnh hưởng của điện trở trong lên hiệu điện thế giữa hai cực nguồn',
+    lead: 'Khám phá vì sao hiệu điện thế giữa hai cực nguồn khi có dòng điện nhỏ hơn suất điện động.',
     questions: [
       {
         id: 'q1',
-        prompt: 'Khi chưa có dòng điện chạy qua nguồn thì U bằng đại lượng nào?',
-        options: ['U = ε', 'U = Ir', 'U = 0'],
-        answer: 'U = ε',
-        conclusion: 'Khi mạch hở: U = ε.',
+        prompt: 'Khi mạch kín, năng lượng nguồn điện cung cấp được tiêu thụ ở đâu?',
+        options: ['Chỉ trên điện trở ngoài R', 'Chỉ trên điện trở trong r', 'Trên cả điện trở ngoài R và điện trở trong r'],
+        answer: 'Trên cả điện trở ngoài R và điện trở trong r',
+        conclusion: 'Năng lượng nguồn điện được tiêu thụ trên cả điện trở ngoài và điện trở trong.',
       },
       {
         id: 'q2',
-        prompt: 'Tại sao hiệu điện thế hai cực nguồn giảm khi mạch kín?',
-        options: ['Do hao phí trên điện trở trong', 'Do dây dẫn dài hơn', 'Do electron mất đi'],
-        answer: 'Do hao phí trên điện trở trong',
-        conclusion: 'Khi mạch kín: U = ε − Ir.',
+        prompt: 'Khi mạch kín, hiệu điện thế giữa hai cực nguồn liên hệ với suất điện động như thế nào?',
+        options: ['Bằng suất điện động', 'Nhỏ hơn suất điện động', 'Luôn bằng 0'],
+        answer: 'Nhỏ hơn suất điện động',
+        conclusion: 'Khi mạch kín: U = ξ − Ir; hiệu điện thế giữa hai cực nguồn nhỏ hơn suất điện động.',
       },
     ],
   },
   {
     id: 'whole-ohm',
     title: 'Định luật Ôm toàn mạch',
-    lead: 'Quan sát mối liên hệ giữa ε, R, r và cường độ dòng điện I.',
+    lead: 'Khám phá mối liên hệ giữa ξ, điện trở toàn phần và cường độ dòng điện trong mạch kín.',
     questions: [
       {
         id: 'q1',
-        prompt: 'Khi ε tăng thì I thay đổi thế nào?',
-        options: ['Tăng', 'Giảm', 'Không đổi'],
-        answer: 'Tăng',
-        conclusion: 'ε tăng làm I tăng nếu R và r không đổi.',
+        prompt: 'Điện trở toàn phần của mạch gồm những điện trở nào?',
+        options: ['Chỉ R', 'Chỉ r', 'R + r'],
+        answer: 'R + r',
+        conclusion: 'Điện trở toàn phần của mạch là R + r.',
       },
       {
         id: 'q2',
-        prompt: 'Khi R tăng thì I thay đổi thế nào?',
+        prompt: 'Khi ξ tăng thì I thay đổi thế nào nếu R và r không đổi?',
         options: ['Tăng', 'Giảm', 'Không đổi'],
-        answer: 'Giảm',
-        conclusion: 'R tăng làm điện trở toàn mạch tăng, nên I giảm.',
+        answer: 'Tăng',
+        conclusion: 'Khi điện trở toàn phần không đổi, ξ càng lớn thì I càng lớn.',
       },
       {
         id: 'q3',
-        prompt: 'Khi r tăng thì I thay đổi thế nào?',
+        prompt: 'Khi điện trở toàn phần tăng thì I thay đổi thế nào nếu ξ không đổi?',
         options: ['Tăng', 'Giảm', 'Không đổi'],
         answer: 'Giảm',
-        conclusion: 'r tăng cũng làm điện trở toàn mạch tăng, nên I giảm.',
-      },
-      {
-        id: 'q4',
-        type: 'number',
-        prompt: 'Tính I khi ε = 12 V, R = 5 Ω, r = 1 Ω.',
-        answer: 2,
-        unit: 'A',
-        conclusion: 'I = ε/(R + r) = 12/(5 + 1) = 2 A.',
+        conclusion: 'Điện trở toàn phần càng lớn thì dòng điện càng nhỏ.',
       },
     ],
-    formula: 'I = ε/(R + r)',
   },
   {
     id: 'short',
-    title: 'Đoản mạch',
-    lead: 'Một sơ đồ nối trực tiếp hai cực nguồn có thể rất nguy hiểm.',
+    title: '⚠️ Em có biết? Đoản mạch',
+    lead: 'Khi hai cực của nguồn điện được nối trực tiếp với nhau bằng dây dẫn có điện trở rất nhỏ, hiện tượng đoản mạch có thể xảy ra.',
     questions: [
       {
         id: 'q1',
-        prompt: 'Sơ đồ nào có hiện tượng đoản mạch?',
-        options: ['Nguồn - bóng đèn - dây dẫn', 'Nguồn có công tắc mở', 'Hai cực nguồn nối thẳng bằng dây', 'Nguồn - điện trở - bóng đèn'],
-        answer: 'Hai cực nguồn nối thẳng bằng dây',
-        conclusion: 'Đoản mạch xảy ra khi hai cực nguồn bị nối trực tiếp bằng dây dẫn có điện trở rất nhỏ.',
+        prompt: 'Sơ đồ nào mô tả hiện tượng đoản mạch?',
+        options: ['Nguồn – bóng đèn – dây dẫn', 'Nguồn có công tắc mở', 'Hai cực nguồn nối trực tiếp bằng dây dẫn'],
+        answer: 'Hai cực nguồn nối trực tiếp bằng dây dẫn',
+        conclusion: 'Đoản mạch xảy ra khi hai cực nguồn được nối trực tiếp bằng dây dẫn có điện trở rất nhỏ.',
       },
       {
         id: 'q2',
         prompt: 'Vì sao đoản mạch nguy hiểm?',
-        options: ['Dòng điện tăng rất lớn', 'Dòng điện giảm', 'Không ảnh hưởng'],
+        options: ['Dòng điện tăng rất lớn', 'Dòng điện giảm về 0', 'Không ảnh hưởng gì'],
         answer: 'Dòng điện tăng rất lớn',
-        conclusion: 'Khi đoản mạch, dòng điện có thể tăng rất lớn làm dây nóng lên và gây nguy hiểm.',
+        conclusion: 'Khi đoản mạch, điện trở mạch ngoài rất nhỏ nên cường độ dòng điện có thể tăng rất lớn.',
       },
     ],
   },
@@ -6788,22 +6860,22 @@ const lesson24WorksheetCards = [
 
 const lesson24OpeningSequence = [
   ['weak-pin', '🪫 Pin yếu'],
+  ['dim-light', '💡 Đèn sáng mờ'],
   ['replace-pin', '🔋 Thay pin mới'],
-  ['current-maintained', '⚡ Dòng điện được duy trì'],
   ['bright-light', '💡 Đèn sáng mạnh trở lại'],
 ]
 
 const lesson24OpeningCards = [
   ['bright-light', '💡 Đèn sáng mạnh trở lại'],
+  ['dim-light', '💡 Đèn sáng mờ'],
   ['weak-pin', '🪫 Pin yếu'],
-  ['current-maintained', '⚡ Dòng điện được duy trì'],
   ['replace-pin', '🔋 Thay pin mới'],
 ]
 
 const lesson24OpeningFocusCards = [
-  ['color', '🎨 Màu sắc của pin'],
-  ['current', '⚡ Dòng điện trong mạch'],
-  ['wire', '📏 Chiều dài dây dẫn'],
+  ['color', 'A. Pin mới có màu sắc khác.'],
+  ['current', 'B. Pin mới giúp dòng điện tiếp tục tồn tại trong mạch.'],
+  ['wire', 'C. Dây dẫn ngắn hơn.'],
 ]
 
 function Lesson24SectionMeta({ title, objective, tasks, product }) {
@@ -6846,9 +6918,44 @@ function Lesson24WorksheetV2() {
   const [openingFeedback, setOpeningFeedback] = useState({})
   const [openingAttempts, setOpeningAttempts] = useState({})
   const [focusChoice, setFocusChoice] = useState('')
-  const [conclusionChoice, setConclusionChoice] = useState('')
+  const [electronTransfers, setElectronTransfers] = useState(0)
+  const [spheresConnected, setSpheresConnected] = useState(false)
+  const [conditionAnswers, setConditionAnswers] = useState({})
+  const [conditionFeedback, setConditionFeedback] = useState({})
+  const [sourcePolesRevealed, setSourcePolesRevealed] = useState(false)
+  const [sourceAnswers, setSourceAnswers] = useState({})
+  const [sourceFeedback, setSourceFeedback] = useState({})
+  const [internalAnswers, setInternalAnswers] = useState({})
+  const [internalFeedback, setInternalFeedback] = useState({})
+  const [internalDraggedPhrase, setInternalDraggedPhrase] = useState('')
+  const [voltageAnswers, setVoltageAnswers] = useState({})
+  const [voltageFeedback, setVoltageFeedback] = useState({})
+  const [voltageDraggedToken, setVoltageDraggedToken] = useState('')
+  const [wholeOhmAnswers, setWholeOhmAnswers] = useState({})
+  const [wholeOhmFeedback, setWholeOhmFeedback] = useState({})
+  const [wholeOhmDraggedToken, setWholeOhmDraggedToken] = useState('')
+  const [wholeOhmEmf, setWholeOhmEmf] = useState(9)
+  const [wholeOhmTotalResistance, setWholeOhmTotalResistance] = useState(6)
+  const [shortAnswers, setShortAnswers] = useState({})
+  const [shortFeedback, setShortFeedback] = useState({})
   const [quizOpen, setQuizOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
   const [selfOpen, setSelfOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
+
+  useEffect(() => {
+    if (!spheresConnected || electronTransfers >= 4) return undefined
+
+    const timer = window.setInterval(() => {
+      setElectronTransfers((current) => {
+        if (current >= 4) {
+          window.clearInterval(timer)
+          return current
+        }
+        return current + 1
+      })
+    }, 950)
+
+    return () => window.clearInterval(timer)
+  }, [spheresConnected, electronTransfers])
 
   const isQuestionCorrect = (question, value) => {
     if (question.type === 'number') {
@@ -6980,7 +7087,7 @@ function Lesson24WorksheetV2() {
       isCorrect,
       '💡 Hãy suy nghĩ xem điều gì xảy ra trước và điều gì là kết quả cuối cùng mà em quan sát được.',
       '💡 Đèn sáng mạnh trở lại là kết quả cuối cùng chứ không phải nguyên nhân.',
-      '✅ Chính xác! Pin mới giúp dòng điện tiếp tục được duy trì trong mạch nên đèn sáng mạnh trở lại.',
+      '✅ Chính xác! Pin yếu → đèn sáng mờ → thay pin mới → đèn sáng mạnh trở lại.',
     )
   }
 
@@ -6993,18 +7100,167 @@ function Lesson24WorksheetV2() {
       focusChoice === 'current',
       hint,
       hint,
-      '✅ Đúng rồi! Muốn đèn sáng thì phải có dòng điện trong mạch.',
+      '✅ Đúng! Sau khi thay pin mới, dòng điện trong mạch tiếp tục tồn tại nên đèn sáng trở lại. Nhưng pin đã làm gì để dòng điện không bị mất đi?',
     )
   }
 
   const checkOpeningConclusion = () => {
     setOpeningSmartFeedback(
       'conclusion',
-      conclusionChoice === 'current',
-      '💡 Hãy nhớ lại điều vừa được xác định là quan trọng nhất đối với hoạt động của đèn.',
-      '💡 Muốn đèn sáng liên tục thì điều quan trọng đó cũng phải được duy trì liên tục.',
-      '✅ Chính xác! Muốn đèn sáng liên tục thì dòng điện trong mạch phải được duy trì liên tục.',
+      true,
+      '💡 Hãy giữ lại câu hỏi khoa học vừa xuất hiện sau khi thay pin mới.',
+      '💡 Câu hỏi này chưa cần trả lời ngay; ta sẽ khám phá ở nhiệm vụ tiếp theo.',
+      '✅ Câu hỏi đã sẵn sàng: Vì sao pin có thể giúp dòng điện tồn tại lâu dài trong mạch?',
     )
+  }
+
+  const connectSpheres = () => {
+    setElectronTransfers(0)
+    setSpheresConnected(true)
+    playLessonTone('correct')
+  }
+
+  const answerConditionQuestion = (key, value, correct, successText, wrongText) => {
+    const isCorrect = value === correct
+    setConditionAnswers((current) => ({ ...current, [key]: value }))
+    setConditionFeedback((current) => ({ ...current, [key]: { type: isCorrect ? 'success' : 'hint', text: isCorrect ? successText : wrongText } }))
+    playLessonTone(isCorrect ? 'correct' : 'wrong')
+  }
+
+  const completeConditionTask = () => {
+    setCompletedCards((current) => current.includes('condition') ? current : [...current, 'condition'])
+    playLessonTone('correct')
+  }
+
+  const answerSourceQuestion = (key, value, correct, successText, wrongText) => {
+    const isCorrect = value === correct
+    setSourceAnswers((current) => ({ ...current, [key]: value }))
+    setSourceFeedback((current) => ({ ...current, [key]: { type: isCorrect ? 'success' : 'hint', text: isCorrect ? successText : wrongText } }))
+    playLessonTone(isCorrect ? 'correct' : 'wrong')
+  }
+
+  const completeSourceTask = () => {
+    setCompletedCards((current) => current.includes('source') ? current : [...current, 'source'])
+    playLessonTone('correct')
+  }
+
+  const answerInternalQuestion = (key, value, correct, successText, wrongText) => {
+    const isCorrect = value === correct
+    setInternalAnswers((current) => ({ ...current, [key]: value }))
+    setInternalFeedback((current) => ({ ...current, [key]: { type: isCorrect ? 'success' : 'hint', text: isCorrect ? successText : wrongText } }))
+    playLessonTone(isCorrect ? 'correct' : 'wrong')
+  }
+
+  const completeInternalTask = () => {
+    setCompletedCards((current) => current.includes('internal') ? current : [...current, 'internal'])
+    playLessonTone('correct')
+  }
+
+  const answerVoltageQuestion = (key, value, correct, successText, wrongText) => {
+    const isCorrect = value === correct
+    setVoltageAnswers((current) => ({ ...current, [key]: value }))
+    setVoltageFeedback((current) => ({ ...current, [key]: { type: isCorrect ? 'success' : 'hint', text: isCorrect ? successText : wrongText } }))
+    playLessonTone(isCorrect ? 'correct' : 'wrong')
+  }
+
+  const placeVoltageToken = (slot) => {
+    if (!voltageDraggedToken) return
+    setVoltageAnswers((current) => ({ ...current, [slot]: voltageDraggedToken }))
+    setVoltageDraggedToken('')
+    setVoltageFeedback((current) => ({ ...current, formula: '' }))
+  }
+
+  const checkVoltageFormula = () => {
+    const isCorrect = voltageAnswers.emf === 'ξ' && voltageAnswers.terminal === 'U' && voltageAnswers.drop === 'Ir'
+    setVoltageFeedback((current) => ({
+      ...current,
+      formula: {
+        type: isCorrect ? 'success' : 'hint',
+        text: isCorrect
+          ? 'Đúng! Suất điện động bằng tổng hiệu điện thế mạch ngoài và độ giảm điện thế trên điện trở trong.'
+          : 'Hãy ghép: suất điện động là ξ, hiệu điện thế mạch ngoài là U, độ giảm điện thế trên điện trở trong là Ir.',
+      },
+    }))
+    if (isCorrect) {
+      setVoltageAnswers((current) => ({ ...current, formula: 'done' }))
+      playLessonTone('correct')
+    } else {
+      playLessonTone('wrong')
+    }
+  }
+
+  const completeVoltageTask = () => {
+    setCompletedCards((current) => current.includes('voltage') ? current : [...current, 'voltage'])
+    playLessonTone('correct')
+  }
+
+  const answerWholeOhmQuestion = (key, value, correct, successText, wrongText) => {
+    const isCorrect = value === correct
+    setWholeOhmAnswers((current) => ({ ...current, [key]: value }))
+    setWholeOhmFeedback((current) => ({ ...current, [key]: { type: isCorrect ? 'success' : 'hint', text: isCorrect ? successText : wrongText } }))
+    playLessonTone(isCorrect ? 'correct' : 'wrong')
+  }
+
+  const placeWholeOhmToken = (slot) => {
+    if (!wholeOhmDraggedToken) return
+    setWholeOhmAnswers((current) => ({ ...current, [slot]: wholeOhmDraggedToken }))
+    setWholeOhmDraggedToken('')
+    setWholeOhmFeedback((current) => ({ ...current, formula: '' }))
+  }
+
+  const checkWholeOhmFormula = () => {
+    const isCorrect = wholeOhmAnswers.left === 'I' && wholeOhmAnswers.numerator === 'ξ' && wholeOhmAnswers.denominator === 'R+r'
+    setWholeOhmFeedback((current) => ({
+      ...current,
+      formula: {
+        type: isCorrect ? 'success' : 'hint',
+        text: isCorrect
+          ? 'Đúng! Từ ξ = I(R + r) suy ra cường độ dòng điện trong toàn mạch.'
+          : 'Hãy đặt I ở vế trái, ξ ở tử số và R+r ở mẫu số.',
+      },
+    }))
+    if (isCorrect) {
+      setWholeOhmAnswers((current) => ({ ...current, formula: 'done' }))
+      playLessonTone('correct')
+    } else {
+      playLessonTone('wrong')
+    }
+  }
+
+  const checkWholeOhmStatement = () => {
+    const isCorrect = wholeOhmAnswers.direct === 'tỉ lệ thuận' && wholeOhmAnswers.inverse === 'tỉ lệ nghịch'
+    setWholeOhmFeedback((current) => ({
+      ...current,
+      statement: {
+        type: isCorrect ? 'success' : 'hint',
+        text: isCorrect
+          ? 'Đúng! Cường độ dòng điện tỉ lệ thuận với suất điện động và tỉ lệ nghịch với điện trở toàn phần.'
+          : 'Hãy dựa vào hai mô phỏng: ξ tăng làm I tăng, còn R+r tăng làm I giảm.',
+      },
+    }))
+    if (isCorrect) {
+      setWholeOhmAnswers((current) => ({ ...current, statement: 'done' }))
+      playLessonTone('correct')
+    } else {
+      playLessonTone('wrong')
+    }
+  }
+
+  const completeWholeOhmTask = () => {
+    setCompletedCards((current) => current.includes('whole-ohm') ? current : [...current, 'whole-ohm'])
+    playLessonTone('correct')
+  }
+
+  const answerShortQuestion = (key, value, correct, successText, wrongText) => {
+    const isCorrect = value === correct
+    setShortAnswers((current) => ({ ...current, [key]: value }))
+    setShortFeedback((current) => ({ ...current, [key]: { type: isCorrect ? 'success' : 'hint', text: isCorrect ? successText : wrongText } }))
+    playLessonTone(isCorrect ? 'correct' : 'wrong')
+  }
+
+  const completeShortTask = () => {
+    setCompletedCards((current) => current.includes('short') ? current : [...current, 'short'])
+    playLessonTone('correct')
   }
 
   const renderWorksheetQuestion = (card, question) => {
@@ -7053,6 +7309,923 @@ function Lesson24WorksheetV2() {
     )
   }
 
+  const renderConditionTask = (index) => {
+    const voltagePercent = Math.max(0, 100 - electronTransfers * 25)
+    const predictionCorrect = conditionAnswers.prediction === 'b-to-a'
+    const q1Ready = spheresConnected && electronTransfers >= 1
+    const finalStateReached = spheresConnected && electronTransfers >= 4
+    const q2Ready = finalStateReached && conditionAnswers.q1 === 'current'
+    const conclusionReady = conditionAnswers.q2 === 'same-potential'
+    const done = completedCards.includes('condition')
+
+    return (
+      <section className={done ? 'worksheet24-section is-done' : 'worksheet24-section'} key="condition">
+        <div className="worksheet24-card-head worksheet24-section-head">
+          <span>Nhiệm vụ {index + 2}</span>
+          <h3>Điều kiện để duy trì dòng điện</h3>
+          <p>Dự đoán hiện tượng, nối hai quả cầu rồi quan sát dòng điện có thể tồn tại lâu dài hay không.</p>
+        </div>
+
+        <article className="worksheet24-question">
+          <strong>Nếu nối hai quả cầu này bằng dây dẫn thì điều gì xảy ra?</strong>
+          <div className="worksheet24-options">
+            <button className={conditionAnswers.prediction === 'b-to-a' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('prediction', 'b-to-a', 'b-to-a', 'Hãy kiểm chứng dự đoán bằng mô phỏng.', 'Hãy xét chiều dịch chuyển của electron giữa quả cầu âm và quả cầu dương.')}>A. Electron dịch chuyển từ B sang A.</button>
+            <button className={conditionAnswers.prediction === 'a-to-b' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('prediction', 'a-to-b', 'b-to-a', 'Hãy kiểm chứng dự đoán bằng mô phỏng.', 'Quả cầu A mang điện dương, quả cầu B mang điện âm. Hãy dự đoán lại.')}>B. Electron dịch chuyển từ A sang B.</button>
+            <button className={conditionAnswers.prediction === 'none' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('prediction', 'none', 'b-to-a', 'Hãy kiểm chứng dự đoán bằng mô phỏng.', 'Giữa hai quả cầu có hiệu điện thế nên cần kiểm tra xem electron có dịch chuyển không.')}>C. Không có electron nào dịch chuyển.</button>
+          </div>
+          {conditionFeedback.prediction && <div className={conditionFeedback.prediction.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{conditionFeedback.prediction.text}</strong></div>}
+        </article>
+
+        <article className="source24-condition-lab">
+          <div className="source24-lab-head">
+            <span>Thí nghiệm tương tác</span>
+            <h3>Hãy thử nối hai quả cầu</h3>
+          </div>
+          <div className="source24-sphere-lab" style={{ '--voltage-level': `${voltagePercent}%` }}>
+            <div className="source24-charge-sphere source24-charge-sphere--a">
+              <strong>Quả cầu A</strong>
+              <span>Mang điện tích dương (+)</span>
+              <div className="source24-plus-cloud">{Array.from({ length: 8 }, (_, item) => <i key={item}>+</i>)}</div>
+              <div className="source24-a-electrons">{Array.from({ length: electronTransfers }, (_, item) => <b key={item} />)}</div>
+            </div>
+            <div className="source24-connection">
+              <div
+                className={spheresConnected ? (electronTransfers > 0 && electronTransfers < 4 ? 'source24-wire is-active' : 'source24-wire') : 'source24-wire source24-wire--hidden'}
+                style={{ '--electron-speed': `${0.85 + electronTransfers * 0.42}s` }}
+              >
+                {spheresConnected && electronTransfers < 4 && Array.from({ length: 3 }, (_, item) => <i key={item} />)}
+              </div>
+              {!spheresConnected && <span className="source24-potential-label">VA ≠ VB</span>}
+              {predictionCorrect && (
+                <button className="primary-soft-btn source24-connect-btn" disabled={spheresConnected} type="button" onClick={connectSpheres}>
+                  NỐI HAI QUẢ CẦU
+                </button>
+              )}
+            </div>
+            <div className="source24-charge-sphere source24-charge-sphere--b">
+              <strong>Quả cầu B</strong>
+              <span>Mang điện tích âm (-)</span>
+              <div className="source24-electron-cloud">{Array.from({ length: Math.max(0, 8 - electronTransfers) }, (_, item) => <b key={item} />)}</div>
+            </div>
+          </div>
+          <div className="source24-voltage-meter" aria-label={`Hiệu điện thế còn ${voltagePercent}%`}>
+            <div><strong>Hiệu điện thế</strong><span>{finalStateReached ? '0' : spheresConnected ? `${voltagePercent}%` : 'VA ≠ VB'}</span></div>
+            <i><b style={{ width: `${voltagePercent}%` }} /></i>
+            {finalStateReached && <p>VA = VB. Hiệu điện thế = 0. Không còn electron chuyển động.</p>}
+          </div>
+        </article>
+
+        {q1Ready && (
+          <article className="worksheet24-question">
+            <strong>Trong quá trình electron dịch chuyển qua dây dẫn, hiện tượng nào xuất hiện?</strong>
+            <div className="worksheet24-options">
+              <button className={conditionAnswers.q1 === 'current' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('q1', 'current', 'current', '✅ Đúng! Sự dịch chuyển có hướng của electron trong dây dẫn tạo thành dòng điện.', 'Hãy quan sát electron đang tự dịch chuyển qua dây nối.')}>A. Dòng điện trong dây dẫn.</button>
+              <button className={conditionAnswers.q1 === 'still' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('q1', 'still', 'current', '✅ Đúng! Sự dịch chuyển có hướng của electron trong dây dẫn tạo thành dòng điện.', 'Electron không đứng yên sau khi hai quả cầu được nối bằng dây.')}>B. Electron đứng yên.</button>
+              <button className={conditionAnswers.q1 === 'none' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('q1', 'none', 'current', '✅ Đúng! Sự dịch chuyển có hướng của electron trong dây dẫn tạo thành dòng điện.', 'Có electron dịch chuyển qua dây nối, hãy quan sát lại mô phỏng.')}>C. Không có hiện tượng gì.</button>
+            </div>
+            {conditionFeedback.q1 && <div className={conditionFeedback.q1.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{conditionFeedback.q1.text}</strong></div>}
+          </article>
+        )}
+
+        {q2Ready && (
+          <article className="worksheet24-question">
+            <strong>Vì sao dòng điện không còn tồn tại?</strong>
+            <div className="worksheet24-options">
+              <button className={conditionAnswers.q2 === 'lost' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('q2', 'lost', 'same-potential', '✅ Đúng! Khi điện thế hai quả cầu bằng nhau thì giữa hai đầu dây dẫn không còn hiệu điện thế nên dòng điện mất đi.', 'Electron không biến mất; hãy quan sát trạng thái VA = VB.')}>A. Electron biến mất.</button>
+              <button className={conditionAnswers.q2 === 'same-potential' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('q2', 'same-potential', 'same-potential', '✅ Đúng! Khi điện thế hai quả cầu bằng nhau thì giữa hai đầu dây dẫn không còn hiệu điện thế nên dòng điện mất đi.', 'Hãy quan sát trạng thái cuối của hai quả cầu.')}>B. Hai quả cầu đã có cùng điện thế.</button>
+              <button className={conditionAnswers.q2 === 'broken' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('q2', 'broken', 'same-potential', '✅ Đúng! Khi điện thế hai quả cầu bằng nhau thì giữa hai đầu dây dẫn không còn hiệu điện thế nên dòng điện mất đi.', 'Dây dẫn không bị hỏng; hiệu điện thế mới là đại lượng đã giảm về 0.')}>C. Dây dẫn bị hỏng.</button>
+            </div>
+            {conditionFeedback.q2 && <div className={conditionFeedback.q2.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{conditionFeedback.q2.text}</strong></div>}
+          </article>
+        )}
+
+        {conclusionReady && (
+          <article className="worksheet24-question">
+            <strong>Điều kiện nào giúp dòng điện tồn tại lâu dài?</strong>
+            <strong>Muốn dòng điện tồn tại lâu dài cần duy trì ______ giữa hai đầu mạch.</strong>
+            <div className="worksheet24-options">
+              <button className={conditionAnswers.conclusion === 'voltage' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('conclusion', 'voltage', 'voltage', '✅ Chính xác. Muốn duy trì dòng điện lâu dài cần duy trì hiệu điện thế giữa hai đầu mạch.', 'Hãy nhớ đại lượng đã giảm dần về 0 trong thí nghiệm.')}>Hiệu điện thế</button>
+              <button className={conditionAnswers.conclusion === 'color' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('conclusion', 'color', 'voltage', '✅ Chính xác. Muốn duy trì dòng điện lâu dài cần duy trì hiệu điện thế giữa hai đầu mạch.', 'Màu sắc của vật dẫn không phải điều kiện tạo dòng điện.')}>Màu sắc của vật dẫn</button>
+              <button className={conditionAnswers.conclusion === 'length' ? 'is-selected' : ''} type="button" onClick={() => answerConditionQuestion('conclusion', 'length', 'voltage', '✅ Chính xác. Muốn duy trì dòng điện lâu dài cần duy trì hiệu điện thế giữa hai đầu mạch.', 'Chiều dài dây không phải đại lượng đã mất đi trong mô phỏng.')}>Chiều dài dây dẫn</button>
+            </div>
+            {conditionFeedback.conclusion && <div className={conditionFeedback.conclusion.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{conditionFeedback.conclusion.text}</strong></div>}
+          </article>
+        )}
+
+        {conditionAnswers.conclusion === 'voltage' && (
+          <div className="worksheet24-info-box worksheet24-info-box--remember">
+            <strong>Kết luận</strong>
+            <p>✔ Khi giữa hai đầu vật dẫn có hiệu điện thế, electron dịch chuyển có hướng tạo thành dòng điện.</p>
+            <p>✔ Trong trường hợp hai quả cầu mang điện, hiệu điện thế giảm dần nên dòng điện chỉ tồn tại trong thời gian ngắn.</p>
+            <p>✔ Muốn duy trì dòng điện lâu dài cần duy trì hiệu điện thế giữa hai đầu mạch.</p>
+            <p>🤔 Chúng ta vừa biết muốn duy trì dòng điện lâu dài cần duy trì hiệu điện thế. Vậy thiết bị nào có thể liên tục duy trì hiệu điện thế giữa hai đầu mạch?</p>
+            {!done && <button className="primary-soft-btn" type="button" onClick={completeConditionTask}>Khám phá tiếp</button>}
+          </div>
+        )}
+
+        {done && index < lesson24WorksheetCards.length - 1 && index === cardIndex && (
+          <button className="primary-soft-btn" type="button" onClick={() => setCardIndex((current) => current + 1)}>Mở nhiệm vụ tiếp theo</button>
+        )}
+      </section>
+    )
+  }
+
+  const renderSourceTask = (index) => {
+    const sourceIdentified = sourceAnswers.device === 'source'
+    const polesUnderstood = sourceAnswers.poles === 'two'
+    const separationUnderstood = sourceAnswers.separation === 'separate'
+    const done = completedCards.includes('source')
+
+    return (
+      <section className={done ? 'worksheet24-section is-done' : 'worksheet24-section'} key="source">
+        <div className="worksheet24-card-head worksheet24-section-head">
+          <span>Nhiệm vụ {index + 2}</span>
+          <h3>Nguồn điện</h3>
+          <p>Trong thí nghiệm hai quả cầu, dòng điện chỉ tồn tại trong thời gian ngắn vì hiệu điện thế dần mất đi. Tuy nhiên chiếc đèn pin vẫn có thể sáng liên tục trong thời gian dài.</p>
+        </div>
+        <div className="worksheet24-bridge worksheet24-bridge--reflect">
+          <p><strong>🤔 Điều gì giúp hiệu điện thế giữa hai đầu mạch luôn được duy trì?</strong></p>
+        </div>
+
+        <article className="worksheet24-question">
+          <strong>Thiết bị nào có khả năng duy trì hiệu điện thế giữa hai đầu mạch?</strong>
+          <div className="worksheet24-options">
+            <button className={sourceAnswers.device === 'wire' ? 'is-selected' : ''} type="button" onClick={() => answerSourceQuestion('device', 'wire', 'source', '✅ Đúng! Nguồn điện là thiết bị tạo ra và duy trì hiệu điện thế giữa hai cực của nó.', 'Dây dẫn chỉ tạo đường đi cho dòng điện, không duy trì hiệu điện thế.')}>A. Dây dẫn</button>
+            <button className={sourceAnswers.device === 'lamp' ? 'is-selected' : ''} type="button" onClick={() => answerSourceQuestion('device', 'lamp', 'source', '✅ Đúng! Nguồn điện là thiết bị tạo ra và duy trì hiệu điện thế giữa hai cực của nó.', 'Bóng đèn là thiết bị tiêu thụ điện, không duy trì hiệu điện thế.')}>B. Bóng đèn</button>
+            <button className={sourceAnswers.device === 'source' ? 'is-selected' : ''} type="button" onClick={() => answerSourceQuestion('device', 'source', 'source', '✅ Đúng! Nguồn điện là thiết bị tạo ra và duy trì hiệu điện thế giữa hai cực của nó.', 'Hãy chọn thiết bị có thể duy trì hiệu điện thế lâu dài.')}>C. Nguồn điện</button>
+          </div>
+          {sourceFeedback.device && <div className={sourceFeedback.device.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{sourceFeedback.device.text}</strong></div>}
+        </article>
+
+        {sourceIdentified && (
+          <article className="source24-source-device">
+            <div className="source24-source-head">
+              <span>Hoạt động 2</span>
+              <h3>Quan sát nguồn điện</h3>
+              <p>Bấm khám phá để quan sát cấu tạo ngoài của một pin.</p>
+            </div>
+            <div className={sourcePolesRevealed ? 'source24-battery-observe is-revealed' : 'source24-battery-observe'}>
+              <img src={pinImage} alt="Pin điện" />
+              {sourcePolesRevealed && (
+                <>
+                  <span className="source24-pole source24-pole--plus">Cực dương (+)</span>
+                  <span className="source24-pole source24-pole--minus">Cực âm (-)</span>
+                </>
+              )}
+            </div>
+            {!sourcePolesRevealed && <button className="primary-soft-btn" type="button" onClick={() => setSourcePolesRevealed(true)}>Khám phá</button>}
+          </article>
+        )}
+
+        {sourcePolesRevealed && (
+          <article className="worksheet24-question">
+            <strong>Nguồn điện luôn có:</strong>
+            <div className="worksheet24-options">
+              <button className={sourceAnswers.poles === 'one' ? 'is-selected' : ''} type="button" onClick={() => answerSourceQuestion('poles', 'one', 'two', '✅ Đúng! Nguồn điện có hai cực: cực dương (+) và cực âm (-). Giữa hai cực luôn tồn tại hiệu điện thế.', 'Quan sát lại hai nhãn trên pin.')}>A. Một cực</button>
+              <button className={sourceAnswers.poles === 'two' ? 'is-selected' : ''} type="button" onClick={() => answerSourceQuestion('poles', 'two', 'two', '✅ Đúng! Nguồn điện có hai cực: cực dương (+) và cực âm (-). Giữa hai cực luôn tồn tại hiệu điện thế.', 'Quan sát lại hai nhãn trên pin.')}>B. Hai cực</button>
+              <button className={sourceAnswers.poles === 'three' ? 'is-selected' : ''} type="button" onClick={() => answerSourceQuestion('poles', 'three', 'two', '✅ Đúng! Nguồn điện có hai cực: cực dương (+) và cực âm (-). Giữa hai cực luôn tồn tại hiệu điện thế.', 'Quan sát lại hai nhãn trên pin.')}>C. Ba cực</button>
+            </div>
+            {sourceFeedback.poles && <div className={sourceFeedback.poles.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{sourceFeedback.poles.text}</strong></div>}
+          </article>
+        )}
+
+        {polesUnderstood && (
+          <article className="source24-separation-card">
+            <div className="source24-source-head">
+              <span>Hoạt động 3</span>
+              <h3>Vì sao nguồn điện duy trì được hiệu điện thế?</h3>
+            </div>
+            <div className="source24-separation-sim" aria-label="Mô phỏng nguồn điện tách điện tích">
+              <div className="source24-pole-well source24-pole-well--plus"><strong>Cực dương (+)</strong><i>+</i><i>+</i><i>+</i></div>
+              <div className="source24-separator">
+                <span>tách điện tích</span>
+                <b className="source24-moving-positive">+</b>
+                <b className="source24-moving-electron" />
+              </div>
+              <div className="source24-pole-well source24-pole-well--minus"><strong>Cực âm (-)</strong><i>-</i><i>-</i><i>-</i></div>
+            </div>
+          </article>
+        )}
+
+        {polesUnderstood && (
+          <article className="worksheet24-question">
+            <strong>Nguồn điện phải thực hiện việc gì để duy trì hiệu điện thế?</strong>
+            <div className="worksheet24-options">
+              <button className={sourceAnswers.separation === 'separate' ? 'is-selected' : ''} type="button" onClick={() => answerSourceQuestion('separation', 'separate', 'separate', '✅ Đúng! Muốn duy trì hiệu điện thế, nguồn điện phải liên tục tách các điện tích dương và âm về hai cực khác nhau.', 'Hãy quan sát mô phỏng tách điện tích về hai cực.')}>A. Liên tục tách điện tích dương và âm.</button>
+              <button className={sourceAnswers.separation === 'shorten' ? 'is-selected' : ''} type="button" onClick={() => answerSourceQuestion('separation', 'shorten', 'separate', '✅ Đúng! Muốn duy trì hiệu điện thế, nguồn điện phải liên tục tách các điện tích dương và âm về hai cực khác nhau.', 'Làm dây dẫn ngắn lại không tạo ra hai cực có hiệu điện thế.')}>B. Làm dây dẫn ngắn lại.</button>
+              <button className={sourceAnswers.separation === 'lamp' ? 'is-selected' : ''} type="button" onClick={() => answerSourceQuestion('separation', 'lamp', 'separate', '✅ Đúng! Muốn duy trì hiệu điện thế, nguồn điện phải liên tục tách các điện tích dương và âm về hai cực khác nhau.', 'Bóng đèn sáng là kết quả khi có dòng điện, không phải cơ chế duy trì hiệu điện thế.')}>C. Làm bóng đèn sáng hơn.</button>
+            </div>
+            {sourceFeedback.separation && <div className={sourceFeedback.separation.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{sourceFeedback.separation.text}</strong></div>}
+          </article>
+        )}
+
+        {separationUnderstood && (
+          <>
+            <div className="worksheet24-info-box">
+              <strong>Kiến thức mới</strong>
+              <p>Bên trong nguồn điện tồn tại một lực đặc biệt.</p>
+              <p>Lực này không phải lực điện.</p>
+              <p>Lực đó được gọi là: <b>⭐ Lực lạ</b></p>
+              <p>Lực lạ giúp tách điện tích và duy trì hiệu điện thế giữa hai cực của nguồn điện.</p>
+            </div>
+            <div className="worksheet24-info-box worksheet24-info-box--remember">
+              <strong>Kết luận</strong>
+              <p>✔ Nguồn điện là thiết bị tạo ra và duy trì hiệu điện thế.</p>
+              <p>✔ Nguồn điện có hai cực: cực dương và cực âm.</p>
+              <p>✔ Để duy trì hiệu điện thế, nguồn điện phải liên tục tách các điện tích.</p>
+              <p>✔ Công việc đó được thực hiện bởi lực lạ bên trong nguồn điện.</p>
+              {!done && <button className="primary-soft-btn" type="button" onClick={completeSourceTask}>Hoàn thành Nhiệm vụ 3</button>}
+            </div>
+          </>
+        )}
+
+        {done && index < lesson24WorksheetCards.length - 1 && index === cardIndex && (
+          <button className="primary-soft-btn" type="button" onClick={() => setCardIndex((current) => current + 1)}>Mở nhiệm vụ tiếp theo</button>
+        )}
+      </section>
+    )
+  }
+
+  const renderInternalResistanceTask = (index) => {
+    const circuitUnderstood = internalAnswers.path === 'whole'
+    const conductorUnderstood = internalAnswers.conductor === 'conductor'
+    const inferenceUnderstood = internalAnswers.inference === 'Vật dẫn điện có điện trở'
+    const symbolUnderstood = internalAnswers.symbol === 'r'
+    const done = completedCards.includes('internal')
+
+    return (
+      <section className={done ? 'worksheet24-section is-done' : 'worksheet24-section'} key="internal">
+        <div className="worksheet24-card-head worksheet24-section-head">
+          <span>Nhiệm vụ {index + 2}</span>
+          <h3>Nguồn điện có điện trở không?</h3>
+          <p>Suy luận từng bước từ dòng điện trong mạch kín.</p>
+        </div>
+
+        <article className="internal24-card">
+          <div className="internal24-head">
+            <span>Card 1</span>
+            <h3>Dòng điện chỉ chạy ở mạch ngoài hay còn đi qua nguồn điện?</h3>
+          </div>
+          <div className="internal24-circuit" aria-label="Mô phỏng dòng điện trong mạch kín">
+            <div className="internal24-battery"><Icon name="battery" /><span>Nguồn điện</span></div>
+            <div className="internal24-lamp"><span /></div>
+            <div className="internal24-wire internal24-wire--top">{Array.from({ length: 4 }, (_, item) => <i key={item} />)}</div>
+            <div className="internal24-wire internal24-wire--bottom">{Array.from({ length: 4 }, (_, item) => <i key={item} />)}</div>
+            <div className="internal24-source-path">{Array.from({ length: 3 }, (_, item) => <i key={item} />)}</div>
+          </div>
+          <article className="worksheet24-question">
+            <strong>Trong mạch kín, dòng điện đi qua:</strong>
+            <div className="worksheet24-options">
+              <button className={internalAnswers.path === 'lamp' ? 'is-selected' : ''} type="button" onClick={() => answerInternalQuestion('path', 'lamp', 'whole', '✅ Đúng! Dòng điện trong mạch kín đi qua toàn bộ mạch, bao gồm cả phần bên trong nguồn điện.', 'Hãy quan sát electron chuyển động cả trên dây, qua đèn và bên trong nguồn.')}>A. Chỉ bóng đèn</button>
+              <button className={internalAnswers.path === 'outside' ? 'is-selected' : ''} type="button" onClick={() => answerInternalQuestion('path', 'outside', 'whole', '✅ Đúng! Dòng điện trong mạch kín đi qua toàn bộ mạch, bao gồm cả phần bên trong nguồn điện.', 'Mạch kín gồm cả mạch ngoài và phần bên trong nguồn điện.')}>B. Chỉ dây dẫn ngoài</button>
+              <button className={internalAnswers.path === 'whole' ? 'is-selected' : ''} type="button" onClick={() => answerInternalQuestion('path', 'whole', 'whole', '✅ Đúng! Dòng điện trong mạch kín đi qua toàn bộ mạch, bao gồm cả phần bên trong nguồn điện.', 'Hãy quan sát electron chuyển động cả trên dây, qua đèn và bên trong nguồn.')}>C. Cả mạch ngoài và bên trong nguồn điện</button>
+            </div>
+            {internalFeedback.path && <div className={internalFeedback.path.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{internalFeedback.path.text}</strong></div>}
+          </article>
+        </article>
+
+        {circuitUnderstood && (
+          <article className="internal24-card">
+            <div className="internal24-head">
+              <span>Card 2</span>
+              <h3>Nếu dòng điện đi qua được nguồn điện thì điều đó cho biết điều gì?</h3>
+            </div>
+            <article className="worksheet24-question">
+              <strong>Nguồn điện là:</strong>
+              <div className="worksheet24-options">
+                <button className={internalAnswers.conductor === 'insulator' ? 'is-selected' : ''} type="button" onClick={() => answerInternalQuestion('conductor', 'insulator', 'conductor', '✅ Đúng! Dòng điện chỉ có thể đi qua vật dẫn điện. Điều đó cho thấy nguồn điện cũng là một vật dẫn điện.', 'Nếu là vật cách điện thì dòng điện không đi qua được.')}>A. Vật cách điện</button>
+                <button className={internalAnswers.conductor === 'conductor' ? 'is-selected' : ''} type="button" onClick={() => answerInternalQuestion('conductor', 'conductor', 'conductor', '✅ Đúng! Dòng điện chỉ có thể đi qua vật dẫn điện. Điều đó cho thấy nguồn điện cũng là một vật dẫn điện.', 'Dòng điện đi qua được nguồn điện, hãy suy luận tính chất của nó.')}>B. Vật dẫn điện</button>
+                <button className={internalAnswers.conductor === 'vacuum' ? 'is-selected' : ''} type="button" onClick={() => answerInternalQuestion('conductor', 'vacuum', 'conductor', '✅ Đúng! Dòng điện chỉ có thể đi qua vật dẫn điện. Điều đó cho thấy nguồn điện cũng là một vật dẫn điện.', 'Nguồn điện không phải chân không trong mạch kín đang xét.')}>C. Chân không</button>
+              </div>
+              {internalFeedback.conductor && <div className={internalFeedback.conductor.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{internalFeedback.conductor.text}</strong></div>}
+            </article>
+          </article>
+        )}
+
+        {conductorUnderstood && (
+          <article className="internal24-card">
+            <div className="internal24-head">
+              <span>Card 3</span>
+              <h3>Suy luận từ điều vừa khám phá</h3>
+            </div>
+            <div className="internal24-reasoning">
+              <span>Nguồn điện là vật dẫn điện</span>
+              <b>↓</b>
+              <button
+                className={inferenceUnderstood ? 'internal24-drop is-filled' : 'internal24-drop'}
+                type="button"
+                onClick={() => {
+                  if (internalDraggedPhrase) answerInternalQuestion('inference', internalDraggedPhrase, 'Vật dẫn điện có điện trở', 'Chính xác! Vì nguồn điện là vật dẫn điện nên nguồn điện cũng có điện trở. Điện trở của chính nguồn điện được gọi là điện trở trong.', 'Hãy đặt cụm từ liên hệ giữa vật dẫn điện và điện trở.')
+                }}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => {
+                  event.preventDefault()
+                  answerInternalQuestion('inference', internalDraggedPhrase, 'Vật dẫn điện có điện trở', 'Chính xác! Vì nguồn điện là vật dẫn điện nên nguồn điện cũng có điện trở. Điện trở của chính nguồn điện được gọi là điện trở trong.', 'Hãy đặt cụm từ liên hệ giữa vật dẫn điện và điện trở.')
+                }}
+              >
+                {internalAnswers.inference || '?'}
+              </button>
+              <b>↓</b>
+              <span>Nguồn điện có điện trở</span>
+            </div>
+            <div className="opening-card-bank">
+              <button
+                className={internalDraggedPhrase === 'Vật dẫn điện có điện trở' ? 'opening-drag-card is-selected' : 'opening-drag-card'}
+                draggable={!inferenceUnderstood}
+                type="button"
+                onClick={() => setInternalDraggedPhrase('Vật dẫn điện có điện trở')}
+                onDragStart={() => setInternalDraggedPhrase('Vật dẫn điện có điện trở')}
+              >
+                Vật dẫn điện có điện trở
+              </button>
+            </div>
+            {internalFeedback.inference && <div className={internalFeedback.inference.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{internalFeedback.inference.text}</strong></div>}
+          </article>
+        )}
+
+        {inferenceUnderstood && (
+          <article className="internal24-card">
+            <div className="internal24-head">
+              <span>Card 4</span>
+              <h3>Khái niệm mới</h3>
+            </div>
+            <div className="internal24-concept">
+              <p>Điện trở của nguồn điện được gọi là <strong>điện trở trong</strong>.</p>
+              <p>Kí hiệu: <strong>r</strong></p>
+            </div>
+            <article className="worksheet24-question">
+              <strong>Điện trở trong của nguồn điện được kí hiệu bằng:</strong>
+              <div className="worksheet24-options">
+                <button className={internalAnswers.symbol === 'U' ? 'is-selected' : ''} type="button" onClick={() => answerInternalQuestion('symbol', 'U', 'r', '✅ Đúng! Điện trở trong của nguồn điện được kí hiệu là r.', 'U là kí hiệu hiệu điện thế, không phải điện trở trong.')}>A. U</button>
+                <button className={internalAnswers.symbol === 'R' ? 'is-selected' : ''} type="button" onClick={() => answerInternalQuestion('symbol', 'R', 'r', '✅ Đúng! Điện trở trong của nguồn điện được kí hiệu là r.', 'R thường dùng cho điện trở mạch ngoài; điện trở trong dùng chữ r.')}>B. R</button>
+                <button className={internalAnswers.symbol === 'r' ? 'is-selected' : ''} type="button" onClick={() => answerInternalQuestion('symbol', 'r', 'r', '✅ Đúng! Điện trở trong của nguồn điện được kí hiệu là r.', 'Điện trở trong của nguồn điện được kí hiệu bằng chữ r.')}>C. r</button>
+              </div>
+              {internalFeedback.symbol && <div className={internalFeedback.symbol.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{internalFeedback.symbol.text}</strong></div>}
+            </article>
+          </article>
+        )}
+
+        {symbolUnderstood && (
+          <div className="internal24-summary">
+            <strong>Tổng kết</strong>
+            <div className="internal24-reasoning internal24-reasoning--summary">
+              <span>Dòng điện đi qua cả bên trong nguồn điện</span><b>↓</b>
+              <span>Nguồn điện là vật dẫn điện</span><b>↓</b>
+              <span>Nguồn điện có điện trở</span><b>↓</b>
+              <span>Điện trở đó gọi là điện trở trong</span><b>↓</b>
+              <span>Kí hiệu: r</span>
+            </div>
+            <div className="worksheet24-info-box worksheet24-info-box--remember">
+              <strong>Em đã học</strong>
+              <p>✔ Dòng điện chạy qua cả mạch ngoài và bên trong nguồn điện.</p>
+              <p>✔ Nguồn điện cũng là vật dẫn điện.</p>
+              <p>✔ Vì vậy nguồn điện có điện trở.</p>
+              <p>✔ Điện trở đó gọi là điện trở trong.</p>
+              <p>✔ Điện trở trong được kí hiệu là r.</p>
+              <p>✔ Mỗi nguồn điện được đặc trưng bởi suất điện động ξ và điện trở trong r.</p>
+              {!done && <button className="primary-soft-btn" type="button" onClick={completeInternalTask}>Hoàn thành Nhiệm vụ 5</button>}
+            </div>
+          </div>
+        )}
+
+        {done && index < lesson24WorksheetCards.length - 1 && index === cardIndex && (
+          <button className="primary-soft-btn" type="button" onClick={() => setCardIndex((current) => current + 1)}>Mở nhiệm vụ tiếp theo</button>
+        )}
+      </section>
+    )
+  }
+
+  const renderVoltageDropTask = (index) => {
+    const energyDone = voltageAnswers.energy === 'both'
+    const stateDone = voltageAnswers.state === 'closed'
+    const formulaDone = voltageAnswers.formula === 'done'
+    const relationDone = voltageAnswers.relation === 'minus'
+    const openDone = voltageAnswers.open === 'emf'
+    const challengeDone = voltageAnswers.challenge === 'nhỏ hơn'
+    const done = completedCards.includes('voltage')
+    const tokenLabels = ['ξ', 'U', 'Ir']
+
+    const renderVoltageChoice = (key, value, correct, successText, wrongText, label) => (
+      <button
+        className={voltageAnswers[key] === value ? 'is-selected' : ''}
+        type="button"
+        onClick={() => answerVoltageQuestion(key, value, correct, successText, wrongText)}
+      >
+        {label}
+      </button>
+    )
+
+    return (
+      <section className={done ? 'worksheet24-section is-done' : 'worksheet24-section'} key="voltage">
+        <div className="worksheet24-card-head worksheet24-section-head">
+          <span>Nhiệm vụ {index + 2}</span>
+          <h3>Ảnh hưởng của điện trở trong lên hiệu điện thế giữa hai cực nguồn</h3>
+          <p>Quan sát sơ đồ năng lượng để rút ra hệ thức giữa U, ξ và Ir.</p>
+        </div>
+
+        <article className="voltage24-card">
+          <div className="voltage24-head">
+            <span>Card 1</span>
+            <h3>Khi mạch kín, năng lượng nguồn điện được sử dụng như thế nào?</h3>
+          </div>
+          <div className="voltage24-energy-map">
+            <strong>Nguồn điện (ξ, r)</strong>
+            <b>↓</b>
+            <span>Cung cấp năng lượng</span>
+            <b>↓</b>
+            <div>
+              <em>Điện trở ngoài R</em>
+              <em>Điện trở trong r</em>
+            </div>
+          </div>
+          <article className="worksheet24-question">
+            <strong>Khi mạch kín, năng lượng nguồn điện cung cấp được tiêu thụ ở đâu?</strong>
+            <div className="worksheet24-options">
+              {renderVoltageChoice('energy', 'outside', 'both', 'Đúng! Dòng điện chạy qua toàn bộ mạch nên năng lượng nguồn điện cung cấp được tiêu thụ trên cả điện trở ngoài và điện trở trong.', 'Dòng điện trong mạch kín còn đi qua bên trong nguồn điện.', 'A. Chỉ trên điện trở ngoài R')}
+              {renderVoltageChoice('energy', 'inside', 'both', 'Đúng! Dòng điện chạy qua toàn bộ mạch nên năng lượng nguồn điện cung cấp được tiêu thụ trên cả điện trở ngoài và điện trở trong.', 'Mạch kín còn có điện trở ngoài R trong mạch ngoài.', 'B. Chỉ trên điện trở trong r')}
+              {renderVoltageChoice('energy', 'both', 'both', 'Đúng! Dòng điện chạy qua toàn bộ mạch nên năng lượng nguồn điện cung cấp được tiêu thụ trên cả điện trở ngoài và điện trở trong.', 'Hãy xét cả phần mạch ngoài và phần bên trong nguồn.', 'C. Trên cả điện trở ngoài R và điện trở trong r')}
+            </div>
+            {voltageFeedback.energy && <div className={voltageFeedback.energy.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{voltageFeedback.energy.text}</strong></div>}
+          </article>
+        </article>
+
+        {energyDone && (
+          <article className="voltage24-card">
+            <div className="voltage24-head">
+              <span>Card 2</span>
+              <h3>Điều gì xảy ra với hiệu điện thế hai cực nguồn khi có dòng điện?</h3>
+            </div>
+            <div className="voltage24-states">
+              <div>
+                <strong>Trạng thái A</strong>
+                <p>Mạch hở</p>
+                <span>I = 0</span>
+                <small>Không có dòng điện</small>
+              </div>
+              <div>
+                <strong>Trạng thái B</strong>
+                <p>Mạch kín</p>
+                <span>I &gt; 0</span>
+                <small>Có dòng điện chạy qua điện trở trong</small>
+              </div>
+            </div>
+            <article className="worksheet24-question">
+              <strong>Ở trạng thái nào điện trở trong ảnh hưởng đến hiệu điện thế giữa hai cực nguồn?</strong>
+              <div className="worksheet24-options">
+                {renderVoltageChoice('state', 'open', 'closed', 'Đúng! Khi có dòng điện chạy qua điện trở trong, một phần năng lượng bị tiêu thụ trong nguồn điện.', 'Mạch hở có I = 0 nên chưa có dòng điện qua điện trở trong.', 'A. Mạch hở')}
+                {renderVoltageChoice('state', 'closed', 'closed', 'Đúng! Khi có dòng điện chạy qua điện trở trong, một phần năng lượng bị tiêu thụ trong nguồn điện.', 'Hãy chọn trạng thái có dòng điện chạy qua điện trở trong.', 'B. Mạch kín')}
+              </div>
+              {voltageFeedback.state && <div className={voltageFeedback.state.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{voltageFeedback.state.text}</strong></div>}
+            </article>
+          </article>
+        )}
+
+        {stateDone && (
+          <article className="voltage24-card">
+            <div className="voltage24-head">
+              <span>Card 3</span>
+              <h3>Từ bảo toàn năng lượng</h3>
+            </div>
+            <div className="opening-card-bank">
+              {tokenLabels.map((token) => (
+                <button
+                  className={voltageDraggedToken === token ? 'opening-drag-card is-selected' : 'opening-drag-card'}
+                  draggable={!formulaDone}
+                  key={token}
+                  type="button"
+                  onClick={() => setVoltageDraggedToken(token)}
+                  onDragStart={() => setVoltageDraggedToken(token)}
+                >
+                  {token}
+                </button>
+              ))}
+            </div>
+            <div className="voltage24-formula-drop">
+              <button
+                className={voltageAnswers.emf ? 'is-filled' : ''}
+                type="button"
+                onClick={() => placeVoltageToken('emf')}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => {
+                  event.preventDefault()
+                  placeVoltageToken('emf')
+                }}
+              >
+                {voltageAnswers.emf || 'Suất điện động của nguồn'}
+              </button>
+              <b>=</b>
+              <button
+                className={voltageAnswers.terminal ? 'is-filled' : ''}
+                type="button"
+                onClick={() => placeVoltageToken('terminal')}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => {
+                  event.preventDefault()
+                  placeVoltageToken('terminal')
+                }}
+              >
+                {voltageAnswers.terminal || 'Hiệu điện thế mạch ngoài'}
+              </button>
+              <b>+</b>
+              <button
+                className={voltageAnswers.drop ? 'is-filled' : ''}
+                type="button"
+                onClick={() => placeVoltageToken('drop')}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => {
+                  event.preventDefault()
+                  placeVoltageToken('drop')
+                }}
+              >
+                {voltageAnswers.drop || 'Độ giảm điện thế trên điện trở trong'}
+              </button>
+            </div>
+            <button className="primary-soft-btn" type="button" onClick={checkVoltageFormula}>Kiểm tra</button>
+            {voltageFeedback.formula && <div className={voltageFeedback.formula.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{voltageFeedback.formula.text}</strong></div>}
+            {formulaDone && <div className="voltage24-formula-result">ξ = U + Ir</div>}
+          </article>
+        )}
+
+        {formulaDone && (
+          <article className="voltage24-card">
+            <div className="voltage24-head">
+              <span>Card 4</span>
+              <h3>Hiệu điện thế giữa hai cực nguồn</h3>
+            </div>
+            <div className="voltage24-given">Cho: <strong>ξ = U + Ir</strong></div>
+            <article className="worksheet24-question">
+              <strong>Biểu thức nào sau đây đúng?</strong>
+              <div className="worksheet24-options">
+                {renderVoltageChoice('relation', 'minus', 'minus', 'Đúng! Từ ξ = U + Ir suy ra U = ξ − Ir.', 'Hãy chuyển Ir sang vế bên kia.', 'A. U = ξ − Ir')}
+                {renderVoltageChoice('relation', 'plus', 'minus', 'Đúng! Từ ξ = U + Ir suy ra U = ξ − Ir.', 'Dấu cộng đã nằm trong hệ thức ξ = U + Ir.', 'B. U = ξ + Ir')}
+                {renderVoltageChoice('relation', 'drop', 'minus', 'Đúng! Từ ξ = U + Ir suy ra U = ξ − Ir.', 'U là hiệu điện thế hai cực nguồn, không chỉ là độ giảm trên r.', 'C. U = Ir')}
+              </div>
+              {voltageFeedback.relation && <div className={voltageFeedback.relation.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{voltageFeedback.relation.text}</strong></div>}
+            </article>
+            {relationDone && <div className="voltage24-formula-result">U = ξ − Ir</div>}
+          </article>
+        )}
+
+        {relationDone && (
+          <article className="voltage24-card">
+            <div className="voltage24-head">
+              <span>Card 5</span>
+              <h3>Khi mạch hở</h3>
+            </div>
+            <div className="voltage24-open-case"><strong>I = 0</strong></div>
+            <article className="worksheet24-question">
+              <strong>Khi mạch hở, hiệu điện thế giữa hai cực nguồn bằng:</strong>
+              <div className="worksheet24-options">
+                {renderVoltageChoice('open', 'emf', 'emf', 'Đúng! Khi mạch hở: I = 0 ⇒ U = ξ − Ir = ξ. Đó cũng chính là số vôn ghi trên nguồn điện.', 'Mạch hở có I = 0, hãy thay vào U = ξ − Ir.', 'A. ξ')}
+                {renderVoltageChoice('open', 'drop', 'emf', 'Đúng! Khi mạch hở: I = 0 ⇒ U = ξ − Ir = ξ. Đó cũng chính là số vôn ghi trên nguồn điện.', 'Ir bằng 0 khi I = 0.', 'B. Ir')}
+                {renderVoltageChoice('open', 'zero', 'emf', 'Đúng! Khi mạch hở: I = 0 ⇒ U = ξ − Ir = ξ. Đó cũng chính là số vôn ghi trên nguồn điện.', 'Mạch hở không làm hiệu điện thế hai cực nguồn bằng 0.', 'C. 0')}
+              </div>
+              {voltageFeedback.open && <div className={voltageFeedback.open.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{voltageFeedback.open.text}</strong></div>}
+            </article>
+          </article>
+        )}
+
+        {openDone && (
+          <article className="voltage24-card">
+            <div className="voltage24-head">
+              <span>Thử thách cuối</span>
+              <h3>Hoàn thành bản đồ tư duy</h3>
+            </div>
+            <div className="voltage24-mindmap">
+              <span>Mạch kín</span><b>↓</b>
+              <span>Có dòng điện qua điện trở trong</span><b>↓</b>
+              <span>Có độ giảm điện thế Ir</span><b>↓</b>
+              <span>Hiệu điện thế hai cực nguồn <button className={challengeDone ? 'is-filled' : ''} type="button" onClick={() => answerVoltageQuestion('challenge', 'nhỏ hơn', 'nhỏ hơn', 'Chính xác! Khi mạch kín, hiệu điện thế hai cực nguồn nhỏ hơn suất điện động.', 'Cần chọn quan hệ giữa U và ξ khi có độ giảm Ir.')}>{challengeDone ? 'nhỏ hơn' : '______'}</button> suất điện động</span>
+            </div>
+            <div className="opening-card-bank">
+              <button className="opening-drag-card" type="button" onClick={() => answerVoltageQuestion('challenge', 'nhỏ hơn', 'nhỏ hơn', 'Chính xác! Khi mạch kín, hiệu điện thế hai cực nguồn nhỏ hơn suất điện động.', 'Cần chọn quan hệ giữa U và ξ khi có độ giảm Ir.')}>nhỏ hơn</button>
+            </div>
+            {voltageFeedback.challenge && <div className={voltageFeedback.challenge.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{voltageFeedback.challenge.text}</strong></div>}
+          </article>
+        )}
+
+        {challengeDone && (
+          <div className="worksheet24-info-box worksheet24-info-box--remember">
+            <strong>Em đã học</strong>
+            <p>✔ Năng lượng nguồn điện được tiêu thụ trên cả điện trở ngoài và điện trở trong.</p>
+            <p>✔ Khi mạch kín: U = ξ − Ir.</p>
+            <p>✔ Hiệu điện thế giữa hai cực nguồn nhỏ hơn suất điện động.</p>
+            <p>✔ Khi mạch hở: U = ξ.</p>
+            <p>✔ Số vôn ghi trên nguồn điện chính là giá trị hiệu điện thế giữa hai cực nguồn khi mạch hở.</p>
+            {!done && <button className="primary-soft-btn" type="button" onClick={completeVoltageTask}>Hoàn thành Nhiệm vụ 6</button>}
+          </div>
+        )}
+
+        {done && index < lesson24WorksheetCards.length - 1 && index === cardIndex && (
+          <button className="primary-soft-btn" type="button" onClick={() => setCardIndex((current) => current + 1)}>Mở nhiệm vụ tiếp theo</button>
+        )}
+      </section>
+    )
+  }
+
+  const renderWholeOhmTask = (index) => {
+    const totalDone = wholeOhmAnswers.total === 'R+r'
+    const emfDone = wholeOhmAnswers.emf === 'increase'
+    const resistanceDone = wholeOhmAnswers.resistance === 'decrease'
+    const formulaDone = wholeOhmAnswers.formula === 'done'
+    const statementDone = wholeOhmAnswers.statement === 'done'
+    const challengeDone = wholeOhmAnswers.challengeUp === 'tăng' && wholeOhmAnswers.challengeDown === 'giảm'
+    const done = completedCards.includes('whole-ohm')
+    const emfCurrent = (wholeOhmEmf / 6).toFixed(1)
+    const resistanceCurrent = (12 / wholeOhmTotalResistance).toFixed(1)
+    const formulaTokens = ['I', 'ξ', 'R+r']
+    const statementTokens = ['tỉ lệ thuận', 'tỉ lệ nghịch']
+
+    const renderWholeChoice = (key, value, correct, successText, wrongText, label) => (
+      <button
+        className={wholeOhmAnswers[key] === value ? 'is-selected' : ''}
+        type="button"
+        onClick={() => answerWholeOhmQuestion(key, value, correct, successText, wrongText)}
+      >
+        {label}
+      </button>
+    )
+
+    const placeStatementToken = (slot) => {
+      if (!wholeOhmDraggedToken) return
+      setWholeOhmAnswers((current) => ({ ...current, [slot]: wholeOhmDraggedToken }))
+      setWholeOhmDraggedToken('')
+      setWholeOhmFeedback((current) => ({ ...current, statement: '' }))
+    }
+
+    return (
+      <section className={done ? 'worksheet24-section is-done' : 'worksheet24-section'} key="whole-ohm">
+        <div className="worksheet24-card-head worksheet24-section-head">
+          <span>Nhiệm vụ {index + 2}</span>
+          <h3>Định luật Ôm toàn mạch</h3>
+          <p>Ta đã biết: U = ξ − Ir và U = IR. Vậy cường độ dòng điện trong toàn mạch phụ thuộc như thế nào vào ξ, R và r?</p>
+        </div>
+
+        <article className="whole24-card">
+          <div className="whole24-head">
+            <span>Card 1</span>
+            <h3>Toàn mạch gồm những điện trở nào?</h3>
+          </div>
+          <div className="whole24-total-map">
+            <span>Nguồn điện <strong>r</strong></span>
+            <b>↓</b>
+            <span>Điện trở ngoài <strong>R</strong></span>
+          </div>
+          <article className="worksheet24-question">
+            <strong>Điện trở toàn phần của mạch gồm:</strong>
+            <div className="worksheet24-options">
+              {renderWholeChoice('total', 'R', 'R+r', 'Đúng! Điện trở toàn phần của mạch bằng tổng điện trở ngoài và điện trở trong: R + r.', 'Toàn mạch còn có điện trở trong của nguồn điện.', 'A. Chỉ R')}
+              {renderWholeChoice('total', 'r', 'R+r', 'Đúng! Điện trở toàn phần của mạch bằng tổng điện trở ngoài và điện trở trong: R + r.', 'Toàn mạch còn có điện trở ngoài R.', 'B. Chỉ r')}
+              {renderWholeChoice('total', 'R+r', 'R+r', 'Đúng! Điện trở toàn phần của mạch bằng tổng điện trở ngoài và điện trở trong: R + r.', 'Hãy cộng điện trở ngoài và điện trở trong.', 'C. R + r')}
+            </div>
+            {wholeOhmFeedback.total && <div className={wholeOhmFeedback.total.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{wholeOhmFeedback.total.text}</strong></div>}
+          </article>
+        </article>
+
+        {totalDone && (
+          <article className="whole24-card">
+            <div className="whole24-head">
+              <span>Card 2</span>
+              <h3>Nếu suất điện động tăng</h3>
+            </div>
+            <div className="whole24-sim">
+              <label>
+                <span>Giữ nguyên R và r. Tăng ξ.</span>
+                <input min="6" max="18" step="1" type="range" value={wholeOhmEmf} onChange={(event) => setWholeOhmEmf(Number(event.target.value))} />
+              </label>
+              <div className="whole24-meter">
+                <strong>ξ = {wholeOhmEmf} V</strong>
+                <span>Ampe kế</span>
+                <b>{emfCurrent} A</b>
+                <i style={{ width: `${Math.min(100, (Number(emfCurrent) / 3) * 100)}%` }} />
+              </div>
+            </div>
+            <article className="worksheet24-question">
+              <strong>Khi ξ tăng, cường độ dòng điện sẽ:</strong>
+              <div className="worksheet24-options">
+                {renderWholeChoice('emf', 'increase', 'increase', 'Đúng! Khi điện trở toàn phần không đổi, suất điện động càng lớn thì dòng điện càng lớn.', 'Quan sát ampe kế khi kéo ξ tăng.', 'A. Tăng')}
+                {renderWholeChoice('emf', 'decrease', 'increase', 'Đúng! Khi điện trở toàn phần không đổi, suất điện động càng lớn thì dòng điện càng lớn.', 'Dòng điện không giảm khi ξ tăng và R+r giữ nguyên.', 'B. Giảm')}
+                {renderWholeChoice('emf', 'same', 'increase', 'Đúng! Khi điện trở toàn phần không đổi, suất điện động càng lớn thì dòng điện càng lớn.', 'Ampe kế thay đổi khi ξ thay đổi.', 'C. Không đổi')}
+              </div>
+              {wholeOhmFeedback.emf && <div className={wholeOhmFeedback.emf.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{wholeOhmFeedback.emf.text}</strong></div>}
+            </article>
+          </article>
+        )}
+
+        {emfDone && (
+          <article className="whole24-card">
+            <div className="whole24-head">
+              <span>Card 3</span>
+              <h3>Nếu điện trở toàn phần tăng</h3>
+            </div>
+            <div className="whole24-sim">
+              <label>
+                <span>Giữ nguyên ξ. Tăng R hoặc r.</span>
+                <input min="4" max="12" step="1" type="range" value={wholeOhmTotalResistance} onChange={(event) => setWholeOhmTotalResistance(Number(event.target.value))} />
+              </label>
+              <div className="whole24-meter">
+                <strong>R+r = {wholeOhmTotalResistance} Ω</strong>
+                <span>Ampe kế</span>
+                <b>{resistanceCurrent} A</b>
+                <i style={{ width: `${Math.min(100, (Number(resistanceCurrent) / 3) * 100)}%` }} />
+              </div>
+            </div>
+            <article className="worksheet24-question">
+              <strong>Khi điện trở toàn phần tăng, cường độ dòng điện:</strong>
+              <div className="worksheet24-options">
+                {renderWholeChoice('resistance', 'increase', 'decrease', 'Đúng! Điện trở toàn phần càng lớn thì dòng điện càng nhỏ.', 'Quan sát ampe kế khi R+r tăng.', 'A. Tăng')}
+                {renderWholeChoice('resistance', 'decrease', 'decrease', 'Đúng! Điện trở toàn phần càng lớn thì dòng điện càng nhỏ.', 'Quan sát ampe kế khi R+r tăng.', 'B. Giảm')}
+                {renderWholeChoice('resistance', 'same', 'decrease', 'Đúng! Điện trở toàn phần càng lớn thì dòng điện càng nhỏ.', 'Ampe kế thay đổi khi R+r thay đổi.', 'C. Không đổi')}
+              </div>
+              {wholeOhmFeedback.resistance && <div className={wholeOhmFeedback.resistance.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{wholeOhmFeedback.resistance.text}</strong></div>}
+            </article>
+          </article>
+        )}
+
+        {resistanceDone && (
+          <article className="whole24-card">
+            <div className="whole24-head">
+              <span>Card 4</span>
+              <h3>Rút ra biểu thức của cường độ dòng điện</h3>
+            </div>
+            <div className="whole24-given">Cho: <strong>ξ = I(R + r)</strong></div>
+            <div className="opening-card-bank">
+              {formulaTokens.map((token) => (
+                <button
+                  className={wholeOhmDraggedToken === token ? 'opening-drag-card is-selected' : 'opening-drag-card'}
+                  draggable={!formulaDone}
+                  key={token}
+                  type="button"
+                  onClick={() => setWholeOhmDraggedToken(token)}
+                  onDragStart={() => setWholeOhmDraggedToken(token)}
+                >
+                  {token}
+                </button>
+              ))}
+            </div>
+            <div className="whole24-formula-drop">
+              <button className={wholeOhmAnswers.left ? 'is-filled' : ''} type="button" onClick={() => placeWholeOhmToken('left')} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); placeWholeOhmToken('left') }}>{wholeOhmAnswers.left || 'vế trái'}</button>
+              <b>=</b>
+              <div>
+                <button className={wholeOhmAnswers.numerator ? 'is-filled' : ''} type="button" onClick={() => placeWholeOhmToken('numerator')} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); placeWholeOhmToken('numerator') }}>{wholeOhmAnswers.numerator || 'tử số'}</button>
+                <i />
+                <button className={wholeOhmAnswers.denominator ? 'is-filled' : ''} type="button" onClick={() => placeWholeOhmToken('denominator')} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); placeWholeOhmToken('denominator') }}>{wholeOhmAnswers.denominator || 'mẫu số'}</button>
+              </div>
+            </div>
+            <button className="primary-soft-btn" type="button" onClick={checkWholeOhmFormula}>Kiểm tra</button>
+            {wholeOhmFeedback.formula && <div className={wholeOhmFeedback.formula.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{wholeOhmFeedback.formula.text}</strong></div>}
+            {formulaDone && <div className="whole24-formula-result">I = ξ/(R + r)</div>}
+          </article>
+        )}
+
+        {formulaDone && (
+          <article className="whole24-card">
+            <div className="whole24-head">
+              <span>Card 5</span>
+              <h3>Hoàn thành phát biểu</h3>
+            </div>
+            <div className="opening-card-bank">
+              {statementTokens.map((token) => (
+                <button
+                  className={wholeOhmDraggedToken === token ? 'opening-drag-card is-selected' : 'opening-drag-card'}
+                  draggable={!statementDone}
+                  key={token}
+                  type="button"
+                  onClick={() => setWholeOhmDraggedToken(token)}
+                  onDragStart={() => setWholeOhmDraggedToken(token)}
+                >
+                  {token}
+                </button>
+              ))}
+            </div>
+            <div className="whole24-statement">
+              <span>Cường độ dòng điện trong mạch kín</span>
+              <button className={wholeOhmAnswers.direct ? 'is-filled' : ''} type="button" onClick={() => placeStatementToken('direct')} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); placeStatementToken('direct') }}>{wholeOhmAnswers.direct || '_____'}</button>
+              <span>với suất điện động ξ</span>
+              <span>và</span>
+              <button className={wholeOhmAnswers.inverse ? 'is-filled' : ''} type="button" onClick={() => placeStatementToken('inverse')} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); placeStatementToken('inverse') }}>{wholeOhmAnswers.inverse || '_____'}</button>
+              <span>với điện trở toàn phần (R+r)</span>
+            </div>
+            <button className="primary-soft-btn" type="button" onClick={checkWholeOhmStatement}>Kiểm tra</button>
+            {wholeOhmFeedback.statement && <div className={wholeOhmFeedback.statement.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{wholeOhmFeedback.statement.text}</strong></div>}
+          </article>
+        )}
+
+        {statementDone && (
+          <div className="worksheet24-info-box worksheet24-info-box--remember">
+            <strong>Định luật Ôm toàn mạch</strong>
+            <p>Cường độ dòng điện trong mạch kín tỉ lệ thuận với suất điện động của nguồn điện và tỉ lệ nghịch với điện trở toàn phần của mạch.</p>
+            <div className="whole24-formula-result">I = ξ/(R + r)</div>
+            <p>ξ là suất điện động của nguồn điện.</p>
+            <p>R là điện trở mạch ngoài.</p>
+            <p>r là điện trở trong của nguồn điện.</p>
+            <p>R+r là điện trở toàn phần của mạch.</p>
+          </div>
+        )}
+
+        {statementDone && (
+          <article className="whole24-card">
+            <div className="whole24-head">
+              <span>Thử thách cuối</span>
+              <h3>Hoàn thành sơ đồ tư duy</h3>
+            </div>
+            <div className="whole24-mindmap">
+              <span>ξ tăng</span><b>↓</b>
+              <span>I <button className={wholeOhmAnswers.challengeUp ? 'is-filled' : ''} type="button" onClick={() => answerWholeOhmQuestion('challengeUp', 'tăng', 'tăng', 'Đúng.', 'Khi ξ tăng và R+r không đổi thì I tăng.')}>{wholeOhmAnswers.challengeUp || '______'}</button></span>
+              <span>R+r tăng</span><b>↓</b>
+              <span>I <button className={wholeOhmAnswers.challengeDown ? 'is-filled' : ''} type="button" onClick={() => answerWholeOhmQuestion('challengeDown', 'giảm', 'giảm', 'Đúng.', 'Khi R+r tăng và ξ không đổi thì I giảm.')}>{wholeOhmAnswers.challengeDown || '______'}</button></span>
+            </div>
+            <div className="opening-card-bank">
+              <button className="opening-drag-card" type="button" onClick={() => answerWholeOhmQuestion('challengeUp', 'tăng', 'tăng', 'Đúng.', 'Khi ξ tăng và R+r không đổi thì I tăng.')}>tăng</button>
+              <button className="opening-drag-card" type="button" onClick={() => answerWholeOhmQuestion('challengeDown', 'giảm', 'giảm', 'Đúng.', 'Khi R+r tăng và ξ không đổi thì I giảm.')}>giảm</button>
+            </div>
+            {(wholeOhmFeedback.challengeUp || wholeOhmFeedback.challengeDown) && (
+              <div className="worksheet24-feedback is-correct"><strong>{challengeDone ? 'Chính xác! Em đã hoàn thành sơ đồ tư duy.' : 'Hoàn thành cả hai nhánh của sơ đồ.'}</strong></div>
+            )}
+          </article>
+        )}
+
+        {challengeDone && (
+          <div className="worksheet24-info-box worksheet24-info-box--remember">
+            <strong>Em đã học</strong>
+            <p>✔ Điện trở toàn phần của mạch kín là R+r.</p>
+            <p>✔ ξ tăng thì I tăng nếu điện trở toàn phần không đổi.</p>
+            <p>✔ R+r tăng thì I giảm nếu ξ không đổi.</p>
+            <p>✔ Định luật Ôm toàn mạch: I = ξ/(R+r).</p>
+            {!done && <button className="primary-soft-btn" type="button" onClick={completeWholeOhmTask}>Hoàn thành Nhiệm vụ 7</button>}
+          </div>
+        )}
+
+        {done && index < lesson24WorksheetCards.length - 1 && index === cardIndex && (
+          <button className="primary-soft-btn" type="button" onClick={() => setCardIndex((current) => current + 1)}>Mở nhiệm vụ tiếp theo</button>
+        )}
+      </section>
+    )
+  }
+
+  const renderShortCircuitTask = (index) => {
+    const firstDone = shortAnswers.diagram === 'direct'
+    const secondDone = shortAnswers.danger === 'large-current'
+    const done = completedCards.includes('short')
+
+    const renderShortChoice = (key, value, correct, successText, wrongText, label) => (
+      <button
+        className={shortAnswers[key] === value ? 'is-selected' : ''}
+        type="button"
+        onClick={() => answerShortQuestion(key, value, correct, successText, wrongText)}
+      >
+        {label}
+      </button>
+    )
+
+    return (
+      <section className={done ? 'worksheet24-section is-done' : 'worksheet24-section'} key="short">
+        <div className="worksheet24-card-head worksheet24-section-head">
+          <span>Nhiệm vụ {index + 2}</span>
+          <h3>⚠️ Em có biết? Đoản mạch</h3>
+          <p>Khi hai cực của nguồn điện được nối trực tiếp với nhau bằng dây dẫn có điện trở rất nhỏ, hiện tượng đoản mạch có thể xảy ra.</p>
+        </div>
+
+        <div className="short24-know">
+          <article className="worksheet24-question">
+            <strong>Sơ đồ nào mô tả hiện tượng đoản mạch?</strong>
+            <div className="worksheet24-options">
+              {renderShortChoice('diagram', 'lamp', 'direct', 'Đúng! Đoản mạch xảy ra khi hai cực nguồn được nối trực tiếp bằng dây dẫn có điện trở rất nhỏ.', 'Sơ đồ này vẫn có bóng đèn trong mạch ngoài.', 'A. Nguồn – bóng đèn – dây dẫn')}
+              {renderShortChoice('diagram', 'open', 'direct', 'Đúng! Đoản mạch xảy ra khi hai cực nguồn được nối trực tiếp bằng dây dẫn có điện trở rất nhỏ.', 'Công tắc mở làm mạch không kín.', 'B. Nguồn có công tắc mở')}
+              {renderShortChoice('diagram', 'direct', 'direct', 'Đúng! Đoản mạch xảy ra khi hai cực nguồn được nối trực tiếp bằng dây dẫn có điện trở rất nhỏ.', 'Hãy chọn sơ đồ nối trực tiếp hai cực nguồn.', 'C. Hai cực nguồn nối trực tiếp bằng dây dẫn')}
+            </div>
+            {shortFeedback.diagram && <div className={shortFeedback.diagram.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{shortFeedback.diagram.text}</strong></div>}
+          </article>
+
+          {firstDone && (
+            <article className="worksheet24-question">
+              <strong>Vì sao đoản mạch nguy hiểm?</strong>
+              <div className="worksheet24-options">
+                {renderShortChoice('danger', 'large-current', 'large-current', 'Đúng! Khi đoản mạch, điện trở mạch ngoài rất nhỏ nên cường độ dòng điện có thể tăng rất lớn. Dòng điện lớn có thể làm nóng dây dẫn, làm hỏng nguồn điện hoặc gây cháy.', 'Hãy chú ý điện trở mạch ngoài khi đoản mạch rất nhỏ.', 'A. Dòng điện tăng rất lớn')}
+                {renderShortChoice('danger', 'zero', 'large-current', 'Đúng! Khi đoản mạch, điện trở mạch ngoài rất nhỏ nên cường độ dòng điện có thể tăng rất lớn. Dòng điện lớn có thể làm nóng dây dẫn, làm hỏng nguồn điện hoặc gây cháy.', 'Đoản mạch không làm dòng điện giảm về 0.', 'B. Dòng điện giảm về 0')}
+                {renderShortChoice('danger', 'no-effect', 'large-current', 'Đúng! Khi đoản mạch, điện trở mạch ngoài rất nhỏ nên cường độ dòng điện có thể tăng rất lớn. Dòng điện lớn có thể làm nóng dây dẫn, làm hỏng nguồn điện hoặc gây cháy.', 'Đoản mạch là hiện tượng nguy hiểm.', 'C. Không ảnh hưởng gì')}
+              </div>
+              {shortFeedback.danger && <div className={shortFeedback.danger.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{shortFeedback.danger.text}</strong></div>}
+            </article>
+          )}
+
+          {secondDone && (
+            <div className="short24-note">
+              <strong>Em có biết</strong>
+              <p>⚠️ Đoản mạch là hiện tượng hai cực nguồn điện nối trực tiếp với nhau bằng dây dẫn có điện trở rất nhỏ.</p>
+              <p>⚠️ Khi đoản mạch xảy ra, dòng điện có thể rất lớn và gây nguy hiểm.</p>
+              {!done && <button className="primary-soft-btn" type="button" onClick={completeShortTask}>Hoàn thành Nhiệm vụ 8</button>}
+            </div>
+          )}
+        </div>
+
+        {done && index < lesson24WorksheetCards.length - 1 && index === cardIndex && (
+          <button className="primary-soft-btn" type="button" onClick={() => setCardIndex((current) => current + 1)}>Mở nhiệm vụ tiếp theo</button>
+        )}
+      </section>
+    )
+  }
+
   return (
     <div className="worksheet24">
       <section className="worksheet24-intro">
@@ -7087,7 +8260,12 @@ function Lesson24WorksheetV2() {
       <section className={openingDone ? 'worksheet24-card is-done' : 'worksheet24-card'}>
         <div className="worksheet24-card-head">
           <span>Nhiệm vụ 1</span>
-          <h3>Hãy hoàn thành chuỗi suy luận</h3>
+          <h3>Tại sao thay pin thì đèn lại sáng trở lại?</h3>
+          <p>Kết nối với tình huống mở đầu để hình thành câu hỏi khoa học cần khám phá.</p>
+        </div>
+        <div className="worksheet24-card-head worksheet24-section-head">
+          <span>Phần 1</span>
+          <h3>Hãy sắp xếp sự việc theo đúng thực tế</h3>
           <p>Kéo các thẻ vào đúng thứ tự xảy ra trong thực tế.</p>
         </div>
         <div className="opening-card-bank">
@@ -7132,9 +8310,9 @@ function Lesson24WorksheetV2() {
         {openingStepDone.sequence && (
           <div className="opening-mini-task">
             <div className="worksheet24-card-head">
-              <span>Thử thách tiếp theo</span>
-              <h3>Điều gì thực sự quan trọng?</h3>
-              <p>Kéo thẻ quan trọng nhất vào ô trung tâm.</p>
+              <span>Phần 2</span>
+              <h3>Điều gì thực sự thay đổi?</h3>
+              <p>Pin mới giúp đèn sáng mạnh trở lại. Nhưng điều gì ở pin đã làm được điều đó?</p>
             </div>
             <div className="opening-card-bank">
               {lesson24OpeningFocusCards.map(([id, label]) => (
@@ -7160,7 +8338,7 @@ function Lesson24WorksheetV2() {
                 setFocusChoice(draggedOpeningCard)
               }}
             >
-              {lesson24OpeningFocusCards.find(([id]) => id === focusChoice)?.[1] || 'Ô trung tâm'}
+              {lesson24OpeningFocusCards.find(([id]) => id === focusChoice)?.[1] || 'Chọn câu trả lời'}
             </button>
             <button className="primary-soft-btn" disabled={!focusChoice || openingStepDone.focus} type="button" onClick={checkOpeningFocus}>Kiểm tra</button>
             {openingFeedback.focus && <div className={openingFeedback.focus.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{openingFeedback.focus.text}</strong></div>}
@@ -7171,51 +8349,20 @@ function Lesson24WorksheetV2() {
           <div className="opening-mini-task">
             <div className="worksheet24-card-head">
               <span>Thử thách cuối</span>
-              <h3>Hoàn thành câu kết luận</h3>
+              <h3>🤔 Vì sao pin có thể giúp dòng điện tồn tại lâu dài trong mạch?</h3>
+              <p>Chưa cần trả lời ngay. Hãy tiếp tục khám phá để tự tìm điều kiện duy trì dòng điện.</p>
             </div>
-            <div className="opening-fill-sentence">
-              <span>Muốn đèn sáng liên tục thì cần duy trì</span>
-              <button
-                className={conclusionChoice ? 'opening-blank is-filled' : 'opening-blank'}
-                type="button"
-                onClick={() => draggedOpeningCard && setConclusionChoice(draggedOpeningCard)}
-                onDragOver={(event) => event.preventDefault()}
-                onDrop={(event) => {
-                  event.preventDefault()
-                  setConclusionChoice(draggedOpeningCard)
-                }}
-              >
-                {lesson24OpeningFocusCards.find(([id]) => id === conclusionChoice)?.[1] || '________'}
-              </button>
-            </div>
-            <div className="opening-card-bank">
-              {lesson24OpeningFocusCards.map(([id, label]) => (
-                <button
-                  className={conclusionChoice === id ? 'opening-drag-card is-selected' : 'opening-drag-card'}
-                  draggable={!openingStepDone.conclusion}
-                  key={id}
-                  type="button"
-                  onClick={() => setConclusionChoice(id)}
-                  onDragStart={() => setDraggedOpeningCard(id)}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            <button className="primary-soft-btn" disabled={!conclusionChoice || openingStepDone.conclusion} type="button" onClick={checkOpeningConclusion}>Kiểm tra</button>
+            <button className="primary-soft-btn" disabled={openingStepDone.conclusion} type="button" onClick={checkOpeningConclusion}>Khám phá tiếp</button>
             {openingFeedback.conclusion && <div className={openingFeedback.conclusion.type === 'success' ? 'worksheet24-feedback is-correct' : 'worksheet24-feedback'}><strong>{openingFeedback.conclusion.text}</strong></div>}
           </div>
         )}
 
         {openingDone && (
           <div className="worksheet24-bridge worksheet24-bridge--reflect">
-            <p><strong>📌 Chúng ta đã biết:</strong></p>
-            <p>Pin mới giúp dòng điện tiếp tục được duy trì.</p>
-            <p>Muốn đèn sáng liên tục cần duy trì dòng điện.</p>
-            <p>Nhưng dòng điện có thể tồn tại lâu dài nhờ điều gì?</p>
-            <p>Điều kiện nào giúp dòng điện không bị mất đi?</p>
+            <p><strong>📌 Câu hỏi mới xuất hiện:</strong></p>
+            <p>Pin đã làm gì để dòng điện không bị mất đi?</p>
             {!openingComplete && (
-              <button className="primary-soft-btn" type="button" onClick={() => setOpeningComplete(true)}>Tiếp tục nhiệm vụ hình thành kiến thức</button>
+              <button className="primary-soft-btn" type="button" onClick={() => setOpeningComplete(true)}>Bắt đầu Nhiệm vụ 2</button>
             )}
           </div>
         )}
@@ -7225,6 +8372,30 @@ function Lesson24WorksheetV2() {
         <section className="worksheet24-card worksheet24-unified-card">
           {lesson24WorksheetCards.slice(0, cardIndex + 1).map((card, index) => {
             const done = completedCards.includes(card.id)
+
+            if (card.id === 'condition') {
+              return renderConditionTask(index)
+            }
+
+            if (card.id === 'source') {
+              return renderSourceTask(index)
+            }
+
+            if (card.id === 'internal') {
+              return renderInternalResistanceTask(index)
+            }
+
+            if (card.id === 'voltage') {
+              return renderVoltageDropTask(index)
+            }
+
+            if (card.id === 'whole-ohm') {
+              return renderWholeOhmTask(index)
+            }
+
+            if (card.id === 'short') {
+              return renderShortCircuitTask(index)
+            }
 
             return (
               <section className={done ? 'worksheet24-section is-done' : 'worksheet24-section'} key={card.id}>
@@ -7775,7 +8946,6 @@ function Lesson25InteractiveOpener({ onComplete }) {
                 <p style={{ '--delay': '600ms' }}>Chúng ta sẽ cùng khám phá trong phiếu học tập.</p>
               </div>
             </div>
-            <button className="lesson25-opener-primary lesson25-opener-primary--large" type="button" onClick={onComplete}>Chuyển sang phiếu học tập</button>
           </section>
         )}
       </div>
@@ -7944,9 +9114,6 @@ function Lesson25ElectricJourneyOld() {
           <h2>Khởi động: năng lượng điện trong đời sống</h2>
         </div>
         <Lesson25InteractiveVideo src="/videos/bai25.mp4" />
-        <button className="primary-soft-btn lesson25-start-btn" type="button" onClick={() => revealBlock('worksheet')}>
-          Chuyển sang phiếu học tập
-        </button>
       </article>
 
       {revealedBlocks.worksheet && (
@@ -8735,9 +9902,11 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
   const [quizResults, setQuizResults] = useState({})
   const [quizSubmitted, setQuizSubmitted] = useState(false)
   const [selectedQuizMatch, setSelectedQuizMatch] = useState('')
+  const [selectedEnergyDevice, setSelectedEnergyDevice] = useState('')
   const [selfOpen, setSelfOpen] = useState(PREVIEW_ALL_LESSON_PARTS || isAfterPart)
 
   const normalizeFormula = (value) => normalizeText(String(value || '')).replace(/[∆Δδ]/g, 'delta').replace(/[÷:]/g, '/').replace(/\s/g, '').replace(/[.×*]/g, '')
+  const isEnergyWorkFormula = (value) => normalizeFormula(value).replace(/^a=/, '').split('').sort().join('') === 'itu'
   const numberFrom = (value) => Number(String(value || '').replace(',', '.').match(/-?\d+(\.\d+)?/)?.[0])
   const completeStep = (step) => setMaxStep((current) => Math.max(current, step + 1))
   const setFeedback = (key, correct, good, bad) => {
@@ -8754,29 +9923,38 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
   }
 
   const checkEnergyForms = () => {
-    const forms = answers.energyForms || {}
-    const correct = forms.light && forms.heat && forms.motion && !forms.none
-    setFeedback('energyForms', correct, 'Đúng. Điện năng có thể chuyển hóa thành quang năng, nhiệt năng, cơ năng hoặc các dạng năng lượng khác tùy thiết bị.', 'Gợi ý: hãy chọn các dạng năng lượng xuất hiện khi đèn sáng, ấm nước nóng lên và quạt quay.')
+    const matches = answers.energyMatches || {}
+    const correct = matches.bike === 'motion' && matches.kettle === 'heat' && matches.lamp === 'light'
+    setFeedback(
+      'energyForms',
+      correct,
+      'Chính xác! Dòng điện làm các thiết bị hoạt động và điện năng được chuyển hóa thành những dạng năng lượng khác nhau.',
+      'Gợi ý: xe đạp điện chuyển động, ấm đun nước làm nước nóng lên, bóng đèn phát sáng.',
+    )
     if (correct) completeStep(1)
+  }
+
+  const placeEnergyForm = (deviceId, formId) => {
+    updateAnswer('energyMatches', { ...(answers.energyMatches || {}), [deviceId]: formId })
+    setFeedbacks((current) => ({ ...current, energyForms: '' }))
   }
 
   const checkChargeFormula = () => {
     const value = normalizeFormula(answers.chargeFormula).replace(/^q=/, '')
     const correct = value === 'it'
-    setFeedback('chargeFormula', correct, 'Đúng. Điện lượng đi qua đoạn mạch trong thời gian t là q = It.', 'Gợi ý: dòng điện càng mạnh thì điện lượng đi qua càng nhiều; thời gian càng lâu thì điện lượng đi qua càng nhiều. Vì vậy q liên hệ với I và t.')
+    setFeedback('chargeFormula', correct, 'Chính xác! Nếu cường độ dòng điện là I và dòng điện chạy trong thời gian t thì điện lượng chuyển qua tiết diện dây dẫn là: q = It.', 'Gợi ý: từ I = q/t, hãy nhân cả hai vế với t để biểu diễn q theo I và t.')
   }
 
   const checkDerive = () => {
-    const value = normalizeFormula(answers.derive).replace(/^a=/, '')
-    const correct = value === 'uit'
-    setFeedback('derive', correct, 'Chính xác. Điện năng tiêu thụ của đoạn mạch được xác định bởi A = UIt.', 'Gợi ý: thay q = It vào A = qU.')
+    const correct = isEnergyWorkFormula(answers.derive)
+    setFeedback('derive', correct, 'Đúng! Công của lực điện trong đoạn mạch được tính bằng: A = UIt.', 'Gợi ý: thay q = It vào A = qU.')
   }
 
   const checkEnergyFormulaTask = () => {
     const charge = normalizeFormula(answers.chargeFormula).replace(/^q=/, '') === 'it'
-    const energy = normalizeFormula(answers.derive).replace(/^a=/, '') === 'uit'
-    const correct = charge && energy
-    setFeedback('energyFormulaTask', correct, 'Đúng. Em đã suy luận được q = It và A = UIt.', 'Cần hoàn thành đúng cả hai bước: q = It, sau đó A = UIt.')
+    const energy = isEnergyWorkFormula(answers.derive)
+    const correct = charge && energy && answers.energyConclusion === 'electric-work'
+    setFeedback('energyFormulaTask', correct, 'Hoàn thành! Năng lượng điện tiêu thụ của đoạn mạch bằng công của lực điện.', 'Gợi ý: điện năng tiêu thụ bằng công mà lực điện thực hiện khi dịch chuyển các điện tích.')
     if (correct) completeStep(2)
   }
 
@@ -8785,68 +9963,101 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
     setFeedback('meterTool', correct, 'Đúng. Thiết bị dùng để đo điện năng tiêu thụ trong gia đình là công tơ điện.', 'Gợi ý: dụng cụ này thường được lắp ở hệ thống điện gia đình để theo dõi lượng điện tiêu thụ.')
   }
 
+  const isKwhStep1Correct = () => String(answers.kwhWatts || '').replace(/\D/g, '') === '1000' && String(answers.kwhSeconds || '').replace(/\D/g, '') === '3600'
+  const isKwhFinalCorrect = () => {
+    const compact = normalizeText(String(answers.kwhRelation || ''))
+      .replace(/[⁶]/g, '^6')
+      .replace(/\s/g, '')
+      .replace(/j|jun/g, '')
+    const digitsOnly = compact.replace(/\D/g, '')
+
+    return digitsOnly === '3600000' || /3[,.]6(?:x|×|\*|\.)?10\^?6/.test(compact)
+  }
+
+  const checkKwhStep1 = () => {
+    const correct = isKwhStep1Correct()
+    setFeedback('kwhStep1', correct, 'Đúng. Ta có 1 kW = 1000 W và 1 h = 3600 s.', 'Gợi ý: đổi riêng kW sang W và h sang s.')
+  }
+
   const checkKwh = () => {
-    const normalizedValue = normalizeFormula(answers.kwhRelation).replace(/^1kwh=/, '').replace(/^kwh=/, '')
-    const numeric = numberFrom(answers.kwhRelation)
-    const correct = normalizedValue.includes('36') && normalizedValue.includes('10^6') || Math.abs(numeric - 3600000) <= 1
-    setFeedback('kwhRelation', correct, 'Đúng. kWh là đơn vị thường dùng để tính điện năng tiêu thụ trong đời sống.', 'Gợi ý: 1 kWh = 3,6 × 10^6 J.')
+    const correct = isKwhStep1Correct() && isKwhFinalCorrect()
+    setFeedback('kwhRelation', correct, 'Đúng. Từ 1000 × 3600 ta suy ra 1 kWh = 3,6 × 10⁶ J.', 'Gợi ý: 1000 × 3600 = 3 600 000 = 3,6 × 10⁶.')
   }
 
   const checkMeterTask = () => {
-    const correct = answers.meterTool === 'meter' && (normalizeFormula(answers.kwhRelation).includes('10^6') || Math.abs(numberFrom(answers.kwhRelation) - 3600000) <= 1)
-    setFeedback('meterTask', correct, 'Đúng. Em đã xác định được công tơ điện và đơn vị kWh.', 'Cần chọn công tơ điện và hoàn thành 1 kWh = 3,6 × 10^6 J.')
+    const correct = answers.meterTool === 'meter' && isKwhStep1Correct() && isKwhFinalCorrect()
+    setFeedback('meterTask', correct, 'Đúng. Em đã xác định được công tơ điện và tự chứng minh được mối liên hệ giữa kWh và J.', 'Cần chọn công tơ điện và hoàn thành chứng minh 1 kWh = 3,6 × 10⁶ J.')
     if (correct) completeStep(3)
   }
 
+  const isPowerFormulaCorrect = () => normalizeFormula(answers.powerFormula || '').replace(/^p=/, '').split('').sort().join('') === 'iu'
+  const isPowerSummaryCorrect = () => ['speed', 'larger', 'led', 'formula'].every((key) => answers.powerSummary?.[key])
+
+  const checkPowerDevice = () => {
+    const correct = answers.powerDevice === 'ac'
+    setFeedback('powerDevice', correct, 'Đúng! Trong cùng một khoảng thời gian, thiết bị có công suất lớn hơn sẽ tiêu thụ nhiều điện năng hơn.', 'Gợi ý: so sánh công suất 55 W và 2638 W.')
+  }
+
+  const checkPowerMeaning = () => {
+    const correct = answers.powerMeaning === 'energy-time'
+    setFeedback('powerMeaning', correct, 'Chính xác! Công suất điện là lượng điện năng mà đoạn mạch tiêu thụ trong một đơn vị thời gian.', 'Gợi ý: công suất điện liên hệ với lượng điện năng tiêu thụ trong mỗi đơn vị thời gian.')
+  }
+
+  const checkPowerFormulaTask = () => {
+    const correct = isPowerFormulaCorrect()
+    setFeedback('powerFormula', correct, 'Đúng! Công suất điện được xác định bởi: P = W/t = UI.', 'Gợi ý: thay W = UIt vào P = W/t rồi rút gọn t.')
+  }
+
+  const checkRatedPower = () => {
+    const correct = answers.ratedPower === 'rated'
+    setFeedback('ratedPower', correct, 'Đúng! Khi thiết bị hoạt động ở hiệu điện thế định mức 220 V thì công suất của nó là 100 W. Công suất này được gọi là công suất định mức.', 'Gợi ý: 100 W là số ghi công suất của thiết bị.')
+  }
+
+  const checkLedLowerPower = () => {
+    const correct = answers.lowerPowerLamp === 'led'
+    setFeedback('lowerPowerLamp', correct, 'Đúng. Đèn LED có công suất 20 W, nhỏ hơn đèn sợi đốt 100 W.', 'Gợi ý: so sánh 20 W với 100 W.')
+  }
+
+  const checkLampTime = () => {
+    const correct = Math.abs(numberFrom(answers.lampUseTime) - 150) <= 0.1
+    setFeedback('lampUseTime', correct, 'Đúng. Tổng thời gian sử dụng là 5 × 30 = 150 giờ.', 'Gợi ý: mỗi ngày dùng 5 giờ trong 30 ngày.')
+  }
+
+  const checkIncandescentEnergy = () => {
+    const correct = Math.abs(numberFrom(answers.incandescentEnergy) - 15) <= 0.1
+    setFeedback('incandescentEnergy', correct, 'Đúng. A = 0,1 × 150 = 15 kWh.', 'Gợi ý: dùng P = 0,1 kW và t = 150 h.')
+  }
+
+  const checkLedEnergy = () => {
+    const correct = Math.abs(numberFrom(answers.ledEnergy) - 3) <= 0.1
+    setFeedback('ledEnergy', correct, 'Đúng. A = 0,02 × 150 = 3 kWh.', 'Gợi ý: dùng P = 0,02 kW và t = 150 h.')
+  }
+
+  const checkIncandescentMoney = () => {
+    const correct = Math.abs(numberFrom(answers.incandescentMoney) - 30000) <= 100
+    setFeedback('incandescentMoney', correct, 'Đúng. Tiền điện của đèn sợi đốt là 15 × 2000 = 30000 đồng.', 'Gợi ý: lấy điện năng tiêu thụ nhân với giá điện.')
+  }
+
+  const checkLedMoney = () => {
+    const correct = Math.abs(numberFrom(answers.ledMoney) - 6000) <= 100
+    setFeedback('ledMoney', correct, 'Đúng. Tiền điện của đèn LED là 3 × 2000 = 6000 đồng.', 'Gợi ý: lấy 3 kWh nhân với 2000 đồng/kWh.')
+  }
+
   const checkPowerConceptTask = () => {
-    const blank = normalizeText(answers.powerBlank || '')
-    const correct = answers.powerDevice === 'ac' && blank.includes('thoi gian')
-    setFeedback('powerConceptTask', correct, 'Đúng. Vì điều hòa có công suất lớn hơn nên trong cùng thời gian sẽ tiêu thụ nhiều điện năng hơn.', 'Gợi ý: chọn thiết bị 2638 W và điền “thời gian”.')
-    if (correct) completeStep(4)
-  }
-
-  const checkPowerUiFormula = () => {
-    const value = normalizeFormula(answers.powerUiFormula).replace(/^p=/, '')
-    const correct = value === 'ui'
-    setFeedback('powerUiFormula', correct, 'Đúng. Công suất điện được xác định bởi P = UI.', 'Gợi ý: thay A = UIt vào P = A/t, thời gian t được rút gọn.')
-    if (correct) completeStep(5)
-  }
-
-  const checkSavingChoices = () => {
-    const saving = answers.savingChoices || {}
-    const correct = saving.reduceTime && saving.efficient && saving.suitablePower && !saving.alwaysOn
-    setFeedback('savingChoices', correct, 'Đúng. Giảm thời gian sử dụng, chọn thiết bị tiết kiệm điện và dùng công suất phù hợp đều giúp giảm điện năng tiêu thụ.', 'Gợi ý: không chọn phương án bật tất cả thiết bị liên tục.')
-  }
-
-  const checkLedReason = () => {
-    const text = normalizeText(answers.ledReason || '')
-    const correct = (text.includes('cong suat') || text.includes('nho')) && (text.includes('it') || text.includes('tiet kiem') || text.includes('hieu qua'))
-    setFeedback('ledReason', correct, 'Đúng. Việc lựa chọn thiết bị có công suất phù hợp và hiệu quả sử dụng cao giúp tiết kiệm điện năng.', 'Gợi ý: liên hệ đèn LED với công suất nhỏ hơn và điện năng tiêu thụ ít hơn trong cùng thời gian.')
-  }
-
-  const checkSavingTask = () => {
-    const saving = answers.savingChoices || {}
-    const choicesCorrect = saving.reduceTime && saving.efficient && saving.suitablePower && !saving.alwaysOn
-    const text = normalizeText(answers.ledReason || '')
-    const ledCorrect = (text.includes('cong suat') || text.includes('nho')) && (text.includes('it') || text.includes('tiet kiem') || text.includes('hieu qua'))
-    const correct = choicesCorrect && ledCorrect
-    setFeedback('savingTask', correct, 'Đúng. Em đã vận dụng được mối liên hệ giữa công suất, thời gian sử dụng và điện năng tiêu thụ.', 'Cần chọn đủ ba biện pháp tiết kiệm điện và giải thích đèn LED bằng ý công suất/hiệu quả sử dụng.')
-    if (correct) completeStep(6)
-  }
-
-  const checkNumber = (key, expected, tolerance, good, bad, nextStep) => {
-    const numeric = numberFrom(answers[key])
-    const correct = Number.isFinite(numeric) && Math.abs(numeric - expected) <= tolerance
-    setFeedback(key, correct, good, bad)
-    if (correct && nextStep !== undefined) completeStep(nextStep)
-  }
-
-  const checkCostChallenge = () => {
     const correct =
-      Math.abs(numberFrom(answers.ledCost) - 40) <= 1 &&
-      Math.abs(numberFrom(answers.fanCost) - 110) <= 1 &&
-      Math.abs(numberFrom(answers.acCost) - 5276) <= 20
-    setFeedback('cost', correct, 'Đúng. LED khoảng 40 đồng/giờ, quạt 110 đồng/giờ, điều hòa khoảng 5276 đồng/giờ.', 'Gợi ý: đổi W sang kW rồi nhân 1 giờ và nhân 2000 đồng/kWh.')
+      answers.powerDevice === 'ac' &&
+      answers.powerMeaning === 'energy-time' &&
+      isPowerFormulaCorrect() &&
+      answers.ratedPower === 'rated' &&
+      answers.lowerPowerLamp === 'led' &&
+      Math.abs(numberFrom(answers.lampUseTime) - 150) <= 0.1 &&
+      Math.abs(numberFrom(answers.incandescentEnergy) - 15) <= 0.1 &&
+      Math.abs(numberFrom(answers.ledEnergy) - 3) <= 0.1 &&
+      Math.abs(numberFrom(answers.incandescentMoney) - 30000) <= 100 &&
+      Math.abs(numberFrom(answers.ledMoney) - 6000) <= 100 &&
+      isPowerSummaryCorrect()
+    setFeedback('powerConceptTask', correct, 'Hoàn thành! Hiểu công suất điện giúp chúng ta lựa chọn và sử dụng thiết bị điện tiết kiệm, hiệu quả hơn trong thực tế.', 'Cần hoàn thành đúng các bước khám phá và chọn đủ bốn kết luận đúng.')
+    if (correct) completeStep(4)
   }
 
   const worksheetSteps = [
@@ -8855,8 +10066,6 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
     'Công thức điện năng tiêu thụ',
     'Đơn vị điện năng và công tơ điện',
     'Khái niệm công suất điện',
-    'Công thức công suất điện',
-    'Vận dụng thực tiễn',
   ]
   const worksheetProgress = Math.round((Math.min(maxStep, worksheetSteps.length) / worksheetSteps.length) * 100)
   const currentQuiz = lesson25NewQuiz[quizIndex]
@@ -8868,9 +10077,9 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
     ['kwh', 'Tôi hiểu ý nghĩa của đơn vị kWh.'],
     ['meter', 'Tôi biết công tơ điện dùng để làm gì.'],
     ['power-concept', 'Tôi hiểu công suất điện là gì.'],
-    ['power-formula', 'Tôi vận dụng được công thức P = A/t và P = UI.'],
+    ['power-formula', 'Tôi suy luận được công thức P = W/t = UI.'],
     ['power-compare', 'Tôi giải thích được vì sao thiết bị có công suất lớn hơn thường tiêu thụ nhiều điện năng hơn.'],
-    ['saving', 'Tôi biết cách lựa chọn và sử dụng thiết bị điện tiết kiệm điện.'],
+    ['power-saving', 'Tôi so sánh được mức tiêu thụ và tiền điện của đèn sợi đốt với đèn LED.'],
   ]
   const selfRatingCount = Object.values(answers.selfChecks || {}).filter(Boolean).length
   const selfReflectionDone = ['unclearContent', 'nextPlan'].every((key) => String(answers[key] || '').trim())
@@ -8955,7 +10164,6 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
           </div>
         </div>
         <Lesson25InteractiveVideo onComplete={() => setWorksheetOpen(true)} src="/videos/bai25.mp4" />
-        <button className="primary-soft-btn lesson25-start-btn" type="button" onClick={() => setWorksheetOpen(true)}>Chuyển sang phiếu học tập</button>
       </article>}
 
       {worksheetOpen && isWorksheetPart && (
@@ -8997,61 +10205,169 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
             </section>
 
             {maxStep >= 1 && (
-            <section className="lesson25-task-group">
+            <section className="lesson25-task-group lesson25-energy-task">
               <div className="lesson25-task-heading">
                 <span>Nhiệm vụ 2</span>
-                <h3>Hình thành khái niệm điện năng tiêu thụ</h3>
+                <h3>Nhận biết sự chuyển hóa của điện năng</h3>
+                <p>Trong thực tế, dòng điện có thể làm nhiều thiết bị hoạt động như xe đạp điện, ấm đun nước và bóng đèn.</p>
               </div>
-              <section className="lesson25-unlock-card">
-                <p>Trong video và trong thực tế, dòng điện có thể làm đèn phát sáng, quạt quay, ấm nước nóng lên. Điều đó cho thấy dòng điện mang năng lượng và năng lượng điện có thể chuyển hóa thành các dạng năng lượng khác.</p>
-                <h3>Khi thiết bị điện hoạt động, điện năng có thể chuyển hóa thành những dạng năng lượng nào?</h3>
-                <div className="choice-row choice-row--wrap">
+              <section className="lesson25-unlock-card lesson25-energy-conversion">
+                <p>Hãy quan sát các thiết bị dưới đây và xác định điện năng đã chuyển hóa thành dạng năng lượng nào.</p>
+                <div className="lesson25-device-match">
                   {[
-                    ['light', 'Quang năng'],
-                    ['heat', 'Nhiệt năng'],
+                    ['bike', '🚲', 'Xe đạp điện'],
+                    ['kettle', '♨️', 'Ấm đun nước'],
+                    ['lamp', '💡', 'Bóng đèn'],
+                  ].map(([id, icon, name]) => {
+                    const pickedForm = answers.energyMatches?.[id]
+                    const pickedLabel = {
+                      motion: 'Cơ năng',
+                      heat: 'Nhiệt năng',
+                      light: 'Quang năng',
+                    }[pickedForm]
+
+                    return (
+                      <button
+                        className={selectedEnergyDevice === id ? 'lesson25-device-card is-selected' : pickedForm ? 'lesson25-device-card is-filled' : 'lesson25-device-card'}
+                        key={id}
+                        type="button"
+                        onClick={() => setSelectedEnergyDevice(id)}
+                        onDragOver={(event) => event.preventDefault()}
+                        onDrop={(event) => {
+                          event.preventDefault()
+                          placeEnergyForm(id, event.dataTransfer.getData('text/plain'))
+                        }}
+                      >
+                        <span>{icon}</span>
+                        <strong>{name}</strong>
+                        <em>{pickedLabel || 'Chọn dạng năng lượng'}</em>
+                      </button>
+                    )
+                  })}
+                </div>
+                <div className="lesson25-energy-bank" aria-label="Các dạng năng lượng">
+                  {[
                     ['motion', 'Cơ năng'],
-                    ['none', 'Không chuyển hóa thành dạng năng lượng nào'],
-                  ].map(([key, label]) => (
-                    <label className="soft-checkbox" key={key}>
-                      <input checked={Boolean(answers.energyForms?.[key])} onChange={() => updateAnswer('energyForms', { ...(answers.energyForms || {}), [key]: !answers.energyForms?.[key] })} type="checkbox" />
-                      <span>{label}</span>
-                    </label>
+                    ['heat', 'Nhiệt năng'],
+                    ['light', 'Quang năng'],
+                  ].map(([id, label]) => (
+                    <button
+                      className="lesson25-energy-token"
+                      draggable
+                      key={id}
+                      type="button"
+                      onClick={() => selectedEnergyDevice && placeEnergyForm(selectedEnergyDevice, id)}
+                      onDragStart={(event) => event.dataTransfer.setData('text/plain', id)}
+                    >
+                      {label}
+                    </button>
                   ))}
                 </div>
                 <button className="primary-soft-btn" type="button" onClick={checkEnergyForms}>Kiểm tra</button>
                 {feedbacks.energyForms && <p className={`inline-feedback inline-feedback--${feedbacks.energyForms.type}`}>{feedbacks.energyForms.message}</p>}
-                {feedbacks.energyForms?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Điện năng tiêu thụ của đoạn mạch là năng lượng điện mà đoạn mạch nhận được từ nguồn điện và chuyển hóa thành các dạng năng lượng khác.</span></div>}
+                {feedbacks.energyForms?.type === 'correct' && (
+                  <>
+                    <div className="lesson25-energy-feedback">
+                      <p>Xe đạp điện nhận cơ năng.</p>
+                      <p>Ấm đun nước nhận nhiệt năng.</p>
+                      <p>Bóng đèn phát ra quang năng.</p>
+                    </div>
+                    <div className="worksheet-conclusion">
+                      <strong>Kết luận:</strong>
+                      <span>Từ các ví dụ trên có thể thấy: điện năng tiêu thụ của đoạn mạch không mất đi mà được chuyển hóa thành các dạng năng lượng khác như cơ năng, nhiệt năng, quang năng,... Đây là cơ sở để tìm hiểu khái niệm điện năng tiêu thụ trong phần tiếp theo.</span>
+                    </div>
+                  </>
+                )}
               </section>
             </section>
             )}
 
             {maxStep >= 2 && (
-            <section className="lesson25-task-group">
+            <section className="lesson25-task-group lesson25-formula-task">
               <div className="lesson25-task-heading">
                 <span>Nhiệm vụ 3</span>
                 <h3>Hình thành công thức điện năng tiêu thụ</h3>
               </div>
-              <section className="lesson25-unlock-card">
-                <p>Trong một đoạn mạch, khi điện tích q dịch chuyển dưới tác dụng của hiệu điện thế U, lực điện thực hiện công: A = qU.</p>
-                <p>Mặt khác, cường độ dòng điện được xác định bởi: I = q/t.</p>
-                <p>Hãy sử dụng hai mối liên hệ trên để tìm công thức điện năng tiêu thụ theo U, I và t.</p>
-                <div className="lesson25-formula-clues"><span>A = qU</span><span>I = q/t</span><span>q = ?</span></div>
-                <button className="ghost-soft-btn" type="button" onClick={() => showHint('derive', 3)}>Gợi ý</button>
-                {hints.derive > 0 && <div className="hint-panel">{['Dòng điện càng mạnh thì điện lượng đi qua càng nhiều.', 'Thời gian càng lâu thì điện lượng đi qua càng nhiều.', 'Vì vậy q liên hệ với I và t.'][hints.derive - 1]}</div>}
-                <h3>Từ công thức I = q/t, điện lượng q được biểu diễn theo I và t như thế nào?</h3>
-                <div className="formula-input"><span>q =</span><input value={answers.chargeFormula || ''} onChange={(event) => updateAnswer('chargeFormula', event.target.value)} placeholder="..." /><button type="button" onClick={checkChargeFormula}>Kiểm tra</button></div>
-                {feedbacks.chargeFormula && <p className={`inline-feedback inline-feedback--${feedbacks.chargeFormula.type}`}>{feedbacks.chargeFormula.message}</p>}
-                <h3>Thay q = It vào A = qU, ta thu được công thức điện năng tiêu thụ là gì?</h3>
-                <div className="formula-input"><span>A =</span><input value={answers.derive || ''} onChange={(event) => updateAnswer('derive', event.target.value)} placeholder="..." /><button type="button" onClick={checkDerive}>Kiểm tra</button></div>
-                {feedbacks.derive && <p className={`inline-feedback inline-feedback--${feedbacks.derive.type}`}>{feedbacks.derive.message}</p>}
-                {feedbacks.derive?.type === 'correct' && <div className="lesson25-formula-reveal">A = UIt</div>}
-                <div className="lesson25-practice-grid">
-                  {[['basic1', 'Thiết bị U = 220 V, I = 2 A dùng 10 s. Tính A (J).', 4400, 'Dùng A = UIt = 220 × 2 × 10.'], ['basic2', 'Đèn U = 12 V, I = 0,5 A dùng 60 s. Tính A (J).', 360, 'Dùng A = 12 × 0,5 × 60.']].map(([key, prompt, expected, hint]) => (
-                    <div className="question-card" key={key}><h4>{prompt}</h4><button className="ghost-soft-btn" type="button" onClick={() => showHint(key, 1)}>Gợi ý</button>{hints[key] && <p className="hint-panel">{hint}</p>}<input value={answers[key] || ''} onChange={(event) => updateAnswer(key, event.target.value)} placeholder="Nhập đáp án..." /><button className="primary-soft-btn" type="button" onClick={() => checkNumber(key, expected, 1, 'Đúng. Em đã áp dụng đúng A = UIt.', 'Kiểm tra lại phép nhân U × I × t.')}>Kiểm tra</button>{feedbacks[key] && <p className={`inline-feedback inline-feedback--${feedbacks[key].type}`}>{feedbacks[key].message}</p>}</div>
-                  ))}
+              <section className="lesson25-unlock-card lesson25-formula-steps">
+                <div className="lesson25-formula-intro">
+                  <p>Trong một đoạn mạch, khi điện tích q dịch chuyển dưới tác dụng của hiệu điện thế U thì lực điện thực hiện công:</p>
+                  <strong>A = qU</strong>
+                  <p>Mặt khác:</p>
+                  <strong>I = q/t</strong>
+                  <p>Hãy sử dụng hai công thức trên để tìm biểu thức điện năng tiêu thụ của đoạn mạch.</p>
                 </div>
-                <button className="primary-soft-btn" type="button" onClick={checkEnergyFormulaTask}>Hoàn thành nhiệm vụ</button>
-                {feedbacks.energyFormulaTask && <p className={`inline-feedback inline-feedback--${feedbacks.energyFormulaTask.type}`}>{feedbacks.energyFormulaTask.message}</p>}
+                <article className="lesson25-reason-step is-active">
+                  <span>Bước 1</span>
+                  <h3>Từ công thức I = q/t, hãy biểu diễn q theo I và t.</h3>
+                  <div className="formula-input">
+                    <span>q =</span>
+                    <input
+                      value={answers.chargeFormula || ''}
+                      onChange={(event) => {
+                        updateAnswer('chargeFormula', event.target.value)
+                        setFeedbacks((current) => ({ ...current, chargeFormula: '', derive: '', energyFormulaTask: '' }))
+                      }}
+                      placeholder="..."
+                    />
+                    <button type="button" onClick={checkChargeFormula}>Kiểm tra</button>
+                  </div>
+                  {feedbacks.chargeFormula && <p className={`inline-feedback inline-feedback--${feedbacks.chargeFormula.type}`}>{feedbacks.chargeFormula.message}</p>}
+                </article>
+                {feedbacks.chargeFormula?.type === 'correct' && (
+                  <article className="lesson25-reason-step is-active">
+                    <span>Bước 2</span>
+                    <h3>Thay q = It vào công thức A = qU, ta được:</h3>
+                    <div className="formula-input">
+                      <span>A =</span>
+                      <input
+                        value={answers.derive || ''}
+                        onChange={(event) => {
+                          updateAnswer('derive', event.target.value)
+                          setFeedbacks((current) => ({ ...current, derive: '', energyFormulaTask: '' }))
+                        }}
+                        placeholder="..."
+                      />
+                      <button type="button" onClick={checkDerive}>Kiểm tra</button>
+                    </div>
+                    {feedbacks.derive && <p className={`inline-feedback inline-feedback--${feedbacks.derive.type}`}>{feedbacks.derive.message}</p>}
+                  </article>
+                )}
+                {feedbacks.derive?.type === 'correct' && (
+                  <article className="lesson25-reason-step is-active">
+                    <span>Bước 3</span>
+                    <h3>Hoàn thành kết luận</h3>
+                    <p>"Năng lượng điện tiêu thụ của đoạn mạch bằng ______"</p>
+                    <div className="choice-row">
+                      {[
+                        ['electric-work', 'công của lực điện'],
+                        ['heat', 'nhiệt lượng'],
+                        ['resistance', 'điện trở'],
+                      ].map(([value, label]) => (
+                        <button
+                          className={answers.energyConclusion === value ? 'soft-choice soft-choice--active' : 'soft-choice'}
+                          key={value}
+                          type="button"
+                          onClick={() => {
+                            updateAnswer('energyConclusion', value)
+                            setFeedbacks((current) => ({ ...current, energyFormulaTask: '' }))
+                          }}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                    <button className="primary-soft-btn" type="button" onClick={checkEnergyFormulaTask}>Kiểm tra kết luận</button>
+                    {feedbacks.energyFormulaTask && <p className={`inline-feedback inline-feedback--${feedbacks.energyFormulaTask.type}`}>{feedbacks.energyFormulaTask.message}</p>}
+                    {feedbacks.energyFormulaTask?.type === 'correct' && (
+                      <div className="worksheet-conclusion lesson25-energy-final">
+                        <strong>Kết luận:</strong>
+                        <span>Năng lượng điện tiêu thụ của đoạn mạch bằng công của lực điện thực hiện khi dịch chuyển các điện tích.</span>
+                        <b>W = A = UIt</b>
+                        <em>Đơn vị: Jun (J)</em>
+                      </div>
+                    )}
+                  </article>
+                )}
               </section>
             </section>
             )}
@@ -9068,9 +10384,73 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                 <div className="choice-row">{[['ammeter', 'Ampe kế'], ['voltmeter', 'Vôn kế'], ['meter', 'Công tơ điện'], ['ohmmeter', 'Ôm kế']].map(([value, label]) => <button className={answers.meterTool === value ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={value} onClick={() => updateAnswer('meterTool', value)}>{label}</button>)}</div>
                 <button className="primary-soft-btn" type="button" onClick={checkMeter}>Kiểm tra câu 1</button>
                 {feedbacks.meterTool && <p className={`inline-feedback inline-feedback--${feedbacks.meterTool.type}`}>{feedbacks.meterTool.message}</p>}
-                <h3>Hoàn thành mối liên hệ đơn vị: 1 kWh = ______ J.</h3>
-                <div className="formula-input"><span>1 kWh =</span><input value={answers.kwhRelation || ''} onChange={(event) => updateAnswer('kwhRelation', event.target.value)} placeholder="..." /><button type="button" onClick={checkKwh}>Kiểm tra câu 2</button></div>
-                {feedbacks.kwhRelation && <p className={`inline-feedback inline-feedback--${feedbacks.kwhRelation.type}`}>{feedbacks.kwhRelation.message}</p>}
+                <div className="lesson25-kwh-proof">
+                  <h3>Hãy chứng minh rằng 1 kWh = 3,6 × 10⁶ J</h3>
+                  <div className="lesson25-kwh-hints" aria-label="Gợi ý đổi đơn vị">
+                    <span>1 kW = 1000 W</span>
+                    <span>1 h = 3600 s</span>
+                    <span>1 W = 1 J/s</span>
+                  </div>
+                  <article className="lesson25-kwh-step">
+                    <strong>Bước 1</strong>
+                    <div className="lesson25-kwh-line">
+                      <span>1 kWh =</span>
+                      <input
+                        value={answers.kwhWatts || ''}
+                        onChange={(event) => {
+                          updateAnswer('kwhWatts', event.target.value)
+                          setFeedbacks((current) => ({ ...current, kwhStep1: '', kwhRelation: '', meterTask: '' }))
+                        }}
+                        inputMode="numeric"
+                        placeholder="..."
+                      />
+                      <span>W ×</span>
+                      <input
+                        value={answers.kwhSeconds || ''}
+                        onChange={(event) => {
+                          updateAnswer('kwhSeconds', event.target.value)
+                          setFeedbacks((current) => ({ ...current, kwhStep1: '', kwhRelation: '', meterTask: '' }))
+                        }}
+                        inputMode="numeric"
+                        placeholder="..."
+                      />
+                      <span>s</span>
+                      <button type="button" onClick={checkKwhStep1}>Kiểm tra bước 1</button>
+                    </div>
+                    {feedbacks.kwhStep1 && <p className={`inline-feedback inline-feedback--${feedbacks.kwhStep1.type}`}>{feedbacks.kwhStep1.message}</p>}
+                  </article>
+                  {feedbacks.kwhStep1?.type === 'correct' && (
+                    <>
+                      <article className="lesson25-kwh-step lesson25-kwh-step--static">
+                        <strong>Bước 2</strong>
+                        <p>1 kWh = 1000 × 3600 J</p>
+                      </article>
+                      <article className="lesson25-kwh-step">
+                        <strong>Bước 3</strong>
+                        <div className="formula-input">
+                          <span>1 kWh =</span>
+                          <input
+                            value={answers.kwhRelation || ''}
+                            onChange={(event) => {
+                              updateAnswer('kwhRelation', event.target.value)
+                              setFeedbacks((current) => ({ ...current, kwhRelation: '', meterTask: '' }))
+                            }}
+                            placeholder="..."
+                          />
+                          <button type="button" onClick={checkKwh}>Kiểm tra bước 3</button>
+                        </div>
+                        {feedbacks.kwhRelation && <p className={`inline-feedback inline-feedback--${feedbacks.kwhRelation.type}`}>{feedbacks.kwhRelation.message}</p>}
+                      </article>
+                    </>
+                  )}
+                  {feedbacks.kwhRelation?.type === 'correct' && (
+                    <div className="worksheet-conclusion lesson25-kwh-result">
+                      <strong>Vậy:</strong>
+                      <span>1 kWh = 3,6 × 10⁶ J = 3600 kJ.</span>
+                      <em>Đây là mối liên hệ giữa đơn vị điện năng dùng trong thực tế (kWh) và đơn vị năng lượng trong hệ SI (J).</em>
+                    </div>
+                  )}
+                </div>
                 <button className="primary-soft-btn" type="button" onClick={checkMeterTask}>Hoàn thành nhiệm vụ</button>
                 {feedbacks.meterTask && <p className={`inline-feedback inline-feedback--${feedbacks.meterTask.type}`}>{feedbacks.meterTask.message}</p>}
               </section>
@@ -9078,89 +10458,269 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
             )}
 
             {maxStep >= 4 && (
-            <section className="lesson25-task-group">
+            <section className="lesson25-task-group lesson25-power-concept-task">
               <div className="lesson25-task-heading">
                 <span>Nhiệm vụ 5</span>
-                <h3>Hình thành khái niệm công suất điện</h3>
+                <h3>Khám phá công suất điện</h3>
+                <p>Các thiết bị điện có công suất khác nhau. Vậy công suất điện cho biết điều gì và giúp chúng ta đánh giá mức tiêu thụ điện năng như thế nào?</p>
               </div>
-              <section className="lesson25-unlock-card">
-                <p>Trong video, các thiết bị điện có công suất khác nhau. Cùng hoạt động trong một khoảng thời gian, thiết bị có công suất lớn hơn sẽ tiêu thụ nhiều điện năng hơn.</p>
-                <h3>Hai thiết bị hoạt động trong cùng 1 giờ: quạt điện 55 W và điều hòa 2638 W. Thiết bị nào tiêu thụ nhiều điện năng hơn?</h3>
-                <div className="choice-row">{[['fan', 'Quạt điện 55 W'], ['ac', 'Điều hòa 2638 W']].map(([value, label]) => <button className={answers.powerDevice === value ? 'soft-choice soft-choice--active' : 'soft-choice'} type="button" key={value} onClick={() => updateAnswer('powerDevice', value)}>{label}</button>)}</div>
-                <h3>Công suất điện cho biết lượng điện năng tiêu thụ trong một đơn vị ______.</h3>
-                <input value={answers.powerBlank || ''} onChange={(event) => updateAnswer('powerBlank', event.target.value)} placeholder="Điền từ còn thiếu..." />
-                <button className="primary-soft-btn" type="button" onClick={checkPowerConceptTask}>Kiểm tra</button>
-                {feedbacks.powerConceptTask && <p className={`inline-feedback inline-feedback--${feedbacks.powerConceptTask.type}`}>{feedbacks.powerConceptTask.message}</p>}
-                {feedbacks.powerConceptTask?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Công suất điện là năng lượng điện mà đoạn mạch tiêu thụ trong một đơn vị thời gian.</span></div>}
-              </section>
-            </section>
-            )}
-
-            {maxStep >= 5 && (
-            <section className="lesson25-task-group">
-              <div className="lesson25-task-heading">
-                <span>Nhiệm vụ 6</span>
-                <h3>Hình thành công thức công suất điện</h3>
-              </div>
-              <section className="lesson25-unlock-card">
-                <p>Từ định nghĩa công suất, ta có: P = A/t.</p>
-                <p>Với điện năng tiêu thụ A = UIt, hãy tìm công thức công suất điện theo U và I.</p>
-                <h3>Thay A = UIt vào P = A/t, ta thu được công thức nào?</h3>
-                <div className="formula-input"><span>P =</span><input value={answers.powerUiFormula || ''} onChange={(event) => updateAnswer('powerUiFormula', event.target.value)} placeholder="..." /><button type="button" onClick={checkPowerUiFormula}>Kiểm tra</button></div>
-                {feedbacks.powerUiFormula && <p className={`inline-feedback inline-feedback--${feedbacks.powerUiFormula.type}`}>{feedbacks.powerUiFormula.message}</p>}
-                {feedbacks.powerUiFormula?.type === 'correct' && <><div className="lesson25-formula-reveal">P = UI</div><div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Công suất điện có đơn vị là oát, kí hiệu W.</span></div></>}
-                <div className="lesson25-practice-grid">{[
-                  ['powerBasic', 'Cơ bản: A = 600 J, t = 20 s. Tính P (W).', 30, ['Dùng P = A/t.', 'P = 600/20.']],
-                  ['powerMedium', 'Trung bình: thiết bị P = 500 W chạy 12 phút. Tính A (J).', 360000, ['Đổi 12 phút = 720 s.', 'A = P.t.']],
-                  ['powerReal', 'Vận dụng: quạt 55 W dùng 4 giờ. Tính điện năng (Wh).', 220, ['Dùng A = P.t nếu P tính W và t tính giờ.', 'A = 55 × 4.']],
-                ].map(([key, prompt, expected, hintList]) => <div className="question-card" key={key}><h4>{prompt}</h4><button className="ghost-soft-btn" type="button" onClick={() => showHint(key, hintList.length)}>Gợi ý</button>{hints[key] > 0 && <ol className="hint-panel">{hintList.slice(0, hints[key]).map((hint) => <li key={hint}>{hint}</li>)}</ol>}<input value={answers[key] || ''} onChange={(event) => updateAnswer(key, event.target.value)} placeholder="Nhập đáp án..." /><button className="primary-soft-btn" type="button" onClick={() => checkNumber(key, expected, expected > 1000 ? 1000 : 1, 'Đúng. Em đã xử lí đúng công thức và đơn vị.', 'Xem lại gợi ý từng bước.')}>Kiểm tra</button>{feedbacks[key] && <p className={`inline-feedback inline-feedback--${feedbacks[key].type}`}>{feedbacks[key].message}</p>}</div>)}</div>
-              </section>
-            </section>
-            )}
-
-            {maxStep >= 6 && (
-            <section className="lesson25-task-group">
-              <div className="lesson25-task-heading">
-                <span>Nhiệm vụ 7</span>
-                <h3>Vận dụng thực tiễn và tiết kiệm điện</h3>
-              </div>
-              <section className="lesson25-unlock-card" id="lesson25-final-question">
-                <p>Hóa đơn điện tăng phụ thuộc vào điện năng tiêu thụ. Điện năng tiêu thụ lại phụ thuộc vào công suất thiết bị và thời gian sử dụng.</p>
-                <h3>Nếu muốn giảm điện năng tiêu thụ, em có thể làm gì?</h3>
-                <div className="choice-row choice-row--wrap">
+              <section className="lesson25-unlock-card lesson25-power-concept">
+                <div className="lesson25-power-intro">
+                  <h3>Bước 1. Thiết bị nào tiêu thụ điện nhanh hơn?</h3>
+                  <p>Quan sát một số thiết bị điện thường gặp và công suất ghi trên thiết bị.</p>
+                </div>
+                <div className="lesson25-power-device-table">
                   {[
-                    ['reduceTime', 'Giảm thời gian sử dụng thiết bị khi không cần thiết'],
-                    ['efficient', 'Chọn thiết bị tiết kiệm điện'],
-                    ['suitablePower', 'Sử dụng thiết bị có công suất phù hợp'],
-                    ['alwaysOn', 'Bật tất cả thiết bị liên tục'],
-                  ].map(([key, label]) => (
-                    <label className="soft-checkbox" key={key}>
-                      <input checked={Boolean(answers.savingChoices?.[key])} onChange={() => updateAnswer('savingChoices', { ...(answers.savingChoices || {}), [key]: !answers.savingChoices?.[key] })} type="checkbox" />
-                      <span>{label}</span>
-                    </label>
+                    ['Quạt cây', '55 W'],
+                    ['Tivi LED', '69 W'],
+                    ['Nồi cơm điện', '600 W'],
+                    ['Bàn là', '1000 W'],
+                    ['Điều hòa', '2638 W'],
+                  ].map(([name, power]) => (
+                    <div key={name}>
+                      <span>{name}</span>
+                      <strong>{power}</strong>
+                    </div>
                   ))}
                 </div>
-                <button className="primary-soft-btn" type="button" onClick={checkSavingChoices}>Kiểm tra câu 1</button>
-                {feedbacks.savingChoices && <p className={`inline-feedback inline-feedback--${feedbacks.savingChoices.type}`}>{feedbacks.savingChoices.message}</p>}
-                <h3>Vì sao đèn LED thường tiết kiệm điện hơn đèn sợi đốt?</h3>
-                <textarea value={answers.ledReason || ''} onChange={(event) => updateAnswer('ledReason', event.target.value)} placeholder="Trả lời ngắn..." />
-                <button className="primary-soft-btn" type="button" onClick={checkLedReason}>Kiểm tra câu 2</button>
-                {feedbacks.ledReason && <p className={`inline-feedback inline-feedback--${feedbacks.ledReason.type}`}>{feedbacks.ledReason.message}</p>}
-                <p>Giá điện 2000 đồng/kWh. Tính chi phí dùng trong 1 giờ.</p>
-                <div className="lesson25-cost-table"><span>LED 20 W</span><span>Quạt 55 W</span><span>Điều hòa 2638 W</span></div>
-                <button className="ghost-soft-btn" type="button" onClick={() => showHint('cost', 3)}>Gợi ý nhiều cấp độ</button>
-                {hints.cost > 0 && <ol className="hint-panel">{['Đổi W sang kW: chia cho 1000.', 'Trong 1 giờ, số kWh bằng kW × 1.', 'Chi phí = kWh × 2000 đồng.'].slice(0, hints.cost).map((hint) => <li key={hint}>{hint}</li>)}</ol>}
-                <div className="lesson25-practice-grid">{[['ledCost', 'LED (đồng)'], ['fanCost', 'Quạt (đồng)'], ['acCost', 'Điều hòa (đồng)']].map(([key, label]) => <label key={key}><span>{label}</span><input value={answers[key] || ''} onChange={(event) => updateAnswer(key, event.target.value)} /></label>)}</div>
-                <button className="primary-soft-btn" type="button" onClick={checkCostChallenge}>Kiểm tra chi phí</button>
-                {feedbacks.cost && <p className={`inline-feedback inline-feedback--${feedbacks.cost.type}`}>{feedbacks.cost.message}</p>}
-                <button className="primary-soft-btn" type="button" onClick={checkSavingTask}>Hoàn thành nhiệm vụ</button>
-                {feedbacks.savingTask && <p className={`inline-feedback inline-feedback--${feedbacks.savingTask.type}`}>{feedbacks.savingTask.message}</p>}
+                <article className="lesson25-power-step">
+                  <span>Câu hỏi 1</span>
+                  <h3>Hai thiết bị cùng hoạt động trong 1 giờ: quạt cây 55 W và điều hòa 2638 W. Thiết bị nào tiêu thụ nhiều điện năng hơn?</h3>
+                  <div className="choice-row">
+                    {[
+                      ['fan', 'Quạt cây'],
+                      ['ac', 'Điều hòa'],
+                    ].map(([value, label]) => (
+                      <button
+                        className={answers.powerDevice === value ? 'soft-choice soft-choice--active' : 'soft-choice'}
+                        key={value}
+                        type="button"
+                        onClick={() => {
+                          updateAnswer('powerDevice', value)
+                          setFeedbacks((current) => ({ ...current, powerDevice: '', powerMeaning: '', powerFormula: '', ratedPower: '', lowerPowerLamp: '', powerConceptTask: '' }))
+                        }}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <button className="primary-soft-btn" type="button" onClick={checkPowerDevice}>Kiểm tra câu 1</button>
+                  {feedbacks.powerDevice && <p className={`inline-feedback inline-feedback--${feedbacks.powerDevice.type}`}>{feedbacks.powerDevice.message}</p>}
+                  {feedbacks.powerDevice?.type === 'correct' && <p className="lesson25-power-transition">Vậy đại lượng công suất điện cho biết điều gì?</p>}
+                </article>
+                {feedbacks.powerDevice?.type === 'correct' && (
+                  <article className="lesson25-power-step">
+                    <span>Bước 2</span>
+                    <h3>Khám phá ý nghĩa công suất điện</h3>
+                    <div className="lesson25-power-formula-panel">
+                      <p>Ở bài trước ta đã biết:</p>
+                      <strong>W = UIt</strong>
+                      <p>Trong đó W là điện năng tiêu thụ của đoạn mạch.</p>
+                      <p>Nếu xét lượng điện năng tiêu thụ trong mỗi đơn vị thời gian thì ta có một đại lượng mới gọi là công suất điện.</p>
+                    </div>
+                    <h3>Công suất điện cho biết điều gì?</h3>
+                    <div className="lesson25-power-options">
+                      {[
+                        ['energy-time', 'A. Điện năng tiêu thụ trong một đơn vị thời gian'],
+                        ['voltage', 'B. Hiệu điện thế giữa hai đầu đoạn mạch'],
+                        ['resistance', 'C. Điện trở của đoạn mạch'],
+                      ].map(([value, label]) => (
+                        <button
+                          className={answers.powerMeaning === value ? 'soft-choice soft-choice--active' : 'soft-choice'}
+                          key={value}
+                          type="button"
+                          onClick={() => {
+                            updateAnswer('powerMeaning', value)
+                            setFeedbacks((current) => ({ ...current, powerMeaning: '', powerFormula: '', powerConceptTask: '' }))
+                          }}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                    <button className="primary-soft-btn" type="button" onClick={checkPowerMeaning}>Kiểm tra bước 2</button>
+                    {feedbacks.powerMeaning && <p className={`inline-feedback inline-feedback--${feedbacks.powerMeaning.type}`}>{feedbacks.powerMeaning.message}</p>}
+                  </article>
+                )}
+                {feedbacks.powerMeaning?.type === 'correct' && (
+                  <article className="lesson25-power-step">
+                    <span>Bước 3</span>
+                    <h3>Xây dựng công thức công suất điện</h3>
+                    <div className="lesson25-power-formula-panel">
+                      <p>Theo định nghĩa:</p>
+                      <strong>P = W/t</strong>
+                      <p>Biết:</p>
+                      <strong>W = UIt</strong>
+                    </div>
+                    <h3>Thay W = UIt vào công thức trên để tìm công thức công suất điện.</h3>
+                    <div className="formula-input">
+                      <span>P =</span>
+                      <input
+                        value={answers.powerFormula || ''}
+                        onChange={(event) => {
+                          updateAnswer('powerFormula', event.target.value)
+                          setFeedbacks((current) => ({ ...current, powerFormula: '', ratedPower: '', powerConceptTask: '' }))
+                        }}
+                        placeholder="?"
+                      />
+                      <button type="button" onClick={checkPowerFormulaTask}>Kiểm tra</button>
+                    </div>
+                    {feedbacks.powerFormula && <p className={`inline-feedback inline-feedback--${feedbacks.powerFormula.type}`}>{feedbacks.powerFormula.message}</p>}
+                  </article>
+                )}
+                {feedbacks.powerFormula?.type === 'correct' && (
+                  <>
+                    <div className="lesson25-power-knowledge">
+                      <strong>Công suất điện</strong>
+                      <b>P = W/t = UI</b>
+                      <p><span>P</span> công suất điện (W)</p>
+                      <p><span>W</span> điện năng tiêu thụ (J)</p>
+                      <p><span>t</span> thời gian (s)</p>
+                      <p><span>U</span> hiệu điện thế (V)</p>
+                      <p><span>I</span> cường độ dòng điện (A)</p>
+                      <em>Đơn vị của công suất điện là oát (W).</em>
+                    </div>
+                    <article className="lesson25-power-step">
+                      <span>Bước 4</span>
+                      <h3>Đọc thông tin trên thiết bị điện</h3>
+                      <div className="lesson25-rating-card">220 V - 100 W</div>
+                      <h3>Số 100 W trên thiết bị cho biết điều gì?</h3>
+                      <div className="lesson25-power-options">
+                        {[
+                          ['voltage', 'A. Hiệu điện thế định mức'],
+                          ['rated', 'B. Công suất định mức'],
+                          ['energy', 'C. Điện năng tiêu thụ'],
+                        ].map(([value, label]) => (
+                          <button
+                            className={answers.ratedPower === value ? 'soft-choice soft-choice--active' : 'soft-choice'}
+                            key={value}
+                            type="button"
+                            onClick={() => {
+                              updateAnswer('ratedPower', value)
+                              setFeedbacks((current) => ({ ...current, ratedPower: '', lowerPowerLamp: '', powerConceptTask: '' }))
+                            }}
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                      <button className="primary-soft-btn" type="button" onClick={checkRatedPower}>Kiểm tra bước 4</button>
+                      {feedbacks.ratedPower && <p className={`inline-feedback inline-feedback--${feedbacks.ratedPower.type}`}>{feedbacks.ratedPower.message}</p>}
+                    </article>
+                  </>
+                )}
+                {feedbacks.ratedPower?.type === 'correct' && (
+                  <article className="lesson25-power-step lesson25-lamp-task">
+                    <span>Bước 5</span>
+                    <h3>Thiết bị nào tiết kiệm điện hơn?</h3>
+                    <div className="lesson25-lamp-grid">
+                      <section>
+                        <h4>Đèn sợi đốt</h4>
+                        <p>Công suất: 100 W</p>
+                        <p>Tuổi thọ: 1000 giờ</p>
+                        <p>Giá: 8000 đồng</p>
+                        <div className="lesson25-energy-split"><span style={{ '--share': '5%' }}>5 J ánh sáng</span><b style={{ '--share': '95%' }}>95 J nhiệt</b></div>
+                      </section>
+                      <section>
+                        <h4>Đèn LED</h4>
+                        <p>Công suất: 20 W</p>
+                        <p>Tuổi thọ: 30000 giờ</p>
+                        <p>Giá: 48000 đồng</p>
+                        <div className="lesson25-energy-split"><span style={{ '--share': '80%' }}>80 J ánh sáng</span><b style={{ '--share': '20%' }}>20 J nhiệt</b></div>
+                      </section>
+                    </div>
+                    <div className="lesson25-electric-price">Giá điện: 2000 đồng/kWh</div>
+                    <h3>Câu hỏi 1: Loại đèn nào có công suất nhỏ hơn?</h3>
+                    <div className="choice-row">
+                      {[
+                        ['incandescent', 'Đèn sợi đốt'],
+                        ['led', 'Đèn LED'],
+                      ].map(([value, label]) => (
+                        <button
+                          className={answers.lowerPowerLamp === value ? 'soft-choice soft-choice--active' : 'soft-choice'}
+                          key={value}
+                          type="button"
+                          onClick={() => {
+                            updateAnswer('lowerPowerLamp', value)
+                            setFeedbacks((current) => ({ ...current, lowerPowerLamp: '', lampUseTime: '', powerConceptTask: '' }))
+                          }}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                    <button className="primary-soft-btn" type="button" onClick={checkLedLowerPower}>Kiểm tra câu 1</button>
+                    {feedbacks.lowerPowerLamp && <p className={`inline-feedback inline-feedback--${feedbacks.lowerPowerLamp.type}`}>{feedbacks.lowerPowerLamp.message}</p>}
+                    {feedbacks.lowerPowerLamp?.type === 'correct' && (
+                      <div className="lesson25-power-calc-list">
+                        <label>
+                          <span>Câu hỏi 2: Dùng 5 giờ/ngày trong 30 ngày. Tổng thời gian sử dụng là bao nhiêu giờ?</span>
+                          <input value={answers.lampUseTime || ''} onChange={(event) => updateAnswer('lampUseTime', event.target.value)} placeholder="... giờ" />
+                          <button className="primary-soft-btn" type="button" onClick={checkLampTime}>Kiểm tra câu 2</button>
+                          {feedbacks.lampUseTime && <p className={`inline-feedback inline-feedback--${feedbacks.lampUseTime.type}`}>{feedbacks.lampUseTime.message}</p>}
+                        </label>
+                        {feedbacks.lampUseTime?.type === 'correct' && (
+                          <label>
+                            <span>Câu hỏi 3: Đèn sợi đốt: A = P × t, P = 100 W = 0,1 kW, t = 150 h. A = ?</span>
+                            <input value={answers.incandescentEnergy || ''} onChange={(event) => updateAnswer('incandescentEnergy', event.target.value)} placeholder="... kWh" />
+                            <button className="primary-soft-btn" type="button" onClick={checkIncandescentEnergy}>Kiểm tra câu 3</button>
+                            {feedbacks.incandescentEnergy && <p className={`inline-feedback inline-feedback--${feedbacks.incandescentEnergy.type}`}>{feedbacks.incandescentEnergy.message}</p>}
+                          </label>
+                        )}
+                        {feedbacks.incandescentEnergy?.type === 'correct' && (
+                          <label>
+                            <span>Câu hỏi 4: Đèn LED: P = 20 W = 0,02 kW, t = 150 h. A = ?</span>
+                            <input value={answers.ledEnergy || ''} onChange={(event) => updateAnswer('ledEnergy', event.target.value)} placeholder="... kWh" />
+                            <button className="primary-soft-btn" type="button" onClick={checkLedEnergy}>Kiểm tra câu 4</button>
+                            {feedbacks.ledEnergy && <p className={`inline-feedback inline-feedback--${feedbacks.ledEnergy.type}`}>{feedbacks.ledEnergy.message}</p>}
+                          </label>
+                        )}
+                        {feedbacks.ledEnergy?.type === 'correct' && (
+                          <label>
+                            <span>Câu hỏi 5: Tiền điện của đèn sợi đốt là 15 × 2000 = ?</span>
+                            <input value={answers.incandescentMoney || ''} onChange={(event) => updateAnswer('incandescentMoney', event.target.value)} placeholder="... đồng" />
+                            <button className="primary-soft-btn" type="button" onClick={checkIncandescentMoney}>Kiểm tra câu 5</button>
+                            {feedbacks.incandescentMoney && <p className={`inline-feedback inline-feedback--${feedbacks.incandescentMoney.type}`}>{feedbacks.incandescentMoney.message}</p>}
+                          </label>
+                        )}
+                        {feedbacks.incandescentMoney?.type === 'correct' && (
+                          <label>
+                            <span>Câu hỏi 6: Tiền điện của đèn LED là 3 × 2000 = ?</span>
+                            <input value={answers.ledMoney || ''} onChange={(event) => updateAnswer('ledMoney', event.target.value)} placeholder="... đồng" />
+                            <button className="primary-soft-btn" type="button" onClick={checkLedMoney}>Kiểm tra câu 6</button>
+                            {feedbacks.ledMoney && <p className={`inline-feedback inline-feedback--${feedbacks.ledMoney.type}`}>{feedbacks.ledMoney.message}</p>}
+                          </label>
+                        )}
+                      </div>
+                    )}
+                    {feedbacks.ledMoney?.type === 'correct' && (
+                      <div className="lesson25-power-final">
+                        <h3>Tổng kết</h3>
+                        {[
+                          ['speed', 'Công suất điện cho biết tốc độ tiêu thụ điện năng.'],
+                          ['larger', 'Thiết bị có công suất lớn hơn tiêu thụ điện năng nhanh hơn.'],
+                          ['led', 'Đèn LED tiết kiệm điện hơn đèn sợi đốt.'],
+                          ['formula', 'Công suất điện được tính bằng: P = W/t = UI'],
+                        ].map(([key, label]) => (
+                          <label className="soft-checkbox" key={key}>
+                            <input checked={Boolean(answers.powerSummary?.[key])} onChange={() => updateAnswer('powerSummary', { ...(answers.powerSummary || {}), [key]: !answers.powerSummary?.[key] })} type="checkbox" />
+                            <span>{label}</span>
+                          </label>
+                        ))}
+                        <button className="primary-soft-btn" type="button" onClick={checkPowerConceptTask}>Hoàn thành nhiệm vụ</button>
+                        {feedbacks.powerConceptTask && <p className={`inline-feedback inline-feedback--${feedbacks.powerConceptTask.type}`}>{feedbacks.powerConceptTask.message}</p>}
+                        {feedbacks.powerConceptTask?.type === 'correct' && <p className="lesson25-power-message">Hiểu công suất điện giúp chúng ta lựa chọn và sử dụng thiết bị điện tiết kiệm, hiệu quả hơn trong thực tế.</p>}
+                      </div>
+                    )}
+                  </article>
+                )}
               </section>
             </section>
             )}
+
           </div>
 
-          {maxStep >= 7 && (
+          {maxStep >= 5 && (
             <section className="lesson25-worksheet-summary">
               <div className="lesson25-task-heading">
                 <span>Tổng kết</span>
@@ -9183,14 +10743,8 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
                 <section>
                   <h4>3. Công suất điện</h4>
                   <p>Công suất điện cho biết điện năng tiêu thụ trong một đơn vị thời gian.</p>
-                  <strong>P = A/t = UI</strong>
+                  <strong>P = W/t = UI</strong>
                   <p>P là công suất điện, đơn vị W.</p>
-                </section>
-                <section>
-                  <h4>4. Liên hệ thực tế</h4>
-                  <p>Thiết bị có công suất lớn hơn thường tiêu thụ nhiều điện năng hơn trong cùng thời gian.</p>
-                  <p>Thời gian sử dụng càng lâu thì điện năng tiêu thụ càng lớn.</p>
-                  <p>Chọn thiết bị tiết kiệm điện và sử dụng hợp lí giúp giảm hóa đơn điện.</p>
                 </section>
               </div>
               <button className="primary-soft-btn lesson25-open-quiz" type="button" onClick={() => completeStep(7)}>Hoàn thành Phiếu học tập và chuyển sang Quiz</button>
@@ -9468,8 +11022,8 @@ function Lesson25ElectricJourney({ activePart = 'before' }) {
             ['kwh', 'Tôi hiểu ý nghĩa của đơn vị kW.h.'],
             ['meter', 'Tôi biết công tơ điện dùng để làm gì.'],
             ['power-concept', 'Tôi hiểu công suất điện là gì.'],
-            ['power-formula', 'Tôi vận dụng được công thức P = A/t và P = UI.'],
-            ['saving', 'Tôi biết cách sử dụng thiết bị điện tiết kiệm điện.'],
+            ['power-formula', 'Tôi suy luận được công thức P = W/t = UI.'],
+            ['power-saving', 'Tôi so sánh được mức tiêu thụ và tiền điện của đèn sợi đốt với đèn LED.'],
           ]}
         />
       )}
