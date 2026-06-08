@@ -5,6 +5,7 @@ import bongDenImage from './assets/bongden.png'
 import robotImage from './assets/ai-robot.png'
 import cucPinImage from './assets/cucpin.png'
 import dienTroImage from './assets/dientro.png'
+import emfSymbolImage from './assets/emf-symbol-e.png'
 import lesson22CircuitImage from './assets/lesson-22-circuit.png'
 import machImage from './assets/mach.png'
 import omegaImage from './assets/omega.png'
@@ -293,95 +294,147 @@ const lessonMindmaps = {
   'cuong-do-dong-dien': [
     {
       title: 'Khái niệm',
-      points: ['Dòng chuyển dời có hướng của hạt mang điện', 'Đặc trưng cho tác dụng mạnh yếu của dòng điện'],
+      points: ['Cường độ dòng điện là đại lượng đặc trưng cho tác dụng mạnh, yếu của dòng điện'],
     },
     {
       title: 'Công thức chính',
-      points: ['I = Δq / Δt', 'Δq = I.Δt', '1 C = 1 A.s'],
+      points: [{ type: 'fraction', left: 'I =', numerator: 'Δq', denominator: 'Δt' }],
     },
     {
       title: 'Đơn vị',
-      points: ['Ampe (A)', 'mA = 10^-3 A', 'μA = 10^-6 A'],
+      points: ['Ampe (A)'],
     },
     {
-      title: 'Trong kim loại',
-      points: ['Electron tự do chuyển động ngược chiều dòng điện quy ước', 'I = S.n.v.e'],
+      title: '',
+      points: ['Biểu thức liên hệ giữa cường độ dòng điện trong dây dẫn kim loại với mật độ hạt mang điện và tốc độ dịch chuyển có hướng của các hạt mang điện là I = Snve'],
     },
     {
       title: 'Vận dụng',
-      points: ['Tính I, q, t', 'Đổi dung lượng pin mAh sang điện lượng', 'So sánh dòng điện mạnh yếu'],
+      points: [
+        'Giải bài tập tính cường độ dòng điện.',
+        'Giải thích hiện tượng liên quan đến cường độ dòng điện.',
+        'Vận dụng kiến thức để giải quyết tình huống thực tiễn.',
+      ],
     },
   ],
   'dien-tro-dinh-luat-om': [
     {
-      title: 'Điện trở',
-      points: ['Đặc trưng mức cản trở dòng điện', 'R = U / I', 'Đơn vị ôm (Ω)'],
+      title: 'Điện trở R',
+      points: [
+        'là đại lượng đặc trưng cho mức độ cản trở dòng điện của vật dẫn',
+        'Đơn vị Ôm (Ω)',
+        'Đường đặc trung vôn - ampe của điện trở là đường thẳng đi qua gốc tọa độ, đường thẳng có độ dốc càng lớn khi giá trị của điện trở R càng nhỏ.',
+      ],
     },
     {
       title: 'Định luật Ôm',
-      points: ['I = U / R', 'U = I.R', 'Dòng điện tỉ lệ thuận với U và nghịch với R'],
+      points: [
+        'Cường độ dòng điện chạy qua vật dẫn tỉ lệ thuận với hiệu điện thế ở hai đầu vật dẫn, tỉ lệ nghịch với điện trở của vật dẫn.',
+        { type: 'fraction', left: 'Biểu thức: I =', numerator: 'U', denominator: 'R' },
+      ],
     },
     {
-      title: 'Đặc trưng V-A',
-      points: ['Đường thẳng qua gốc tọa độ với vật dẫn kim loại', 'Độ dốc liên hệ với điện trở'],
+      title: 'Nguyên nhân gây ra điện trở',
+      points: [
+        'Trong kim loại có:',
+        '+ Ion dương nằm tại các nút mạng tinh thể.',
+        '+ Electron tự do chuyển động tạo dòng điện.',
+        'Electron tự do va chạm với các ion dương khi chuyển động.',
+        'Sự va chạm này cản trở chuyển động của electron ⇒ xuất hiện điện trở.',
+      ],
     },
     {
-      title: 'Yếu tố ảnh hưởng',
-      points: ['Vật liệu', 'Chiều dài', 'Tiết diện', 'Nhiệt độ'],
-    },
-    {
-      title: 'Mở rộng',
-      points: ['Điện trở nhiệt NTC, PTC', 'Bóng đèn dây tóc', 'Hiện tượng siêu dẫn'],
+      title: 'Ảnh hưởng của nhiệt độ lên điện trở',
+      points: [
+        'Kim loại: T ↑ ⇒ R ↑.',
+        'Dây tóc bóng đèn: T ↑ ⇒ R ↑.',
+        'NTC: T ↑ ⇒ R ↓.',
+        'PTC: T ↑ ⇒ R ↑.',
+      ],
     },
   ],
   'nguon-dien': [
     {
-      title: 'Vai trò',
-      points: ['Tạo và duy trì hiệu điện thế', 'Cung cấp dòng điện cho mạch kín'],
+      title: 'Nguồn điện',
+      points: [
+        'Là thiết bị để tạo ra và duy trì hiệu điện thế, nhằm duy tri dòng điện trong mạch',
+        'Có hai cực:',
+        '+ Cực dương (+)',
+        '+ Cực âm (-)',
+        'Ví dụ: Pin, ắc quy, máy phát điện, pin mặt trời.',
+      ],
     },
     {
-      title: 'Cấu tạo cơ bản',
-      points: ['Cực dương (+)', 'Cực âm (-)', 'Lực lạ tách điện tích trong nguồn'],
+      title: 'Suất điện động của nguồn điện',
+      points: [
+        'là đại lượng đặc trưng cho khả năng thực hiện công của nguồn điện và đo bằng thương số giữa công A của lực lạ thực hiện khi làm dịch chuyển một điện tích dương q bên trong nguồn điện từ cực âm đến cực dương và độ lớn của điện tích q đó',
+        { type: 'symbolLine', label: 'Kí hiệu:', symbol: 'emf' },
+        { type: 'fraction', left: 'biểu thức:', symbol: 'emf', operator: '=', numerator: 'A', denominator: 'q' },
+        'Đơn vị là vôn (V)',
+      ],
     },
     {
-      title: 'Suất điện động',
-      points: ['Kí hiệu ξ', 'ξ = A / q', 'Số vôn ghi trên nguồn khi mạch hở'],
+      title: 'Điện trở trong của nguồn điện.',
+      points: [
+        'Trong mạch kín, dòng điện chạy qua mạch ngoài và cả mạch trong. Như vậy, nguồn điện cũng là một vật dẫn và cũng có điện trở. Điện trở này được gọi là điện trở trong của nguồn điện.',
+        'Kí hiệu: r',
+        'Đơn vị là Ôm (Ω)',
+      ],
     },
     {
-      title: 'Điện trở trong',
-      points: ['Kí hiệu r', 'Làm hiệu điện thế hai cực giảm khi có dòng điện'],
-    },
-    {
-      title: 'Toàn mạch',
-      points: ['I = ξ / (R + r)', 'U = ξ - I.r', 'Phân tích đồ thị U-I của nguồn'],
+      title: 'Ảnh hưởng của điện trở trong của nguồn',
+      points: [
+        'Định luật Ôm toàn mạch: Cường độ dòng điện chạy trong mạch điện kín tỉ lệ thuận với suất điện động của nguồn điện và tỉ lệ nghịch với điện trở toàn phần của mạch điện đó.',
+        { type: 'fraction', left: 'I =', numeratorSymbol: 'emf', denominator: 'R + r' },
+        { type: 'richLine', parts: ['Công của nguồn điện: A = q', { symbol: 'emf' }, ' = ', { symbol: 'emf' }, 'It'] },
+        { type: 'richLine', parts: ['Hiệu điện thế mạch ngoài: U = ', { symbol: 'emf' }, ' - Ir'] },
+        'Độ giảm thế mạch ngoài: U = IR',
+      ],
     },
   ],
   'nang-luong-cong-suat-dien': [
     {
       title: 'Năng lượng điện',
-      points: ['Lực điện thực hiện công', 'W = A = U.I.t'],
+      points: [
+        'Năng lượng điện tiêu thị của đoạn mạch bằng công của lực điện thực hiện khi di chuyển các điện tích.',
+        'Biểu thức: W = A = UIt',
+        'Đơn vị là jun',
+        'Kí hiệu là J',
+      ],
+    },
+    {
+      title: 'Chuyển hóa năng lượng điện',
+      points: [
+        'Dòng điện chạy qua mạch gây ra các tác dụng khác nhau và khi đó có sự chuyển hoá năng lượng điện tiêu thụ của đoạn mạch thành các dạng năng lượng khác.',
+        'Đối với đoạn mạch thuần điện trở, nhiệt lượng đoạn mạch toả ra khi dòng điện chạy qua được tính bằng công thức: Q = RI²t.',
+      ],
     },
     {
       title: 'Công suất điện',
-      points: ['P = A / t', 'P = U.I', 'Đơn vị oát (W)'],
+      points: [
+        {
+          type: 'richLine',
+          parts: [
+            'Công suất tiêu thụ năng lượng điện (gọi tắt là công suất điện) của một đoạn mạch là năng lượng điện mà mạch tiêu thụ trong một đơn vị thời gian: ',
+            { formula: 'power' },
+          ],
+        },
+        'Đơn vị là oát',
+        'Kí hiệu là W',
+      ],
     },
     {
-      title: 'Mạch thuần trở',
-      points: ['Q = I².R.t', 'P = I².R', 'P = U² / R'],
-    },
-    {
-      title: 'Điện năng tiêu thụ',
-      points: ['1 kW.h = 3,6.10^6 J', 'Đọc công tơ điện và hóa đơn điện'],
-    },
-    {
-      title: 'Định mức',
-      points: ['Thông số 220 V - 100 W', 'Dùng đúng hiệu điện thế định mức', 'Tiết kiệm điện'],
+      title: 'Vận dụng',
+      points: [
+        'Giải một số bài tập về công suất điện',
+        'Tính được điện năng tiêu thụ của một số thiết bị điện trong gia đình...',
+      ],
     },
   ],
   'thuc-hanh-pin-dien-hoa': [
     {
       title: 'Mục tiêu',
-      points: ['Đo suất điện động ξ', 'Xác định điện trở trong r của pin'],
+      points: [{ type: 'richLine', parts: ['Đo suất điện động ', { symbol: 'emf' }] }, 'Xác định điện trở trong r của pin'],
     },
     {
       title: 'Dụng cụ',
@@ -393,7 +446,12 @@ const lessonMindmaps = {
     },
     {
       title: 'Xử lí số liệu',
-      points: ['Ghi các cặp U, I', 'Vẽ đồ thị U = f(I)', 'Kéo dài đến I = 0 để tìm ξ'],
+      points: [
+        'Ghi các cặp U, I',
+        'Vẽ đồ thị U = f(I)',
+        { type: 'richLine', parts: ['Kéo dài đến I = 0 để tìm ', { symbol: 'emf' }] },
+        { type: 'fraction', left: 'Tính toán giá trị r theo công thức: r =', numeratorParts: ['U', { sub: 'M' }, ' - U', { sub: 'N' }], denominatorParts: ['I', { sub: 'N' }, ' - I', { sub: 'M' }] },
+      ],
     },
     {
       title: 'Kết luận',
@@ -1781,7 +1839,21 @@ function LessonDiagram({ topic }) {
   )
 }
 
-const lessonMindmapPositions = ['left-top', 'left-middle', 'left-bottom', 'right-top', 'right-bottom']
+const defaultLessonMindmapPositions = ['left-top', 'left-middle', 'left-bottom', 'right-top', 'right-bottom']
+
+const lessonMindmapLayouts = {
+  'dien-tro-dinh-luat-om': ['left-top', 'left-bottom', 'right-top', 'right-bottom'],
+  'nguon-dien': ['left-top', 'left-bottom', 'right-top', 'right-bottom'],
+  'nang-luong-cong-suat-dien': ['left-top', 'left-bottom', 'right-top', 'right-bottom'],
+}
+
+const lessonMindmapLinePaths = {
+  'left-top': 'M642 170 H712 C785 170 785 312 785 340 H865',
+  'left-middle': 'M642 445 H865',
+  'left-bottom': 'M642 718 H712 C785 718 785 560 785 520 H865',
+  'right-top': 'M1115 340 C1115 245 1192 218 1270 218 H1318',
+  'right-bottom': 'M1115 520 C1115 646 1196 676 1318 676',
+}
 
 const getMindmapPalette = (topicId) =>
   mindmapCards.find((card) => card.topicId === topicId) || {
@@ -1792,6 +1864,81 @@ const getMindmapPalette = (topicId) =>
 function LessonMindmap({ topic, onClose }) {
   const branches = lessonMindmaps[topic.id] || []
   const palette = getMindmapPalette(topic.id)
+  const positions = lessonMindmapLayouts[topic.id] || defaultLessonMindmapPositions
+  const getPointKey = (point) => (typeof point === 'string' ? point : `${point.type}-${JSON.stringify(point)}`)
+  const getPointClassName = (point) => (typeof point === 'string' && point.trim().startsWith('+') ? 'lesson-mindmap__subpoint' : undefined)
+  const renderSymbol = (symbol) => {
+    if (symbol === 'emf') {
+      return (
+        <span
+          aria-label="E"
+          className="lesson-mindmap-symbol lesson-mindmap-symbol--emf"
+          role="img"
+          style={{ '--symbol-image': `url(${emfSymbolImage})` }}
+        />
+      )
+    }
+
+    return null
+  }
+  const renderRichParts = (parts) => parts.map((part, index) => (
+    typeof part === 'string'
+      ? <span key={`${index}-${part}`}>{part}</span>
+      : (
+        <Fragment key={`${index}-${part.symbol || part.formula}`}>
+          {part.symbol ? renderSymbol(part.symbol) : null}
+          {part.formula === 'power' ? (
+            <span className="lesson-mindmap-inline-formula" aria-label="P bằng A trên t bằng U I">
+              <span>P =</span>
+              <span className="lesson-mindmap-fraction">
+                <span>A</span>
+                <span>t</span>
+              </span>
+              <span>= UI</span>
+            </span>
+          ) : null}
+        </Fragment>
+      )
+  ))
+  const renderFormulaParts = (parts) => parts?.map((part, index) => (
+    typeof part === 'string'
+      ? <Fragment key={`${index}-${part}`}>{part}</Fragment>
+      : <sub key={`${index}-${part.sub}`}>{part.sub}</sub>
+  ))
+  const renderPoint = (point) => {
+    if (typeof point === 'string') {
+      return point.trim().startsWith('+') ? point.trim().slice(1).trim() : point
+    }
+
+    if (point.type === 'richLine') {
+      return <span className="lesson-mindmap-rich-line">{renderRichParts(point.parts)}</span>
+    }
+
+    if (point.type === 'symbolLine') {
+      return (
+        <span className="lesson-mindmap-symbol-line">
+          <span>{point.label}</span>
+          {renderSymbol(point.symbol)}
+        </span>
+      )
+    }
+
+    if (point.type === 'fraction') {
+      return (
+        <span className="lesson-mindmap-formula">
+          <span>{point.left}</span>
+          {point.symbol && renderSymbol(point.symbol)}
+          {point.operator && <span>{point.operator}</span>}
+          <span className="lesson-mindmap-fraction" aria-label={`${point.numerator} trên ${point.denominator}`}>
+            <span>{point.numeratorParts ? renderFormulaParts(point.numeratorParts) : (point.numeratorSymbol ? renderSymbol(point.numeratorSymbol) : point.numerator)}</span>
+            <span>{point.denominatorParts ? renderFormulaParts(point.denominatorParts) : point.denominator}</span>
+          </span>
+        </span>
+      )
+    }
+
+    return ''
+  }
 
   return (
     <div className="lesson-mindmap-backdrop" role="presentation" onClick={onClose}>
@@ -1813,30 +1960,28 @@ function LessonMindmap({ topic, onClose }) {
           </button>
         </div>
 
-        <div className="lesson-mindmap">
+        <div className={lessonMindmapLayouts[topic.id] ? 'lesson-mindmap lesson-mindmap--balanced' : 'lesson-mindmap'}>
           <div className="lesson-mindmap__center">
             <span>{`Bài ${topic.number}`}</span>
             <strong>{topic.shortLabel}</strong>
           </div>
 
           <svg className="lesson-mindmap__lines" viewBox="0 0 1768 890" aria-hidden="true" preserveAspectRatio="none">
-            <path d="M642 170 H712 C785 170 785 312 785 340 H865" />
-            <path d="M642 445 H865" />
-            <path d="M642 718 H712 C785 718 785 560 785 520 H865" />
-            <path d="M1115 340 C1115 245 1192 218 1270 218 H1318" />
-            <path d="M1115 520 C1115 646 1196 676 1318 676" />
+            {positions.slice(0, branches.length).map((position) => (
+              <path d={lessonMindmapLinePaths[position]} key={position} />
+            ))}
           </svg>
 
           {branches.map((branch, index) => (
             <article
-              className={`lesson-mindmap__branch lesson-mindmap__branch--${lessonMindmapPositions[index] || 'left-middle'}`}
-              key={branch.title}
+              className={`lesson-mindmap__branch lesson-mindmap__branch--${positions[index] || 'left-middle'}`}
+              key={`${index}-${branch.title || getPointKey(branch.points[0])}`}
             >
               <span>{String(index + 1).padStart(2, '0')}</span>
-              <h3>{branch.title}</h3>
-              <ul>
+              {branch.title && <h3>{branch.title}</h3>}
+              <ul className={branch.points.length === 1 ? 'lesson-mindmap__branch-list--plain' : undefined}>
                 {branch.points.map((point) => (
-                  <li key={point}>{point}</li>
+                  <li className={getPointClassName(point)} key={getPointKey(point)}>{renderPoint(point)}</li>
                 ))}
               </ul>
             </article>
@@ -2288,6 +2433,7 @@ const lesson23VideoInteractions = [
 ]
 
 function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
+  const containerRef = useRef(null)
   const videoRef = useRef(null)
   const [activeInteraction, setActiveInteraction] = useState(null)
   const [answeredInteractions, setAnsweredInteractions] = useState({})
@@ -2297,12 +2443,86 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
   const [sequenceIndex, setSequenceIndex] = useState(0)
   const [sequenceCorrect, setSequenceCorrect] = useState([])
   const [sequenceWrongCount, setSequenceWrongCount] = useState(0)
+  const [isMobileVideoExpanded, setIsMobileVideoExpanded] = useState(false)
+
+  useEffect(() => {
+    const syncFullscreenState = () => {
+      const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+      if (!fullscreenElement || fullscreenElement !== containerRef.current) {
+        setIsMobileVideoExpanded(false)
+      }
+    }
+
+    document.addEventListener('fullscreenchange', syncFullscreenState)
+    document.addEventListener('webkitfullscreenchange', syncFullscreenState)
+
+    return () => {
+      document.removeEventListener('fullscreenchange', syncFullscreenState)
+      document.removeEventListener('webkitfullscreenchange', syncFullscreenState)
+    }
+  }, [])
+
+  const shouldUseMobileVideoMode = () => window.matchMedia?.('(max-width: 640px)').matches
+
+  const exitNativeVideoFullscreen = (video) => {
+    if (video?.webkitDisplayingFullscreen && typeof video.webkitExitFullscreen === 'function') {
+      video.webkitExitFullscreen()
+    }
+  }
+
+  const toggleMobileVideoFullscreen = async () => {
+    const container = containerRef.current
+
+    if (!container) {
+      return
+    }
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (fullscreenElement === container) {
+      const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen
+      await exitFullscreen?.call(document)
+      setIsMobileVideoExpanded(false)
+      return
+    }
+
+    setIsMobileVideoExpanded(true)
+
+    const requestFullscreen = container.requestFullscreen || container.webkitRequestFullscreen
+
+    try {
+      await requestFullscreen?.call(container)
+    } catch {
+      setIsMobileVideoExpanded(true)
+    }
+  }
+
+  const collapseMobileVideoMode = async () => {
+    if (!shouldUseMobileVideoMode()) {
+      return
+    }
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (fullscreenElement === containerRef.current) {
+      const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen
+      await exitFullscreen?.call(document)
+    }
+
+    setIsMobileVideoExpanded(false)
+  }
 
   const openTimedInteraction = (interaction) => {
     const video = videoRef.current
 
     if (!video) {
       return
+    }
+
+    if (shouldUseMobileVideoMode()) {
+      exitNativeVideoFullscreen(video)
+      setIsMobileVideoExpanded(false)
     }
 
     video.pause()
@@ -2369,6 +2589,7 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
       return
     }
 
+    collapseMobileVideoMode()
     onComplete?.()
   }
 
@@ -2437,24 +2658,33 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
     setAnswerResult(null)
 
     if (isFinalSequenceComplete) {
+      collapseMobileVideoMode()
       onComplete?.()
+      return
     }
 
     if (activeInteraction.completeOnContinue) {
+      collapseMobileVideoMode()
       onComplete?.()
       return
     }
 
     if (activeInteraction.type !== 'sequence') {
+      collapseMobileVideoMode()
       window.setTimeout(() => video.play(), 80)
     }
   }
 
   const isBlockingOverlay = ['question', 'drag-fill', 'info', 'sequence'].includes(activeInteraction?.type)
   const isSequenceDone = activeInteraction?.type === 'sequence' && sequenceIndex >= activeInteraction.cards.length
+  const videoClassName = [
+    'interactive-video',
+    isBlockingOverlay ? 'interactive-video--paused' : '',
+    isMobileVideoExpanded ? 'interactive-video--mobile-expanded' : '',
+  ].filter(Boolean).join(' ')
 
   return (
-    <div className={isBlockingOverlay ? 'interactive-video interactive-video--paused' : 'interactive-video'}>
+    <div className={videoClassName} ref={containerRef}>
       <video
         controls
         playsInline
@@ -2467,6 +2697,14 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
         <source src={src} type="video/mp4" />
         Trình duyệt của bạn không hỗ trợ phát video HTML5.
       </video>
+
+      <button
+        className="video-mobile-fullscreen-btn"
+        type="button"
+        onClick={toggleMobileVideoFullscreen}
+      >
+        {isMobileVideoExpanded ? 'Thu nhỏ video' : 'Toàn màn hình tương tác'}
+      </button>
 
       {activeInteraction?.type === 'message' && (
         <div className={activeInteraction.transparent ? 'video-toast video-toast--transparent' : 'video-toast'}>
@@ -2627,31 +2865,23 @@ function InteractiveLessonVideo({ src, title, interactions, onComplete }) {
   )
 }
 
-function Lesson22InteractiveWorksheet({ onAction }) {
+function Lesson22InteractiveWorksheet({ onAction, activePart = 'before' }) {
+  const isBeforePart = activePart === 'before'
+  const isWorksheetPart = activePart === 'during'
+  const isAfterPart = activePart === 'after'
   const [revealedBlocks, setRevealedBlocks] = useState({
-    worksheet: PREVIEW_ALL_LESSON_PARTS,
-    quiz: PREVIEW_ALL_LESSON_PARTS,
-    selfCheck: PREVIEW_ALL_LESSON_PARTS,
+    worksheet: PREVIEW_ALL_LESSON_PARTS || isWorksheetPart || isAfterPart,
+    quiz: PREVIEW_ALL_LESSON_PARTS || isAfterPart,
+    selfCheck: PREVIEW_ALL_LESSON_PARTS || isAfterPart,
   })
   const [answers, setAnswers] = useState({
-    task1LampChoice: '',
-    task1MagnetChoice: '',
     task1Fill: '',
     task1Short: '',
-    task2TfA: '',
-    task2TfB: '',
-    task2Tool: '',
-    task2Fill: '',
-    task2Short: '',
     task3FirstCase: '',
-    task3LargeFill: '',
     task3SecondCase: '',
-    task3SmallFill: '',
     task3Predict: '',
-    task3FormulaChoice: '',
-    task3Match: {},
     task4UnitChoice: '',
-    task4Relation: '',
+    task4Charge: '',
     task4Meaning: '',
     task5CarrierChoice: '',
     task5Tf: '',
@@ -2666,7 +2896,6 @@ function Lesson22InteractiveWorksheet({ onAction }) {
   const [worksheetStep, setWorksheetStep] = useState(1)
   const [lampCurrent, setLampCurrent] = useState(0.2)
   const [magnetCurrent, setMagnetCurrent] = useState(0.2)
-  const [questionFeedbacks, setQuestionFeedbacks] = useState({})
   const [selfChecks, setSelfChecks] = useState({})
   const [selfReflection, setSelfReflection] = useState({
     question: '',
@@ -2695,16 +2924,19 @@ function Lesson22InteractiveWorksheet({ onAction }) {
     setAnswers((current) => ({ ...current, [key]: value }))
   }
 
-  const setProgressFeedback = (key, isCorrect, answer, hint, explanation) => {
+  const worksheetTaskKeys = ['task1', 'task3', 'task4', 'task5', 'task6']
+
+  const setProgressFeedback = (key, isCorrect, answer, hint, explanation, correctMessage = 'Đúng. Em đang suy luận theo đúng hướng.', nextWorksheetStep) => {
     if (isCorrect) {
       setAttempts((current) => ({ ...current, [key]: 0 }))
-      const nextFeedbacks = { ...feedbacks, [key]: { type: 'correct', message: 'Đúng. Em đang suy luận theo đúng hướng.' } }
-      const worksheetDone = ['task1', 'task2', 'task3', 'task4', 'task5', 'task6'].every((item) => nextFeedbacks[item]?.type === 'correct')
+      const nextFeedbacks = { ...feedbacks, [key]: { type: 'correct', message: correctMessage } }
+      const worksheetDone = worksheetTaskKeys.every((item) => nextFeedbacks[item]?.type === 'correct')
       const taskNumber = Number(key.replace('task', ''))
 
       setFeedbacks(nextFeedbacks)
-      if (Number.isFinite(taskNumber)) {
-        setWorksheetStep((current) => Math.max(current, Math.min(taskNumber + 1, 6)))
+      const targetStep = nextWorksheetStep === false ? null : nextWorksheetStep ?? (Number.isFinite(taskNumber) ? Math.min(taskNumber + 1, 5) : null)
+      if (targetStep) {
+        setWorksheetStep((current) => Math.max(current, targetStep))
       }
       if (worksheetDone) {
         revealBlock('quiz')
@@ -2730,83 +2962,80 @@ function Lesson22InteractiveWorksheet({ onAction }) {
   const includesAny = (text, keywords) => keywords.some((keyword) => text.includes(keyword))
 
   const checkTask1 = () => {
-    const fill = normalizeText(answers.task1Fill)
-    const conclusion = normalizeText(answers.task1Short)
+    const observation = normalizeText(answers.task1Short)
+    const concept = normalizeText(answers.task1Fill)
+    const hasCurrentStrengthConcept =
+      concept.includes('dong dien') &&
+      (
+        concept.includes('dong dien co tac dung manh hay yeu') ||
+        concept.includes('dong dien co the manh hoac yeu') ||
+        concept.includes('dong dien manh yeu') ||
+        (concept.includes('manh') && concept.includes('yeu'))
+      )
     const isCorrect =
-      answers.task1LampChoice === 'increase' &&
-      answers.task1MagnetChoice === 'increase' &&
-      includesAny(fill, ['manh hon', 'manh']) &&
-      conclusion.includes('dong dien') &&
-      includesAny(conclusion, ['manh hon', 'manh']) &&
-      includesAny(conclusion, ['tang', 'ampe'])
+      observation.includes('bong den') &&
+      includesAny(observation, ['sang hon', 'sang manh', 'sang manh hon']) &&
+      includesAny(observation, ['ghim', 'nam cham']) &&
+      includesAny(observation, ['nhieu hon', 'nhieu ghim', 'hut duoc nhieu', 'tang', 'tang len']) &&
+      hasCurrentStrengthConcept
     setProgressFeedback(
       'task1',
       isCorrect,
-      'Khi số chỉ ampe kế tăng, bóng đèn sáng mạnh hơn, nam châm điện hút nhiều ghim hơn; tác dụng của dòng điện mạnh hơn.',
-      'Gợi ý: cả bóng đèn và nam châm điện đều biểu hiện tác dụng rõ hơn khi số chỉ ampe kế tăng.',
-      'Cần chọn tăng lên ở hai câu quan sát và nêu được: khi số chỉ ampe kế tăng, tác dụng của dòng điện mạnh hơn.',
-    )
-  }
-
-  const checkTask2 = () => {
-    const fill = normalizeText(answers.task2Fill)
-    const short = normalizeText(answers.task2Short)
-    const isCorrect =
-      answers.task2TfA === 'false' &&
-      answers.task2TfB === 'true' &&
-      answers.task2Tool === 'current' &&
-      includesAny(fill, ['manh yeu', 'manh hay yeu', 'manh hoac yeu', 'manh, yeu']) &&
-      short.includes('tac dung') &&
-      includesAny(short, ['tang', 'manh hon', 'ro hon'])
-    setProgressFeedback(
-      'task2',
-      isCorrect,
-      'Cường độ dòng điện là đại lượng đặc trưng cho tác dụng mạnh, yếu của dòng điện.',
-      'Gợi ý: ampe kế đo đại lượng nào? Đại lượng đó biểu thị mức độ mạnh/yếu của dòng điện.',
-      'Cần xác định đúng hai nhận định, chọn ampe kế đo cường độ dòng điện và hoàn thành nhận xét.',
+      'Bóng đèn sáng hơn, nam châm điện hút được nhiều ghim hơn; dòng điện có thể mạnh hoặc yếu khác nhau.',
+      'Gợi ý: so sánh độ sáng bóng đèn, số ghim bị hút khi số chỉ ampe kế tăng, rồi rút ra nhận xét về dòng điện.',
+      'Cần nêu được: bóng đèn sáng hơn, nam châm điện hút nhiều ghim hơn; dòng điện có thể mạnh hoặc yếu khác nhau.',
+      'Cường độ dòng điện là đại lượng đặc trưng cho tác dụng mạnh hay yếu của dòng điện.',
+      false,
     )
   }
 
   const checkTask3 = () => {
-    const largeFill = normalizeText(answers.task3LargeFill)
-    const smallFill = normalizeText(answers.task3SmallFill)
     const predict = normalizeText(answers.task3Predict)
-    const match = answers.task3Match || {}
     const isCorrect =
       answers.task3FirstCase === 'b' &&
-      includesAny(largeFill, ['lon', 'nhieu']) &&
       answers.task3SecondCase === 'a' &&
-      includesAny(smallFill, ['nho', 'ngan']) &&
       predict.includes('dien luong') &&
-      predict.includes('thoi gian') &&
-      answers.task3FormulaChoice === 'dqdt' &&
-      match.I === 'Cường độ dòng điện' &&
-      match.q === 'Điện lượng chuyển qua tiết diện' &&
-      match.t === 'Thời gian'
+      includesAny(predict, ['thoi gian', 'thoi gian chuyen qua'])
     setProgressFeedback(
       'task3',
       isCorrect,
-      'Trong cùng thời gian, điện lượng càng lớn thì dòng điện càng mạnh; cùng điện lượng, thời gian càng nhỏ thì dòng điện càng mạnh. Công thức: I = Δq / Δt.',
-      'Gợi ý: so sánh từng cặp trường hợp để thấy I tăng khi Δq tăng và giảm khi Δt tăng.',
-      'Cần chọn đúng hai trường hợp mạnh hơn, điền lớn/nhỏ, chọn công thức I = Δq/Δt và ghép đúng kí hiệu.',
+      'Cường độ dòng điện phụ thuộc vào điện lượng chuyển qua tiết diện dây dẫn và thời gian chuyển qua. Công thức: I = Δq / Δt.',
+      'Gợi ý: trước hết so sánh điện lượng trong cùng 1 giây, sau đó so sánh thời gian khi cùng có 6 C điện lượng đi qua.',
+      'Cần chọn B ở phần điện lượng, chọn A ở phần thời gian và nêu được hai đại lượng: điện lượng, thời gian.',
+      'Cường độ dòng điện được xác định bằng điện lượng chuyển qua tiết diện thẳng của dây dẫn trong một đơn vị thời gian.',
+      3,
     )
   }
 
+  const isTask4ChargeCorrect = (value) => {
+    const compactValue = normalizeText(value).replace(/\s/g, '')
+    return ['1c', '1culong', 'motc', 'motculong'].some((answer) => compactValue.includes(answer))
+  }
+
   const checkTask4 = () => {
+    const charge = answers.task4Charge
     const meaning = normalizeText(answers.task4Meaning)
-    const relation = normalizeText(answers.task4Relation).replace(/\s/g, '')
+    const hasOne = meaning.includes('1') || meaning.includes('mot')
+    const hasCoulomb = /\bc\b/.test(meaning) || meaning.includes('culong')
+    const hasOneSecond = meaning.includes('1 giay') || meaning.includes('mot giay') || meaning.includes('moi giay') || /\b1\s*s\b/.test(meaning)
+    const describesPassing = includesAny(meaning, ['chuyen qua', 'di qua', 'qua tiet dien'])
+    const mentionsSection = meaning.includes('tiet dien')
     const isCorrect =
       answers.task4UnitChoice === 'a' &&
-      (relation.includes('1') || relation.includes('mot')) &&
-      meaning.includes('1') &&
-      (meaning.includes('c') || meaning.includes('culong')) &&
-      (meaning.includes('giay') || meaning.includes('s'))
+      isTask4ChargeCorrect(charge) &&
+      hasOne &&
+      hasCoulomb &&
+      hasOneSecond &&
+      describesPassing &&
+      mentionsSection
     setProgressFeedback(
       'task4',
       isCorrect,
-      'Đơn vị cường độ dòng điện là ampe (A); 1 A = 1 C/s, nghĩa là mỗi giây có 1 C điện lượng đi qua tiết diện dây dẫn.',
-      'Gợi ý: công thức I = Δq/Δt cho thấy đơn vị của I là C chia cho s.',
-      'Cần chọn A, điền 1 vào hệ thức và nêu ý nghĩa 1 C đi qua trong 1 s.',
+      '1 ampe là cường độ dòng điện mà khi chạy qua tiết diện thẳng của dây dẫn thì trong 1 giây có điện lượng 1 culông chuyển qua tiết diện đó.',
+      'Gợi ý: từ I = Δq/Δt suy ra Δq = IΔt. Thay I = 1 A và Δt = 1 s để tìm Δq.',
+      'Cần chọn A, tính Δq = 1 C và nêu được trong 1 giây có 1 C điện lượng chuyển qua tiết diện dây dẫn.',
+      '1 ampe là cường độ dòng điện mà khi chạy qua tiết diện thẳng của dây dẫn thì trong 1 giây có điện lượng 1 culông chuyển qua tiết diện đó.',
+      4,
     )
   }
 
@@ -2823,6 +3052,8 @@ function Lesson22InteractiveWorksheet({ onAction }) {
       'Trong kim loại, hạt tải điện là electron tự do; khi có điện trường, electron tự do dịch chuyển có hướng; chiều dòng điện quy ước ngược chiều chuyển động của electron.',
       'Gợi ý: electron mang điện âm nên chiều chuyển động của electron không trùng chiều dòng điện quy ước.',
       'Cần chọn electron tự do, xác nhận chuyển động hỗn loạn khi chưa có điện trường, điền có hướng và chọn ngược chiều.',
+      undefined,
+      5,
     )
   }
 
@@ -2839,6 +3070,8 @@ function Lesson22InteractiveWorksheet({ onAction }) {
       'Số hạt mang điện đi qua tiết diện trong một giây tăng hoặc tốc độ dịch chuyển có hướng tăng thì cường độ dòng điện tăng.',
       'Gợi ý: nhiều hạt đi qua hơn trong cùng thời gian nghĩa là tác dụng của dòng điện mạnh hơn.',
       'Cần chọn tăng ở cả hai quan sát và rút ra nhận xét về số lượng hạt, tốc độ chuyển động với cường độ dòng điện.',
+      undefined,
+      6,
     )
   }
 
@@ -2854,9 +3087,40 @@ function Lesson22InteractiveWorksheet({ onAction }) {
     setSelfReflection((current) => ({ ...current, [key]: value }))
   }
 
-  const completedWorksheetTasks = ['task1', 'task2', 'task3', 'task4', 'task5', 'task6'].filter((key) => feedbacks[key]?.type === 'correct').length
-  const worksheetProgress = Math.round((completedWorksheetTasks / 6) * 100)
+  const completedWorksheetTasks = worksheetTaskKeys.filter((key) => feedbacks[key]?.type === 'correct').length
+  const worksheetProgress = Math.round((completedWorksheetTasks / worksheetTaskKeys.length) * 100)
+  const task4ChargeIsCorrect = isTask4ChargeCorrect(answers.task4Charge)
   const lampBrightness = Math.round(((Number(lampCurrent) - 0.2) / 0.8) * 100)
+  const lampBrightnessLevel = lampBrightness / 100
+  const lampGlowLevel = lampBrightnessLevel ** 1.2
+  const lampCurrentDuration = 1.35 - lampBrightnessLevel * 0.9
+  const lampCurrentSpeed = `${lampCurrentDuration}s`
+  const lampEffectStyle = {
+    '--lamp-aura-scale': (0.38 + lampBrightnessLevel * 0.86).toFixed(3),
+    '--lamp-aura-blur': `${6 + lampBrightnessLevel * 22}px`,
+    '--lamp-aura-opacity': (0.02 + lampGlowLevel * 0.96).toFixed(3),
+    '--lamp-core-opacity': (0.01 + lampGlowLevel * 0.92).toFixed(3),
+    '--lamp-scene-warm-opacity': (0.01 + lampGlowLevel * 0.24).toFixed(3),
+    '--lamp-highlight-opacity': (0.1 + lampGlowLevel * 0.88).toFixed(3),
+    '--lamp-warm-opacity': (0.02 + lampGlowLevel * 0.92).toFixed(3),
+    '--lamp-warm-mid-opacity': (0.01 + lampGlowLevel * 0.68).toFixed(3),
+    '--lamp-glow-size': `${1 + lampBrightnessLevel * 68}px`,
+    '--lamp-glow-opacity': (0.02 + lampGlowLevel * 0.96).toFixed(3),
+    '--lamp-inset-size': `${1 + lampBrightnessLevel * 22}px`,
+    '--lamp-inset-opacity': (0.03 + lampGlowLevel * 0.76).toFixed(3),
+    '--filament-glow-size': `${1 + lampBrightnessLevel * 18}px`,
+    '--filament-glow-opacity': (0.05 + lampGlowLevel * 0.88).toFixed(3),
+    '--wire-glow-size': `${1 + lampBrightnessLevel * 20}px`,
+    '--wire-glow-opacity': (0.03 + lampBrightnessLevel * 0.52).toFixed(3),
+    '--electron-glow-size': `${4 + lampBrightnessLevel * 24}px`,
+    '--electron-glow-opacity': (0.16 + lampBrightnessLevel * 0.68).toFixed(3),
+    '--electron-opacity': (0.04 + lampBrightnessLevel * 0.96).toFixed(3),
+    '--lamp-pulse-min-scale': (0.48 + lampBrightnessLevel * 0.52).toFixed(3),
+    '--lamp-pulse-max-scale': (0.56 + lampBrightnessLevel * 0.72).toFixed(3),
+    '--lamp-speed': lampCurrentSpeed,
+    '--lamp-delay-2': `${-lampCurrentDuration / 3}s`,
+    '--lamp-delay-3': `${-lampCurrentDuration / 1.5}s`,
+  }
   const attractedPins = Math.round(((Number(magnetCurrent) - 0.2) / 0.8) * 5)
   const currentLabel = (value, weakText, strongText) => Number(value) < 0.65 ? weakText : strongText
 
@@ -2879,27 +3143,6 @@ function Lesson22InteractiveWorksheet({ onAction }) {
     if (!answers[answerKey]) return null
     return <p className={answers[answerKey] === correctValue ? 'worksheet-step-feedback worksheet-step-feedback--correct' : 'worksheet-step-feedback'}>{answers[answerKey] === correctValue ? correctText : wrongText}</p>
   }
-
-  const renderQuestionFeedbackButton = (feedbackKey, answerKey, correctValue, correctText, wrongText) => (
-    <>
-      <button
-        className="ghost-soft-btn"
-        type="button"
-        onClick={() => setQuestionFeedbacks((current) => ({ ...current, [feedbackKey]: answers[answerKey] === correctValue ? 'correct' : 'wrong' }))}
-      >
-        Gợi ý / phản hồi
-      </button>
-      {questionFeedbacks[feedbackKey] && (
-        <p className={questionFeedbacks[feedbackKey] === 'correct' ? 'worksheet-step-feedback worksheet-step-feedback--correct' : 'worksheet-step-feedback'}>
-          {questionFeedbacks[feedbackKey] === 'correct' ? correctText : wrongText}
-        </p>
-      )}
-    </>
-  )
-
-  const updateMatchAnswer = (symbol, value) => {
-    updateAnswer('task3Match', { ...(answers.task3Match || {}), [symbol]: value })
-  }
   return (
     <section className="restored-lesson restored22">
       <div className="restored-hero">
@@ -2908,7 +3151,7 @@ function Lesson22InteractiveWorksheet({ onAction }) {
         <p>Cấu trúc tự học gồm 4 phần: Video khởi động, Phiếu học tập, Quiz và Tự đánh giá.</p>
       </div>
 
-      <article className="restored-card">
+      {isBeforePart && <article className="restored-card">
         <div className="journey-heading">
           <span>Phần 1</span>
           <h2>Video khởi động</h2>
@@ -2936,14 +3179,14 @@ function Lesson22InteractiveWorksheet({ onAction }) {
             title="Video tương tác bài 22"
           />
         </div>
-      </article>
+      </article>}
 
-      {revealedBlocks.worksheet && <article className="restored-card journey-card lesson22-reveal-block" id="lesson22-worksheet">
+      {revealedBlocks.worksheet && isWorksheetPart && <article className="restored-card journey-card lesson22-reveal-block" id="lesson22-worksheet">
         <div className="journey-heading">
           <span>Phần 2</span>
           <h2>Phiếu học tập</h2>
           <strong className="journey-heading__subhead">Khám phá cường độ dòng điện</strong>
-          <p>Từ bóng đèn sáng mạnh/yếu, em tự nối hiện tượng với công thức và bài tập.</p>
+          <p>Từ quan sát định tính đến dữ kiện định lượng, em tự hình thành khái niệm và công thức cường độ dòng điện.</p>
         </div>
         <div className="lesson22-section-meta" aria-label="Thông tin phần phiếu học tập">
           <div>
@@ -2952,7 +3195,7 @@ function Lesson22InteractiveWorksheet({ onAction }) {
           </div>
           <div>
             <strong>Nhiệm vụ của học sinh</strong>
-            <p>Quan sát, lựa chọn, điền khuyết, ghép đôi, trả lời ngắn và rút ra kết luận sau từng nhiệm vụ.</p>
+            <p>Quan sát, so sánh dữ kiện, trả lời ngắn và rút ra kết luận sau từng nhiệm vụ.</p>
           </div>
           <div>
             <strong>Sản phẩm học tập</strong>
@@ -2963,7 +3206,7 @@ function Lesson22InteractiveWorksheet({ onAction }) {
         <div className="worksheet-progress-card">
           <div>
             <strong>Tiến trình phiếu học tập</strong>
-            <span>{completedWorksheetTasks}/6 nhiệm vụ đã hoàn thành</span>
+            <span>{completedWorksheetTasks}/5 nhiệm vụ đã hoàn thành</span>
           </div>
           <div className="review-progress" aria-label="Tiến trình phiếu học tập">
             <span style={{ width: `${worksheetProgress}%` }} />
@@ -2974,17 +3217,20 @@ function Lesson22InteractiveWorksheet({ onAction }) {
           {worksheetStep >= 1 && <section className="journey-item">
             <b>1</b>
             <div>
-              <h3>Nhiệm vụ 1. Quan sát tác dụng của dòng điện</h3>
-              <p className="worksheet-prompt"><b>Mục tiêu:</b> Nhận biết dòng điện có thể mạnh hoặc yếu khác nhau thông qua tác dụng của dòng điện.</p>
+              <h3>Nhiệm vụ 1. Hình thành khái niệm cường độ dòng điện</h3>
+              <p className="worksheet-prompt"><b>Mục tiêu:</b> Nhận biết dòng điện có thể mạnh hoặc yếu khác nhau và hình thành khái niệm cường độ dòng điện.</p>
               <div className="current-sim-grid">
                 <section className="current-sim-card current-sim-card--lamp">
                   <div className="current-sim-top">
                     <strong>Thí nghiệm bóng đèn</strong>
                     <span className="ammeter-readout">A = {Number(lampCurrent).toFixed(1)} A</span>
                   </div>
-                  <div className="lamp-sim-scene">
-                    <div className="lamp-bulb" style={{ '--glow': `${0.22 + lampBrightness / 90}`, '--light': `${lampBrightness}%` }}><span /></div>
-                    <div className="simple-wire" />
+                  <div
+                    className="lamp-sim-scene"
+                    style={lampEffectStyle}
+                  >
+                    <div className="lamp-bulb"><span /></div>
+                    <div className="simple-wire"><i /><i /><i /></div>
                     <div className="sim-ammeter">A</div>
                   </div>
                   <label className="sim-slider">
@@ -3013,82 +3259,45 @@ function Lesson22InteractiveWorksheet({ onAction }) {
                   </label>
                 </section>
               </div>
-              <div className="worksheet-question-block">
-                <strong>Bước 1. Khi số chỉ ampe kế tăng, độ sáng của bóng đèn:</strong>
-                {renderChoiceGroup('task1LampChoice', [{ id: 'decrease', text: 'Giảm đi' }, { id: 'same', text: 'Không thay đổi' }, { id: 'increase', text: 'Tăng lên' }])}
-                {renderQuestionFeedbackButton('task1LampChoice', 'task1LampChoice', 'increase', 'Đúng: khi số chỉ ampe kế tăng, bóng đèn sáng mạnh hơn.', 'Gợi ý: kéo thanh trượt và quan sát độ sáng của bóng đèn.')}
+              <div className="worksheet-observe-step">
+                <strong>Bước 1. Quan sát</strong>
+                <p>Quan sát độ sáng của bóng đèn, số lượng ghim giấy bị nam châm điện hút và số chỉ ampe kế tương ứng.</p>
               </div>
-              <div className="worksheet-question-block">
-                <strong>Bước 2. Khi số chỉ ampe kế tăng, số ghim bị hút:</strong>
-                {renderChoiceGroup('task1MagnetChoice', [{ id: 'decrease', text: 'Giảm đi' }, { id: 'same', text: 'Không thay đổi' }, { id: 'increase', text: 'Tăng lên' }])}
-                {renderQuestionFeedbackButton('task1MagnetChoice', 'task1MagnetChoice', 'increase', 'Đúng: khi số chỉ ampe kế tăng, nam châm điện hút nhiều ghim hơn.', 'Gợi ý: kéo thanh trượt và đếm số ghim bị hút về phía cuộn dây.')}
-              </div>
-              {answers.task1LampChoice === 'increase' && answers.task1MagnetChoice === 'increase' && (
+              <label className="worksheet-answer"><span>Bước 2. Khi số chỉ ampe kế tăng thì độ sáng bóng đèn và số lượng ghim bị hút thay đổi như thế nào?</span><textarea value={answers.task1Short} onChange={(event) => updateAnswer('task1Short', event.target.value)} placeholder="Ví dụ: Bóng đèn sáng hơn..." /></label>
+              <label className="worksheet-answer"><span>Bước 3. Từ các hiện tượng trên, em có nhận xét gì về dòng điện trong các trường hợp?</span><textarea value={answers.task1Fill} onChange={(event) => updateAnswer('task1Fill', event.target.value)} placeholder="Ví dụ: Dòng điện có thể..." /></label>
+              {feedbacks.task1?.type === 'correct' && (
                 <>
-                  <label className="worksheet-answer"><span>Bước 3. Từ hai hiện tượng trên, em hãy nhận xét tác dụng của dòng điện khi số chỉ ampe kế tăng.</span><textarea value={answers.task1Short} onChange={(event) => {
-                    updateAnswer('task1Short', event.target.value)
-                    updateAnswer('task1Fill', event.target.value)
-                  }} placeholder="Ví dụ: Khi số chỉ ampe kế tăng..." /></label>
-                  <button className="ghost-soft-btn" type="button" onClick={() => {
-                    const normalized = normalizeText(answers.task1Short)
-                    setQuestionFeedbacks((current) => ({ ...current, task1Summary: normalized.includes('manh') && normalized.includes('tang') ? 'correct' : 'wrong' }))
-                  }}>Gợi ý / phản hồi</button>
-                  {questionFeedbacks.task1Summary && <p className={questionFeedbacks.task1Summary === 'correct' ? 'worksheet-step-feedback worksheet-step-feedback--correct' : 'worksheet-step-feedback'}>{questionFeedbacks.task1Summary === 'correct' ? 'Đúng: em đã rút ra tác dụng của dòng điện mạnh hơn khi số chỉ ampe kế tăng.' : 'Gợi ý: hãy dùng cụm “số chỉ ampe kế tăng” và “tác dụng của dòng điện mạnh hơn”.'}</p>}
-                  <button className="primary-soft-btn" type="button" onClick={checkTask1}>Tiếp tục nhiệm vụ tiếp theo</button>
-                  {feedbacks.task1 && <p className={`inline-feedback inline-feedback--${feedbacks.task1.type}`}>{feedbacks.task1.message}</p>}
+                  <div className="worksheet-question-block">
+                    <strong>Bước 4. Hình thành đại lượng mới</strong>
+                    <p>Để biểu thị mức độ mạnh hay yếu của dòng điện, người ta sử dụng đại lượng gọi là cường độ dòng điện.</p>
+                  </div>
+                  <div className="worksheet-conclusion"><strong>Bước 5. Kết luận</strong><span>Cường độ dòng điện là đại lượng đặc trưng cho tác dụng mạnh hay yếu của dòng điện.</span></div>
                 </>
               )}
-              {feedbacks.task1?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận tạm thời:</strong><span>Dòng điện có thể mạnh hoặc yếu khác nhau. Khi số chỉ ampe kế tăng, các tác dụng của dòng điện thể hiện rõ hơn.</span></div>}
+              {feedbacks.task1?.type === 'wrong' && <p className="inline-feedback inline-feedback--wrong">{feedbacks.task1.message}</p>}
+              <button className="primary-soft-btn" type="button" onClick={feedbacks.task1?.type === 'correct' ? () => setWorksheetStep((current) => Math.max(current, 2)) : checkTask1}>{feedbacks.task1?.type === 'correct' ? 'Tiếp tục nhiệm vụ tiếp theo' : 'Kiểm tra câu trả lời'}</button>
             </div>
           </section>}
 
           {worksheetStep >= 2 && <section className="journey-item">
             <b>2</b>
             <div>
-              <h3>Nhiệm vụ 2. Hình thành khái niệm cường độ dòng điện</h3>
-              <p className="worksheet-prompt"><b>Mục tiêu:</b> Hình thành khái niệm cường độ dòng điện từ kết quả quan sát ở nhiệm vụ 1.</p>
-              <div className="worksheet-question-block">
-                <strong>Bước 1a. Dòng điện luôn có mức độ mạnh như nhau.</strong>
-                {renderChoiceGroup('task2TfA', [{ id: 'true', text: 'Đúng' }, { id: 'false', text: 'Sai' }])}
-                {renderStepFeedback('task2TfA', 'false')}
-              </div>
-              <div className="worksheet-question-block">
-                <strong>Bước 1b. Có thể dùng một đại lượng để biểu thị mức độ mạnh, yếu của dòng điện.</strong>
-                {renderChoiceGroup('task2TfB', [{ id: 'true', text: 'Đúng' }, { id: 'false', text: 'Sai' }])}
-                {renderStepFeedback('task2TfB', 'true')}
-              </div>
-              <div className="worksheet-question-block">
-                <strong>Bước 2. Ampe kế là dụng cụ dùng để đo:</strong>
-                {renderChoiceGroup('task2Tool', [{ id: 'charge', text: 'Điện tích' }, { id: 'voltage', text: 'Hiệu điện thế' }, { id: 'current', text: 'Cường độ dòng điện' }, { id: 'power', text: 'Công suất điện' }])}
-                {renderStepFeedback('task2Tool', 'current', 'Đúng: ampe kế đo cường độ dòng điện.')}
-              </div>
-              <label className="worksheet-answer"><span>Bước 3. Cường độ dòng điện là đại lượng đặc trưng cho tác dụng ... của dòng điện.</span><input value={answers.task2Fill} onChange={(event) => updateAnswer('task2Fill', event.target.value)} placeholder="Điền khuyết..." /></label>
-              <label className="worksheet-answer"><span>Bước 4. Nếu cường độ dòng điện tăng thì tác dụng của dòng điện thay đổi như thế nào?</span><textarea value={answers.task2Short} onChange={(event) => updateAnswer('task2Short', event.target.value)} placeholder="Trả lời ngắn..." /></label>
-              <button className="primary-soft-btn" type="button" onClick={checkTask2}>Tiếp tục nhiệm vụ tiếp theo</button>
-              {feedbacks.task2 && <p className={`inline-feedback inline-feedback--${feedbacks.task2.type}`}>{feedbacks.task2.message}</p>}
-              {feedbacks.task2?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Cường độ dòng điện là đại lượng đặc trưng cho tác dụng mạnh hay yếu của dòng điện.</span></div>}
-            </div>
-          </section>}
-
-          {worksheetStep >= 3 && <section className="journey-item">
-            <b>3</b>
-            <div>
-              <h3>Nhiệm vụ 3. Khám phá công thức cường độ dòng điện</h3>
-              <p className="worksheet-prompt"><b>Mục tiêu:</b> Tự xây dựng công thức xác định cường độ dòng điện.</p>
+              <h3>Nhiệm vụ 2. Xác định cường độ dòng điện</h3>
+              <p className="worksheet-prompt"><b>Mục tiêu:</b> Nhận ra cường độ dòng điện phụ thuộc vào điện lượng chuyển qua tiết diện dây dẫn và thời gian chuyển qua.</p>
               <div className="worksheet-observe-step">
-                <strong>Bước 1. Quan sát tình huống</strong>
+                <strong>Bước 1. Quan sát dữ kiện: Ảnh hưởng của điện lượng</strong>
                 <div className="case-compare-card">
                   <span className="case-compare-label">Cùng thời gian: 1 s</span>
                   <div className="case-compare-options">
-                    <div><b>Trường hợp A</b><strong>2 C</strong><small>đi qua tiết diện dây dẫn</small></div>
-                    <div><b>Trường hợp B</b><strong>6 C</strong><small>đi qua tiết diện dây dẫn</small></div>
+                    <div><b>Trường hợp A</b><strong>2 C</strong><small>điện lượng đi qua tiết diện dây dẫn</small></div>
+                    <div><b>Trường hợp B</b><strong>6 C</strong><small>điện lượng đi qua tiết diện dây dẫn</small></div>
                   </div>
                 </div>
               </div>
-              <div className="worksheet-question-block"><strong>Bước 2. Trường hợp nào có dòng điện mạnh hơn?</strong>{renderChoiceGroup('task3FirstCase', [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }])}{renderStepFeedback('task3FirstCase', 'b')}</div>
-              <label className="worksheet-answer"><span>Bước 3. Trong cùng một khoảng thời gian, điện lượng đi qua tiết diện dây dẫn càng ... thì dòng điện càng mạnh.</span><input value={answers.task3LargeFill} onChange={(event) => updateAnswer('task3LargeFill', event.target.value)} placeholder="Điền khuyết..." /></label>
+              <div className="worksheet-question-block"><strong>Bước 2. So sánh điện lượng: Trong cùng một khoảng thời gian, trường hợp nào có nhiều điện lượng đi qua tiết diện dây dẫn hơn?</strong>{renderChoiceGroup('task3FirstCase', [{ id: 'a', text: 'Trường hợp A' }, { id: 'b', text: 'Trường hợp B' }])}{renderStepFeedback('task3FirstCase', 'b', 'Đúng: trong 1 giây, trường hợp B có 6 C đi qua, nhiều hơn trường hợp A.')}</div>
+              {answers.task3FirstCase === 'b' && <div className="worksheet-conclusion"><strong>Bước 3. Nhận xét</strong><span>Trong cùng một khoảng thời gian, điện lượng chuyển qua tiết diện dây dẫn càng lớn thì dòng điện càng mạnh.</span></div>}
               <div className="worksheet-observe-step">
-                <strong>Bước 4. Quan sát tiếp</strong>
+                <strong>Bước 4. Quan sát dữ kiện: Ảnh hưởng của thời gian</strong>
                 <div className="case-compare-card">
                   <span className="case-compare-label">Cùng điện lượng: 6 C</span>
                   <div className="case-compare-options">
@@ -3097,18 +3306,17 @@ function Lesson22InteractiveWorksheet({ onAction }) {
                   </div>
                 </div>
               </div>
-              <div className="worksheet-question-block"><strong>Bước 5. Trường hợp nào có dòng điện mạnh hơn?</strong>{renderChoiceGroup('task3SecondCase', [{ id: 'a', text: 'A' }, { id: 'b', text: 'B' }])}{renderStepFeedback('task3SecondCase', 'a')}</div>
-              <label className="worksheet-answer"><span>Bước 6. Trong cùng một điện lượng, thời gian càng ... thì dòng điện càng mạnh.</span><input value={answers.task3SmallFill} onChange={(event) => updateAnswer('task3SmallFill', event.target.value)} placeholder="Điền khuyết..." /></label>
-              <label className="worksheet-answer"><span>Bước 7. Cường độ dòng điện phụ thuộc vào những đại lượng nào?</span><textarea value={answers.task3Predict} onChange={(event) => updateAnswer('task3Predict', event.target.value)} placeholder="Dự đoán từ hai nhận xét trên..." /></label>
-              <div className="worksheet-question-block"><strong>Bước 8. Chọn công thức phù hợp:</strong>{renderChoiceGroup('task3FormulaChoice', [{ id: 'dqdt', text: 'I = Δq / Δt' }, { id: 'dtdq', text: 'I = Δt / Δq' }, { id: 'multiply', text: 'I = Δq.Δt' }])}{renderStepFeedback('task3FormulaChoice', 'dqdt', 'Đúng: lấy điện lượng chia cho thời gian.')}</div>
-              <div className="worksheet-match-grid">
-                {[
-                  ['I', 'I'],
-                  ['Δq', 'q'],
-                  ['Δt', 't'],
-                ].map(([label, key]) => (
-                  <label key={key}><strong>{label}</strong><select value={answers.task3Match?.[key] || ''} onChange={(event) => updateMatchAnswer(key, event.target.value)}><option value="">Chọn ý nghĩa</option><option>Cường độ dòng điện</option><option>Điện lượng chuyển qua tiết diện</option><option>Thời gian</option></select></label>
-                ))}
+              <div className="worksheet-question-block"><strong>Bước 5. So sánh thời gian: Ở trường hợp nào điện lượng đi qua tiết diện dây dẫn nhanh hơn?</strong>{renderChoiceGroup('task3SecondCase', [{ id: 'a', text: 'Trường hợp A' }, { id: 'b', text: 'Trường hợp B' }])}{renderStepFeedback('task3SecondCase', 'a', 'Đúng: cùng 6 C điện lượng nhưng trường hợp A chỉ mất 1 giây.')}</div>
+              {answers.task3SecondCase === 'a' && <div className="worksheet-conclusion"><strong>Bước 6. Nhận xét</strong><span>Với cùng một điện lượng, thời gian chuyển qua tiết diện dây dẫn càng ngắn thì dòng điện càng mạnh.</span></div>}
+              <label className="worksheet-answer"><span>Bước 7. Từ các nhận xét trên, cường độ dòng điện phụ thuộc vào những đại lượng nào?</span><textarea value={answers.task3Predict} onChange={(event) => updateAnswer('task3Predict', event.target.value)} placeholder="Ví dụ: Điện lượng chuyển qua..." /></label>
+              <div className="worksheet-question-block">
+                <strong>Bước 8. Kết luận</strong>
+                <p>Cường độ dòng điện được xác định bằng điện lượng chuyển qua tiết diện thẳng của dây dẫn trong một đơn vị thời gian.</p>
+              </div>
+              <div className="formula-reveal">
+                <span>Bước 9. Công thức</span>
+                <strong>I = Δq / Δt</strong>
+                <small>I là cường độ dòng điện; Δq là điện lượng chuyển qua tiết diện dây dẫn; Δt là thời gian điện lượng chuyển qua tiết diện dây dẫn.</small>
               </div>
               <button className="primary-soft-btn" type="button" onClick={checkTask3}>Tiếp tục nhiệm vụ tiếp theo</button>
               {feedbacks.task3 && <p className={`inline-feedback inline-feedback--${feedbacks.task3.type}`}>{feedbacks.task3.message}</p>}
@@ -3116,24 +3324,33 @@ function Lesson22InteractiveWorksheet({ onAction }) {
             </div>
           </section>}
 
-          {worksheetStep >= 4 && <section className="journey-item">
-            <b>4</b>
+          {worksheetStep >= 3 && <section className="journey-item">
+            <b>3</b>
             <div>
-              <h3>Nhiệm vụ 4. Đơn vị đo cường độ dòng điện</h3>
+              <h3>Nhiệm vụ 3. Đơn vị đo cường độ dòng điện</h3>
               <p className="worksheet-prompt"><b>Mục tiêu:</b> Hiểu đơn vị đo và ý nghĩa của đơn vị.</p>
-              <div className="worksheet-question-block"><strong>Bước 1. Đơn vị của cường độ dòng điện là:</strong>{renderChoiceGroup('task4UnitChoice', [{ id: 'v', text: 'V' }, { id: 'a', text: 'A' }, { id: 'w', text: 'W' }, { id: 'ohm', text: 'Ω' }])}{renderStepFeedback('task4UnitChoice', 'a')}</div>
-              <div className="formula-input"><span>1 A =</span><input value={answers.task4Relation} onChange={(event) => updateAnswer('task4Relation', event.target.value)} placeholder="... C/s" /></div>
+              <div className="worksheet-question-block">
+                <strong>Bước 1. Đơn vị đo cường độ dòng điện là:</strong>
+                {renderChoiceGroup('task4UnitChoice', [{ id: 'v', text: 'V' }, { id: 'a', text: 'A' }, { id: 'w', text: 'W' }, { id: 'ohm', text: 'Ω' }])}
+                {renderStepFeedback('task4UnitChoice', 'a', 'Đúng.')}
+              </div>
+              <div className="worksheet-question-block">
+                <strong>Bước 2. Từ công thức I = Δq / Δt, suy ra Δq = IΔt.</strong>
+                <p>Nếu I = 1 A và Δt = 1 s thì điện lượng chuyển qua tiết diện dây dẫn là:</p>
+                <div className="formula-input"><span>Δq =</span><input value={answers.task4Charge} onChange={(event) => updateAnswer('task4Charge', event.target.value)} placeholder="... C" /></div>
+                {answers.task4Charge && task4ChargeIsCorrect && <p className="worksheet-step-feedback worksheet-step-feedback--correct">Chính xác. Khi cường độ dòng điện bằng 1 A thì trong 1 giây có 1 C điện lượng chuyển qua tiết diện dây dẫn.</p>}
+              </div>
               <label className="worksheet-answer"><span>Bước 3. 1 A cho biết điều gì về điện lượng chuyển qua tiết diện dây dẫn trong mỗi giây?</span><textarea value={answers.task4Meaning} onChange={(event) => updateAnswer('task4Meaning', event.target.value)} placeholder="Trả lời ngắn..." /></label>
               <button className="primary-soft-btn" type="button" onClick={checkTask4}>Tiếp tục nhiệm vụ tiếp theo</button>
               {feedbacks.task4 && <p className={`inline-feedback inline-feedback--${feedbacks.task4.type}`}>{feedbacks.task4.message}</p>}
-              {feedbacks.task4?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>Đơn vị cường độ dòng điện là ampe (A); 1 A = 1 C/s.</span></div>}
+              {feedbacks.task4?.type === 'correct' && <div className="worksheet-conclusion"><strong>Kết luận:</strong><span>1 ampe là cường độ dòng điện mà khi chạy qua tiết diện thẳng của dây dẫn thì trong 1 giây có điện lượng 1 culông chuyển qua tiết diện đó.</span></div>}
             </div>
           </section>}
 
-          {worksheetStep >= 5 && <section className="journey-item">
-            <b>5</b>
+          {worksheetStep >= 4 && <section className="journey-item">
+            <b>4</b>
             <div>
-              <h3>Nhiệm vụ 5. Dòng điện trong kim loại</h3>
+              <h3>Nhiệm vụ 4. Dòng điện trong kim loại</h3>
               <p className="worksheet-prompt"><b>Mục tiêu:</b> Nhận biết bản chất dòng điện trong kim loại.</p>
               <div className="electron-sim" aria-hidden="true"><span>e</span><span>e</span><span>e</span><span>e</span><strong>Electron tự do trong dây dẫn kim loại</strong></div>
               <div className="worksheet-question-block"><strong>Bước 1. Hạt tải điện trong kim loại là:</strong>{renderChoiceGroup('task5CarrierChoice', [{ id: 'proton', text: 'Proton' }, { id: 'electron', text: 'Electron tự do' }, { id: 'positiveIon', text: 'Ion dương' }, { id: 'negativeIon', text: 'Ion âm' }])}{renderStepFeedback('task5CarrierChoice', 'electron')}</div>
@@ -3146,14 +3363,21 @@ function Lesson22InteractiveWorksheet({ onAction }) {
             </div>
           </section>}
 
-          {worksheetStep >= 6 && <section className="journey-item">
-            <b>6</b>
+          {worksheetStep >= 5 && <section className="journey-item">
+            <b>5</b>
             <div>
-              <h3>Nhiệm vụ 6. Liên hệ giữa cường độ dòng điện và hạt mang điện</h3>
+              <h3>Nhiệm vụ 5. Liên hệ giữa cường độ dòng điện và hạt mang điện</h3>
               <p className="worksheet-prompt"><b>Mục tiêu:</b> Hiểu định tính sự phụ thuộc của cường độ dòng điện.</p>
-              <div className="worksheet-flow worksheet-flow--particles"><span>Số electron qua tiết diện tăng</span><strong>Tiết diện dây dẫn</strong><span>Tốc độ dịch chuyển tăng</span></div>
-              <div className="worksheet-question-block"><strong>Bước 2. Khi số electron đi qua tiết diện tăng, cường độ dòng điện:</strong>{renderChoiceGroup('task6CountChoice', [{ id: 'decrease', text: 'Giảm' }, { id: 'same', text: 'Không đổi' }, { id: 'increase', text: 'Tăng' }])}{renderStepFeedback('task6CountChoice', 'increase')}</div>
-              <div className="worksheet-question-block"><strong>Bước 4. Khi tốc độ dịch chuyển của electron tăng, cường độ dòng điện:</strong>{renderChoiceGroup('task6SpeedChoice', [{ id: 'decrease', text: 'Giảm' }, { id: 'same', text: 'Không đổi' }, { id: 'increase', text: 'Tăng' }])}{renderStepFeedback('task6SpeedChoice', 'increase')}</div>
+              <div className="worksheet-observe-step">
+                <strong>Bước 1. Quan sát ảnh hưởng của số hạt mang điện</strong>
+                <div className="worksheet-flow worksheet-flow--particles"><span>Số electron qua tiết diện tăng</span><strong>Tiết diện dây dẫn</strong><span>Cùng thời gian quan sát</span></div>
+              </div>
+              <div className="worksheet-question-block"><strong>Bước 2. Nhận xét số hạt: Khi số electron đi qua tiết diện tăng, cường độ dòng điện:</strong>{renderChoiceGroup('task6CountChoice', [{ id: 'decrease', text: 'Giảm' }, { id: 'same', text: 'Không đổi' }, { id: 'increase', text: 'Tăng' }])}{renderStepFeedback('task6CountChoice', 'increase')}</div>
+              <div className="worksheet-observe-step">
+                <strong>Bước 3. Quan sát ảnh hưởng của tốc độ dịch chuyển</strong>
+                <div className="worksheet-flow worksheet-flow--particles"><span>Tốc độ dịch chuyển tăng</span><strong>Tiết diện dây dẫn</strong><span>Cùng số hạt mang điện</span></div>
+              </div>
+              <div className="worksheet-question-block"><strong>Bước 4. Nhận xét tốc độ: Khi tốc độ dịch chuyển của electron tăng, cường độ dòng điện:</strong>{renderChoiceGroup('task6SpeedChoice', [{ id: 'decrease', text: 'Giảm' }, { id: 'same', text: 'Không đổi' }, { id: 'increase', text: 'Tăng' }])}{renderStepFeedback('task6SpeedChoice', 'increase')}</div>
               <label className="worksheet-answer"><span>Bước 5. Rút ra nhận xét về mối liên hệ giữa cường độ dòng điện với số lượng và tốc độ chuyển động của hạt mang điện.</span><textarea value={answers.task6Short} onChange={(event) => updateAnswer('task6Short', event.target.value)} placeholder="Trả lời ngắn..." /></label>
               <button className="primary-soft-btn" type="button" onClick={checkTask6}>Hoàn thành phiếu học tập</button>
               {feedbacks.task6 && <p className={`inline-feedback inline-feedback--${feedbacks.task6.type}`}>{feedbacks.task6.message}</p>}
@@ -3162,15 +3386,11 @@ function Lesson22InteractiveWorksheet({ onAction }) {
           </section>}
         </div>
 
-        <div className="worksheet-product">
-          <strong>Sản phẩm học tập:</strong>
-          <span>Phiếu học tập đã hoàn thành.</span>
-        </div>
       </article>}
 
-      {revealedBlocks.quiz && <Lesson22ReviewQuest onAction={onAction} onComplete={revealSelfCheckFromQuiz} />}
+      {revealedBlocks.quiz && isAfterPart && <Lesson22ReviewQuest onAction={onAction} onComplete={revealSelfCheckFromQuiz} />}
 
-      {revealedBlocks.selfCheck && <article className="restored-card self-check lesson22-reveal-block" id="lesson22-self-check">
+      {revealedBlocks.selfCheck && isAfterPart && <article className="restored-card self-check lesson22-reveal-block" id="lesson22-self-check">
         <div className="journey-heading">
           <span>Phần 4</span>
           <h2>Tự đánh giá</h2>
@@ -3250,10 +3470,6 @@ function Lesson22InteractiveWorksheet({ onAction }) {
             </label>
           </section>
         </div>
-        <div className="worksheet-product">
-          <strong>Sản phẩm học tập:</strong>
-          <span>Nội dung tự đánh giá của học sinh.</span>
-        </div>
         <button className="primary-soft-btn" type="button" onClick={finishWorksheet}>Lưu kết quả</button>
       </article>}
     </section>
@@ -3272,7 +3488,7 @@ const lesson22ReviewQuestions = [
       { id: 'd', text: 'Khối lượng của nguồn điện' },
     ],
     answer: 'b',
-    review: 'Xem lại Nhiệm vụ 2: khái niệm cường độ dòng điện.',
+    review: 'Xem lại Nhiệm vụ 1: khái niệm cường độ dòng điện.',
     explain: 'Cường độ dòng điện đặc trưng cho tác dụng mạnh, yếu của dòng điện.',
   },
   {
@@ -3300,7 +3516,7 @@ const lesson22ReviewQuestions = [
       { id: 'd', text: 'I = Δq / Δt' },
     ],
     answer: 'd',
-    review: 'Xem lại Nhiệm vụ 3: xây dựng công thức.',
+    review: 'Xem lại Nhiệm vụ 2: xây dựng công thức.',
     explain: 'Cường độ dòng điện bằng điện lượng chuyển qua tiết diện dây dẫn chia cho thời gian.',
   },
   {
@@ -3314,7 +3530,7 @@ const lesson22ReviewQuestions = [
       { id: 'd', text: 'Điện trở của dây dẫn' },
     ],
     answer: 'c',
-    review: 'Xem lại Nhiệm vụ 3: ý nghĩa I, Δq và Δt.',
+    review: 'Xem lại Nhiệm vụ 2: ý nghĩa I, Δq và Δt.',
     explain: 'Δq là điện lượng chuyển qua tiết diện dây dẫn trong khoảng thời gian Δt.',
   },
   {
@@ -3328,7 +3544,7 @@ const lesson22ReviewQuestions = [
       { id: 'd', text: 'Giây (s)' },
     ],
     answer: 'c',
-    review: 'Xem lại Nhiệm vụ 4: đơn vị đo.',
+    review: 'Xem lại Nhiệm vụ 3: đơn vị đo.',
     explain: 'Đơn vị đo cường độ dòng điện là ampe, kí hiệu A.',
   },
   {
@@ -3342,7 +3558,7 @@ const lesson22ReviewQuestions = [
       { id: 'd', text: '1 A = 1 C/s' },
     ],
     answer: 'd',
-    review: 'Xem lại Nhiệm vụ 4: từ I = Δq/Δt suy ra đơn vị.',
+    review: 'Xem lại Nhiệm vụ 3: từ I = Δq/Δt suy ra đơn vị.',
     explain: 'Nếu Δq tính bằng C và Δt tính bằng s thì I có đơn vị C/s, nên 1 A = 1 C/s.',
   },
   {
@@ -3356,7 +3572,7 @@ const lesson22ReviewQuestions = [
       { id: 'd', text: 'Phân tử khí' },
     ],
     answer: 'c',
-    review: 'Xem lại Nhiệm vụ 5: dòng điện trong kim loại.',
+    review: 'Xem lại Nhiệm vụ 4: dòng điện trong kim loại.',
     explain: 'Trong kim loại, hạt tải điện là các electron tự do.',
   },
   {
@@ -3370,7 +3586,7 @@ const lesson22ReviewQuestions = [
       { id: 'd', text: 'Ngược chiều' },
     ],
     answer: 'd',
-    review: 'Xem lại Nhiệm vụ 5: electron mang điện âm nên chuyển động ngược chiều dòng điện quy ước.',
+    review: 'Xem lại Nhiệm vụ 4: electron mang điện âm nên chuyển động ngược chiều dòng điện quy ước.',
     explain: 'Electron tự do dịch chuyển ngược chiều dòng điện quy ước.',
   },
   {
@@ -3384,7 +3600,7 @@ const lesson22ReviewQuestions = [
       { id: 'd', text: '3 A' },
     ],
     answer: 'd',
-    review: 'Xem lại Nhiệm vụ 3: vận dụng I = Δq/Δt.',
+    review: 'Xem lại Nhiệm vụ 2: vận dụng I = Δq/Δt.',
     explain: 'I = Δq/Δt = 15/5 = 3 A.',
   },
   {
@@ -3398,7 +3614,7 @@ const lesson22ReviewQuestions = [
       { id: 'd', text: 'Không thể thay đổi' },
     ],
     answer: 'c',
-    review: 'Xem lại Nhiệm vụ 6: liên hệ định tính giữa số hạt, tốc độ dịch chuyển và cường độ dòng điện.',
+    review: 'Xem lại Nhiệm vụ 5: liên hệ định tính giữa số hạt, tốc độ dịch chuyển và cường độ dòng điện.',
     explain: 'Nhiều hạt mang điện đi qua hơn trong cùng thời gian hoặc hạt dịch chuyển nhanh hơn thì cường độ dòng điện tăng.',
   },
 ]
@@ -4124,7 +4340,10 @@ function Lesson23FinalChallengeGame({ onComplete }) {
   )
 }
 
-function Lesson23OhmLesson() {
+function Lesson23OhmLesson({ activePart = 'before' }) {
+  const isBeforePart = activePart === 'before'
+  const isWorksheetPart = activePart === 'during'
+  const isAfterPart = activePart === 'after'
   const discoveryRef = useRef(null)
   const voltageControlRef = useRef(null)
   const quizRef = useRef(null)
@@ -4177,9 +4396,9 @@ function Lesson23OhmLesson() {
   const [reflectionText, setReflectionText] = useState('')
   const [overallUnderstanding, setOverallUnderstanding] = useState('')
   const [lesson23UnlockedParts, setLesson23UnlockedParts] = useState({
-    worksheet: PREVIEW_ALL_LESSON_PARTS,
-    quiz: PREVIEW_ALL_LESSON_PARTS,
-    selfCheck: PREVIEW_ALL_LESSON_PARTS,
+    worksheet: PREVIEW_ALL_LESSON_PARTS || isWorksheetPart || isAfterPart,
+    quiz: PREVIEW_ALL_LESSON_PARTS || isAfterPart,
+    selfCheck: PREVIEW_ALL_LESSON_PARTS || isAfterPart,
   })
 
   const hasElectronFlowInsight = electronFlowChoice === 'decrease'
@@ -4424,7 +4643,7 @@ function Lesson23OhmLesson() {
 
   return (
     <section className="lesson23-lab lesson23-framework">
-      <article className="lesson23-video-card lesson23-framework-section">
+      {isBeforePart && <article className="lesson23-video-card lesson23-framework-section">
         <div className="lesson23-video-title">
           <span>Bài 23</span>
           <h1>Điện trở. Định luật Ôm</h1>
@@ -4449,9 +4668,9 @@ function Lesson23OhmLesson() {
             Tiếp tục Phiếu học tập
           </button>
         )}
-      </article>
+      </article>}
 
-      {lesson23UnlockedParts.worksheet && (
+      {lesson23UnlockedParts.worksheet && isWorksheetPart && (
       <section className="lesson23-learning-part lesson23-framework-section" ref={discoveryRef}>
         <div className="journey-heading">
           <span>Phần 2</span>
@@ -5258,7 +5477,7 @@ function Lesson23OhmLesson() {
       </section>
       )}
 
-      {lesson23UnlockedParts.quiz && (
+      {lesson23UnlockedParts.quiz && isAfterPart && (
         <section className="lesson23-learning-part lesson23-framework-section" ref={quizRef}>
           <div className="journey-heading">
             <span>Phần 3</span>
@@ -5269,7 +5488,7 @@ function Lesson23OhmLesson() {
         </section>
       )}
 
-      {lesson23UnlockedParts.selfCheck && (
+      {lesson23UnlockedParts.selfCheck && isAfterPart && (
         <section className="lesson23-learning-part lesson23-framework-section" ref={selfCheckRef}>
           <UnifiedSelfAssessment
             checks={competencyRatings}
@@ -7093,17 +7312,73 @@ function Lesson24WorksheetV2() {
   )
 }
 
-function Lesson24StructuredLessonV2() {
+function Lesson24StructuredLessonV2({ activePart = 'before' }) {
+  const isBeforePart = activePart === 'before'
+  const isWorksheetPart = activePart === 'during'
+  const isAfterPart = activePart === 'after'
   const knowledgeRef = useRef(null)
   const storyVideoRef = useRef(null)
+  const storyVideoShellRef = useRef(null)
   const [videoFinished, setVideoFinished] = useState(false)
   const [videoCheckpointOpen, setVideoCheckpointOpen] = useState(false)
   const [videoCheckpointResolved, setVideoCheckpointResolved] = useState(false)
   const [videoCheckpointFeedback, setVideoCheckpointFeedback] = useState('')
-  const [knowledgeUnlocked, setKnowledgeUnlocked] = useState(PREVIEW_ALL_LESSON_PARTS)
-  const [journeyStarted, setJourneyStarted] = useState(PREVIEW_ALL_LESSON_PARTS)
+  const [isStoryVideoExpanded, setIsStoryVideoExpanded] = useState(false)
+  const [knowledgeUnlocked, setKnowledgeUnlocked] = useState(PREVIEW_ALL_LESSON_PARTS || isWorksheetPart || isAfterPart)
+  const [journeyStarted, setJourneyStarted] = useState(PREVIEW_ALL_LESSON_PARTS || isWorksheetPart || isAfterPart)
+
+  const shouldUseLesson24MobileVideoMode = () => window.matchMedia?.('(max-width: 640px)').matches
+
+  const exitLesson24NativeFullscreen = () => {
+    const video = storyVideoRef.current
+
+    if (video?.webkitDisplayingFullscreen && typeof video.webkitExitFullscreen === 'function') {
+      video.webkitExitFullscreen()
+    }
+  }
+
+  const collapseLesson24VideoMode = async () => {
+    if (!shouldUseLesson24MobileVideoMode()) {
+      return
+    }
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (fullscreenElement === storyVideoShellRef.current) {
+      const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen
+      await exitFullscreen?.call(document)
+    }
+
+    setIsStoryVideoExpanded(false)
+  }
+
+  const toggleLesson24VideoFullscreen = async () => {
+    const shell = storyVideoShellRef.current
+
+    if (!shell) {
+      return
+    }
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (fullscreenElement === shell) {
+      await collapseLesson24VideoMode()
+      return
+    }
+
+    setIsStoryVideoExpanded(true)
+
+    const requestFullscreen = shell.requestFullscreen || shell.webkitRequestFullscreen
+
+    try {
+      await requestFullscreen?.call(shell)
+    } catch {
+      setIsStoryVideoExpanded(true)
+    }
+  }
 
   const finishVideo = () => {
+    collapseLesson24VideoMode()
     setVideoFinished(true)
     setKnowledgeUnlocked(true)
     setJourneyStarted(true)
@@ -7112,6 +7387,10 @@ function Lesson24StructuredLessonV2() {
   const handleStoryVideoTime = (event) => {
     if (videoCheckpointResolved || videoCheckpointOpen || event.currentTarget.currentTime < 10.25) return
     event.currentTarget.pause()
+    if (shouldUseLesson24MobileVideoMode()) {
+      exitLesson24NativeFullscreen()
+      setIsStoryVideoExpanded(false)
+    }
     setVideoCheckpointOpen(true)
   }
 
@@ -7125,9 +7404,28 @@ function Lesson24StructuredLessonV2() {
     setVideoCheckpointFeedback('')
     window.setTimeout(() => {
       setVideoCheckpointOpen(false)
+      collapseLesson24VideoMode()
       storyVideoRef.current?.play().catch(() => {})
     }, 360)
   }
+
+  useEffect(() => {
+    const syncLesson24FullscreenState = () => {
+      const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+      if (!fullscreenElement || fullscreenElement !== storyVideoShellRef.current) {
+        setIsStoryVideoExpanded(false)
+      }
+    }
+
+    document.addEventListener('fullscreenchange', syncLesson24FullscreenState)
+    document.addEventListener('webkitfullscreenchange', syncLesson24FullscreenState)
+
+    return () => {
+      document.removeEventListener('fullscreenchange', syncLesson24FullscreenState)
+      document.removeEventListener('webkitfullscreenchange', syncLesson24FullscreenState)
+    }
+  }, [])
 
   return (
     <section className="restored-lesson restored24">
@@ -7143,7 +7441,7 @@ function Lesson24StructuredLessonV2() {
         </div>
       </div>
 
-      <article className="restored-card">
+      {isBeforePart && <article className="restored-card">
         <Lesson24SectionMeta
           title="Phần 1. Video khởi động"
           objective="Kích hoạt kiến thức nền và tạo tình huống học tập."
@@ -7158,7 +7456,7 @@ function Lesson24StructuredLessonV2() {
           <h2>Chiếc đèn pin trong bóng tối</h2>
           <p>Hãy theo dõi tình huống. Khi video kết thúc, phiếu học tập sẽ mở ra.</p>
         </div>
-        <div className="lesson24-story-video">
+        <div className={isStoryVideoExpanded ? 'lesson24-story-video lesson24-story-video--mobile-expanded' : 'lesson24-story-video'} ref={storyVideoShellRef}>
           <video
             className={videoCheckpointOpen ? 'lesson24-story-video__media lesson24-story-video__media--paused' : 'lesson24-story-video__media'}
             controls
@@ -7172,6 +7470,13 @@ function Lesson24StructuredLessonV2() {
             <source src="/videos/copy_635AC7C0-C022-4240-8365-3FC398A643E4.mp4" type="video/mp4" />
             Trình duyệt của bạn không hỗ trợ phát video HTML5.
           </video>
+          <button
+            className="video-mobile-fullscreen-btn lesson24-video-fullscreen-btn"
+            type="button"
+            onClick={toggleLesson24VideoFullscreen}
+          >
+            {isStoryVideoExpanded ? 'Thu nhỏ video' : 'Toàn màn hình tương tác'}
+          </button>
           {videoCheckpointOpen && (
             <div className={videoCheckpointResolved ? 'lesson24-video-choice lesson24-video-choice--leaving' : 'lesson24-video-choice'}>
               <div className="lesson24-video-choice__card">
@@ -7193,9 +7498,9 @@ function Lesson24StructuredLessonV2() {
             </div>
           )}
         </div>
-      </article>
+      </article>}
 
-      {knowledgeUnlocked && (
+      {knowledgeUnlocked && isWorksheetPart && (
         <article className="source-quest source-quest--lite source-journey24" ref={knowledgeRef}>
           <div className="source-quest-intro source-quest-intro--lite source-start-panel">
             <span>Bài 24</span>
@@ -7206,6 +7511,7 @@ function Lesson24StructuredLessonV2() {
           {journeyStarted && <Lesson24WorksheetV2 />}
         </article>
       )}
+      {isAfterPart && <Lesson24ReviewGame showSelfAssessment />}
     </section>
   )
 }
@@ -8112,6 +8418,7 @@ const lesson25VideoPrompts = [
 ]
 
 function Lesson25InteractiveVideo({ onComplete, src }) {
+  const containerRef = useRef(null)
   const videoRef = useRef(null)
   const [activePrompt, setActivePrompt] = useState(null)
   const [answeredPrompts, setAnsweredPrompts] = useState({})
@@ -8120,9 +8427,109 @@ function Lesson25InteractiveVideo({ onComplete, src }) {
   const [groupAnswers, setGroupAnswers] = useState({})
   const [selectedDragItem, setSelectedDragItem] = useState('')
   const [result, setResult] = useState(null)
+  const [isMobileVideoExpanded, setIsMobileVideoExpanded] = useState(false)
+
+  const shouldUseMobileVideoMode = () => window.matchMedia?.('(max-width: 640px)').matches
+
+  const exitNativeVideoFullscreen = () => {
+    const video = videoRef.current
+
+    if (video?.webkitDisplayingFullscreen && typeof video.webkitExitFullscreen === 'function') {
+      video.webkitExitFullscreen()
+    }
+  }
+
+  const collapseMobileVideoMode = async () => {
+    if (!shouldUseMobileVideoMode()) {
+      return
+    }
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (fullscreenElement === containerRef.current) {
+      const exitFullscreen = document.exitFullscreen || document.webkitExitFullscreen
+      await exitFullscreen?.call(document)
+    }
+
+    setIsMobileVideoExpanded(false)
+  }
+
+  const toggleMobileVideoFullscreen = async () => {
+    const container = containerRef.current
+
+    if (!container) {
+      return
+    }
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+    if (fullscreenElement === container) {
+      await collapseMobileVideoMode()
+      return
+    }
+
+    setIsMobileVideoExpanded(true)
+
+    const requestFullscreen = container.requestFullscreen || container.webkitRequestFullscreen
+
+    try {
+      await requestFullscreen?.call(container)
+    } catch {
+      setIsMobileVideoExpanded(true)
+    }
+  }
+
+  useEffect(() => {
+    const syncFullscreenState = () => {
+      const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement
+
+      if (!fullscreenElement || fullscreenElement !== containerRef.current) {
+        setIsMobileVideoExpanded(false)
+      }
+    }
+
+    document.addEventListener('fullscreenchange', syncFullscreenState)
+    document.addEventListener('webkitfullscreenchange', syncFullscreenState)
+
+    return () => {
+      document.removeEventListener('fullscreenchange', syncFullscreenState)
+      document.removeEventListener('webkitfullscreenchange', syncFullscreenState)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isMobileVideoExpanded || !shouldUseMobileVideoMode()) {
+      return undefined
+    }
+
+    const scrollY = window.scrollY
+    const originalStyles = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+    }
+
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
+
+    return () => {
+      document.body.style.overflow = originalStyles.overflow
+      document.body.style.position = originalStyles.position
+      document.body.style.top = originalStyles.top
+      document.body.style.width = originalStyles.width
+      window.scrollTo(0, scrollY)
+    }
+  }, [isMobileVideoExpanded])
 
   function openPrompt(prompt) {
     videoRef.current?.pause()
+    if (shouldUseMobileVideoMode()) {
+      exitNativeVideoFullscreen()
+      setIsMobileVideoExpanded(false)
+    }
     setActivePrompt(prompt)
     setMultiAnswers({})
     setSingleAnswer('')
@@ -8196,6 +8603,7 @@ function Lesson25InteractiveVideo({ onComplete, src }) {
     setAnsweredPrompts((current) => ({ ...current, [activePrompt.id]: true }))
     setActivePrompt(null)
     setResult(null)
+    collapseMobileVideoMode()
     window.setTimeout(() => videoRef.current?.play(), 80)
   }
 
@@ -8203,12 +8611,31 @@ function Lesson25InteractiveVideo({ onComplete, src }) {
     ? activePrompt.items.filter((item) => !Object.values(groupAnswers).flat().includes(item))
     : []
 
+  const handleVideoEnded = () => {
+    collapseMobileVideoMode()
+    onComplete?.()
+  }
+
+  const videoClassName = [
+    'lesson25-interactive-video',
+    activePrompt ? 'is-paused' : '',
+    isMobileVideoExpanded ? 'lesson25-interactive-video--mobile-expanded' : '',
+  ].filter(Boolean).join(' ')
+
   return (
-    <div className={activePrompt ? 'lesson25-interactive-video is-paused' : 'lesson25-interactive-video'}>
-      <video controls playsInline preload="metadata" ref={videoRef} onEnded={onComplete} onLoadedMetadata={syncVideoPrompt} onPause={syncVideoPrompt} onPlay={syncVideoPrompt} onSeeked={syncVideoPrompt} onTimeUpdate={syncVideoPrompt}>
+    <div className={videoClassName} ref={containerRef}>
+      <video controls playsInline preload="metadata" ref={videoRef} onEnded={handleVideoEnded} onLoadedMetadata={syncVideoPrompt} onPause={syncVideoPrompt} onPlay={syncVideoPrompt} onSeeked={syncVideoPrompt} onTimeUpdate={syncVideoPrompt}>
         <source src={src} type="video/mp4" />
         Trình duyệt của bạn không hỗ trợ phát video HTML5.
       </video>
+
+      <button
+        className="video-mobile-fullscreen-btn lesson25-video-fullscreen-btn"
+        type="button"
+        onClick={toggleMobileVideoFullscreen}
+      >
+        {isMobileVideoExpanded ? 'Thu nhỏ video' : 'Toàn màn hình tương tác'}
+      </button>
 
       {activePrompt && (
         <div className="lesson25-video-overlay">
@@ -8294,8 +8721,11 @@ function Lesson25InteractiveVideo({ onComplete, src }) {
   )
 }
 
-function Lesson25ElectricJourney() {
-  const [worksheetOpen, setWorksheetOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
+function Lesson25ElectricJourney({ activePart = 'before' }) {
+  const isBeforePart = activePart === 'before'
+  const isWorksheetPart = activePart === 'during'
+  const isAfterPart = activePart === 'after'
+  const [worksheetOpen, setWorksheetOpen] = useState(PREVIEW_ALL_LESSON_PARTS || isWorksheetPart || isAfterPart)
   const [maxStep, setMaxStep] = useState(0)
   const [answers, setAnswers] = useState({ meanings: {}, units: {}, checks: {} })
   const [feedbacks, setFeedbacks] = useState({})
@@ -8305,7 +8735,7 @@ function Lesson25ElectricJourney() {
   const [quizResults, setQuizResults] = useState({})
   const [quizSubmitted, setQuizSubmitted] = useState(false)
   const [selectedQuizMatch, setSelectedQuizMatch] = useState('')
-  const [selfOpen, setSelfOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
+  const [selfOpen, setSelfOpen] = useState(PREVIEW_ALL_LESSON_PARTS || isAfterPart)
 
   const normalizeFormula = (value) => normalizeText(String(value || '')).replace(/[∆Δδ]/g, 'delta').replace(/[÷:]/g, '/').replace(/\s/g, '').replace(/[.×*]/g, '')
   const numberFrom = (value) => Number(String(value || '').replace(',', '.').match(/-?\d+(\.\d+)?/)?.[0])
@@ -8505,7 +8935,7 @@ function Lesson25ElectricJourney() {
         <p>Cấu trúc tự học gồm 4 phần: Video khởi động, Phiếu học tập, Quiz và Tự đánh giá.</p>
       </div>
 
-      <article className="restored-card lesson25-real-video-card">
+      {isBeforePart && <article className="restored-card lesson25-real-video-card">
         <div className="journey-heading">
           <span>Bài 25</span>
           <h2>Phần 1. Video khởi động</h2>
@@ -8526,9 +8956,9 @@ function Lesson25ElectricJourney() {
         </div>
         <Lesson25InteractiveVideo onComplete={() => setWorksheetOpen(true)} src="/videos/bai25.mp4" />
         <button className="primary-soft-btn lesson25-start-btn" type="button" onClick={() => setWorksheetOpen(true)}>Chuyển sang phiếu học tập</button>
-      </article>
+      </article>}
 
-      {worksheetOpen && (
+      {worksheetOpen && isWorksheetPart && (
         <article className="restored-card lesson25-discovery-sheet lesson22-reveal-block">
           <div className="lesson25-sheet-head">
             <div>
@@ -8769,7 +9199,7 @@ function Lesson25ElectricJourney() {
         </article>
       )}
 
-      {(PREVIEW_ALL_LESSON_PARTS || maxStep >= 8) && (
+      {isAfterPart && (
         <article className="review-quest-card lesson25-review">
           <div className="review-quest-header"><div><span className="review-quest-kicker"><b>⚡</b> Bài 25</span><h2>Phần 3. Quiz</h2></div></div>
           <div className="lesson22-section-meta lesson25-section-meta lesson25-section-meta--quiz" aria-label="Thông tin phần quiz">
@@ -9003,7 +9433,7 @@ function Lesson25ElectricJourney() {
         </article>
       )}
 
-      {selfOpen && (
+      {selfOpen && isAfterPart && (
         <UnifiedSelfAssessment
           checks={answers.selfChecks || {}}
           className="lesson25-self-review"
@@ -9709,8 +10139,11 @@ function Lesson26FinalReview({ onComplete, showSelfAssessment = true }) {
   )
 }
 
-function Lesson26BatteryLab() {
-  const [started, setStarted] = useState(false)
+function Lesson26BatteryLab({ activePart = 'before' }) {
+  const isBeforePart = activePart === 'before'
+  const isWorksheetPart = activePart === 'during'
+  const isAfterPart = activePart === 'after'
+  const [started, setStarted] = useState(PREVIEW_ALL_LESSON_PARTS || isWorksheetPart || isAfterPart)
   const [quantityAnswer, setQuantityAnswer] = useState('')
   const [circuitChoice, setCircuitChoice] = useState('')
   const [guideMode, setGuideMode] = useState('hint')
@@ -9725,8 +10158,8 @@ function Lesson26BatteryLab() {
   const [relationAnswer, setRelationAnswer] = useState('')
   const [extendedLine, setExtendedLine] = useState(false)
   const [compareAnswer, setCompareAnswer] = useState('')
-  const [finished, setFinished] = useState(false)
-  const [selfOpen, setSelfOpen] = useState(PREVIEW_ALL_LESSON_PARTS)
+  const [finished, setFinished] = useState(PREVIEW_ALL_LESSON_PARTS || isAfterPart)
+  const [selfOpen, setSelfOpen] = useState(PREVIEW_ALL_LESSON_PARTS || isAfterPart)
   const toolsRef = useRef(null)
   const quantityPromptRef = useRef(null)
   const circuitPromptRef = useRef(null)
@@ -9976,7 +10409,7 @@ function Lesson26BatteryLab() {
     <section className={finished ? 'lesson26-lab lesson26-lab--finished' : 'lesson26-lab'}>
       <div className="lesson26-bg" aria-hidden="true"><i /><i /><i /><i /><i /></div>
 
-      {(!started || PREVIEW_ALL_LESSON_PARTS) && (
+      {isBeforePart && (
         <InteractiveIntroBai26
           onStartWorksheet={() => {
             setStarted(true)
@@ -9985,7 +10418,7 @@ function Lesson26BatteryLab() {
         />
       )}
 
-      {(started || PREVIEW_ALL_LESSON_PARTS) && (
+      {(started || PREVIEW_ALL_LESSON_PARTS) && isWorksheetPart && (
         <>
         <article className="lesson26-worksheet-unified">
           <Lesson26SectionHeader
@@ -10387,11 +10820,9 @@ function Lesson26BatteryLab() {
             </>
           )}
         </article>
-        {(PREVIEW_ALL_LESSON_PARTS || finished) && (
-          <Lesson26FinalReview onComplete={() => setSelfOpen(true)} showSelfAssessment={selfOpen} />
-        )}
         </>
       )}
+      {isAfterPart && <Lesson26FinalReview onComplete={() => setSelfOpen(true)} showSelfAssessment={selfOpen} />}
     </section>
   )
 }
@@ -11449,10 +11880,61 @@ function SelfStudyMenuContent({ content, studyData, onOpenLesson, onStartExercis
   return null
 }
 
+const lessonActivityCards = [
+  {
+    id: 'before',
+    title: 'Trước khi học',
+    subtitle: 'Video khởi động',
+    icon: '▶',
+    description: 'Xem tình huống mở đầu và trả lời câu hỏi gợi mở.',
+  },
+  {
+    id: 'during',
+    title: 'Trong khi học',
+    subtitle: 'Phiếu học tập',
+    icon: '✎',
+    description: 'Thực hiện nhiệm vụ khám phá, luyện công thức và rút ra kết luận.',
+  },
+  {
+    id: 'after',
+    title: 'Sau khi học',
+    subtitle: 'Quiz và tự đánh giá',
+    icon: '✓',
+    description: 'Làm quiz củng cố rồi tự kiểm tra mức độ hiểu bài.',
+  },
+]
+
+function LessonActivityGate({ content, onSelect }) {
+  return (
+    <div className="lesson-activity-gate">
+      <header className="lesson-activity-hero">
+        <span>{content.title?.match(/Bài \d+/)?.[0] || 'Bài học'}</span>
+        <h2>{content.title}</h2>
+        <p>Chọn hoạt động muốn học. Nội dung chi tiết chỉ hiện sau khi chọn một card.</p>
+      </header>
+      <div className="lesson-activity-grid" aria-label="Chọn hoạt động bài học">
+        {lessonActivityCards.map((card) => (
+          <button className={`lesson-activity-card lesson-activity-card--${card.id}`} key={card.id} type="button" onClick={() => onSelect(card.id)}>
+            <span className="lesson-activity-card__icon">{card.icon}</span>
+            <strong>{card.title}</strong>
+            <b>{card.subtitle}</b>
+            <small>{card.description}</small>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function FeatureDialog({ content, onClose, onAction, onOpenLesson, onStartExercise, onExportReport, studyData }) {
+  const [activeLessonPart, setActiveLessonPart] = useState(null)
   const isRestoredLesson = content.lessonId === 'cuong-do-dong-dien' || content.lessonId === 'dien-tro-dinh-luat-om' || content.lessonId === 'nguon-dien' || content.lessonId === 'nang-luong-cong-suat-dien' || content.lessonId === 'thuc-hanh-pin-dien-hoa'
   const isSelfStudyMenu = ['overview', 'lessons', 'games', 'review', 'profile', 'formulas'].includes(content.featureKey)
   const showsLegacyLessonExtras = !isSelfStudyMenu && !isRestoredLesson
+
+  useEffect(() => {
+    setActiveLessonPart(null)
+  }, [content.lessonId, content.featureKey])
 
   return (
     <section className={isRestoredLesson ? 'feature-dialog feature-dialog--lesson' : isSelfStudyMenu ? 'feature-dialog feature-dialog--self-menu' : 'feature-dialog'} aria-live="polite" aria-label={content.title}>
@@ -11496,11 +11978,19 @@ function FeatureDialog({ content, onClose, onAction, onOpenLesson, onStartExerci
           )}
         </>
       )}
-      {content.lessonId === 'cuong-do-dong-dien' && <Lesson22InteractiveWorksheet onAction={onAction} />}
-      {content.lessonId === 'dien-tro-dinh-luat-om' && <Lesson23OhmLesson onAction={onAction} />}
-      {content.lessonId === 'nguon-dien' && <Lesson24StructuredLessonV2 />}
-      {content.lessonId === 'nang-luong-cong-suat-dien' && <Lesson25ElectricJourney />}
-      {content.lessonId === 'thuc-hanh-pin-dien-hoa' && <Lesson26BatteryLab />}
+      {isRestoredLesson && !activeLessonPart && <LessonActivityGate content={content} onSelect={setActiveLessonPart} />}
+      {isRestoredLesson && activeLessonPart && (
+        <div className="lesson-activity-detail">
+          <button className="lesson-activity-back" type="button" onClick={() => setActiveLessonPart(null)}>
+            ← Quay lại
+          </button>
+          {content.lessonId === 'cuong-do-dong-dien' && <Lesson22InteractiveWorksheet activePart={activeLessonPart} onAction={onAction} />}
+          {content.lessonId === 'dien-tro-dinh-luat-om' && <Lesson23OhmLesson activePart={activeLessonPart} onAction={onAction} />}
+          {content.lessonId === 'nguon-dien' && <Lesson24StructuredLessonV2 activePart={activeLessonPart} />}
+          {content.lessonId === 'nang-luong-cong-suat-dien' && <Lesson25ElectricJourney activePart={activeLessonPart} />}
+          {content.lessonId === 'thuc-hanh-pin-dien-hoa' && <Lesson26BatteryLab activePart={activeLessonPart} />}
+        </div>
+      )}
       {showsLegacyLessonExtras && content.branches?.length > 0 && (
         <div className="lesson-branches">
           <strong>Nhánh học tập của bài</strong>
@@ -12081,6 +12571,23 @@ function App() {
       return
     }
 
+    if (normalizedAction.includes('bai tiep theo')) {
+      openLesson(nextTopic.id)
+      return
+    }
+
+    if (
+      normalizedAction.includes('tiep tuc hoc') ||
+      normalizedAction.includes('bat dau hoc') ||
+      normalizedAction.includes('on lai') ||
+      normalizedAction.includes('hoc ngay') ||
+      normalizedAction.includes('xem bai hoc') ||
+      normalizedAction.includes('mo bai tuong tac')
+    ) {
+      openLesson(activeFeature?.startsWith('lesson:') ? activeFeature.replace('lesson:', '') : selectedTopicId)
+      return
+    }
+
     if (normalizedAction.includes('ai') || normalizedAction.includes('hoi')) {
       setActiveFeature(null)
       document.querySelector('.ai-question-input')?.focus()
@@ -12495,7 +13002,7 @@ function App() {
                       <button
                         className="lesson-action"
                         type="button"
-                        onClick={() => (progress === 100 ? openLesson(topic.id) : startAiExercise(topic.id))}
+                        onClick={() => openLesson(topic.id)}
                       >
                         <Icon name={progress === 100 ? 'shield' : 'play'} />
                         <span>{getTopicAction(progress)}</span>
