@@ -21,7 +21,10 @@ import './App.css'
 const STORAGE_KEY = 'vat-ly-11-self-learning-ai'
 const ACCOUNTS_KEY = `${STORAGE_KEY}:accounts`
 const SESSION_KEY = `${STORAGE_KEY}:current-student`
+const REVIEW_STORAGE_KEY = `${STORAGE_KEY}:electric-repair-game`
 const PREVIEW_ALL_LESSON_PARTS = false
+const CHAPTER_REVIEW_PROGRESS_ID = 'chapter-review-self-assessment'
+const CHAPTER_REVIEW_TITLE = 'Hoạt động ôn tập và tự đánh giá cuối chương'
 
 const topics = [
   {
@@ -594,7 +597,7 @@ const featureContent = {
 const navItems = [
   { key: 'overview', label: 'Tổng quan chương', icon: 'home' },
   { key: 'lessons', label: 'Bài học', icon: 'document' },
-  { key: 'review', label: 'Hoạt động ôn tập và tự đánh giá cuối chương', icon: 'clipboard' },
+  { key: 'review', label: CHAPTER_REVIEW_TITLE, icon: 'clipboard' },
   { key: 'formulas', label: 'Sổ tay công thức', icon: 'notebook' },
 ]
 
@@ -839,7 +842,7 @@ const openLearningReportWindow = ({ studentName, exportedAt, details }) => {
     <table>
       <thead>
         <tr>
-          <th>Bài học</th>
+          <th>Nội dung học tập</th>
           <th>Trạng thái</th>
           <th>Tiến độ</th>
           <th>Điểm Quiz</th>
@@ -12331,8 +12334,6 @@ function Lesson26BatteryLab({ activePart = 'before' }) {
   )
 }
 
-const REVIEW_STORAGE_KEY = `${STORAGE_KEY}:electric-repair-game`
-
 const formulaHintsByTopic = [
   ['nhiệt lượng', 'Q = mcΔt'],
   ['công suất', 'P = A/t = UI'],
@@ -12704,6 +12705,46 @@ const getEngineerRank = (score, total) => {
   if (ratio >= 0.65) return 'Kỹ sư'
   if (ratio >= 0.4) return 'Kỹ thuật viên'
   return 'Người mới'
+}
+
+const getChapterReviewProgressItem = (gameState) => {
+  const bankIds = new Set(physicsBank.map((exercise) => exercise.id))
+  const totalMissions = bankIds.size
+  const completedCount = new Set(
+    (gameState?.completedMissionIds || []).filter((id) => bankIds.has(id)),
+  ).size
+  const failedCount = new Set(
+    (gameState?.failedMissionIds || []).filter((id) => bankIds.has(id)),
+  ).size
+  const progress = totalMissions ? Math.round((completedCount / totalMissions) * 100) : 0
+  const maxScore = totalMissions * 100
+  const storedScore = Number(gameState?.score || 0)
+  const score = Number.isFinite(storedScore) ? Math.min(maxScore, Math.max(0, storedScore)) : 0
+  const quizScore = maxScore ? ((score / maxScore) * 10).toFixed(1) : '0.0'
+  const rank = getEngineerRank(score, maxScore)
+  const hasStarted = completedCount > 0 || failedCount > 0 || score > 0
+
+  return {
+    id: CHAPTER_REVIEW_PROGRESS_ID,
+    title: CHAPTER_REVIEW_TITLE,
+    chartLabel: 'Ôn tập cuối chương',
+    status: gameState?.finished || progress >= 100
+      ? 'Đã hoàn thành'
+      : hasStarted
+      ? 'Đang ôn tập'
+      : 'Chưa bắt đầu',
+    progress,
+    quizScore,
+    selfAssessment: `${rank}. Hoàn thành ${completedCount}/${totalMissions} nhiệm vụ; ${failedCount} lần cần xem lại.`,
+  }
+}
+
+const readChapterReviewProgressItem = () => {
+  try {
+    return getChapterReviewProgressItem(JSON.parse(window.localStorage.getItem(REVIEW_STORAGE_KEY) || 'null'))
+  } catch {
+    return getChapterReviewProgressItem(null)
+  }
 }
 
 function SourceStationGraph({ visible }) {
@@ -13340,7 +13381,7 @@ function SelfStudyMenuContent({ content, studyData, onOpenLesson, onStartExercis
         <section className="profile-progress-chart" aria-label="Biểu đồ tiến bộ học tập">
           {studyData.progressDetails.map((item) => (
             <div key={item.id}>
-              <span>{item.title.replace('Bài ', '')}</span>
+              <span>{item.chartLabel || item.title.replace('Bài ', '')}</span>
               <i><b style={{ width: `${item.progress}%` }} /></i>
               <strong>{item.progress}%</strong>
             </div>
@@ -14168,10 +14209,25 @@ function App() {
   const completedLessons = topicProgressList.filter((progress) => progress >= 100).length
   const inProgressLessons = topicProgressList.filter((progress) => progress > 0 && progress < 100).length
   const notStartedLessons = topics.length - completedLessons - inProgressLessons
-  const averageLessonProgress = Math.round(
-    topicProgressList.reduce((total, progress) => total + progress, 0) / topics.length,
-  )
   const averageQuizScore = (topicProgressList.reduce((total, progress) => total + progress / 10, 0) / topics.length).toFixed(1)
+  const chapterReviewProgress = readChapterReviewProgressItem()
+  const progressDetails = [
+    ...topics.map((topic) => {
+      const progress = getTopicProgress(memory, topic.id)
+      return {
+        id: topic.id,
+        title: `Bài ${topic.number}: ${topic.shortLabel}`,
+        chartLabel: `Bài ${topic.number}`,
+        status: getTopicStatus(progress),
+        progress,
+        quizScore: (progress / 10).toFixed(1),
+      }
+    }),
+    chapterReviewProgress,
+  ]
+  const averageLearningProgress = Math.round(
+    progressDetails.reduce((total, item) => total + item.progress, 0) / progressDetails.length,
+  )
   const studyHours = Math.floor((memory.studyMinutes || 0) / 60)
   const studyMinutes = (memory.studyMinutes || 0) % 60
   const studyTimeLabel = studyHours > 0 ? `${studyHours} giờ ${studyMinutes} phút` : `${studyMinutes} phút`
@@ -14180,16 +14236,6 @@ function App() {
     topics.find((topic) => getTopicProgress(memory, topic.id) > 0 && getTopicProgress(memory, topic.id) < 100) ||
     topics.find((topic) => getTopicProgress(memory, topic.id) < 100) ||
     topics[0]
-  const progressDetails = topics.map((topic) => {
-    const progress = getTopicProgress(memory, topic.id)
-    return {
-      id: topic.id,
-      title: `Bài ${topic.number}: ${topic.shortLabel}`,
-      status: getTopicStatus(progress),
-      progress,
-      quizScore: (progress / 10).toFixed(1),
-    }
-  })
   const earnedBadges = [
     {
       key: 'explore',
@@ -14217,11 +14263,11 @@ function App() {
     },
   ]
   const autoAssessment =
-    averageLessonProgress >= 100
-      ? `Bạn đã hoàn thành toàn bộ chương học và đạt điểm quiz trung bình ${averageQuizScore}/10. Hãy ôn lại các bài có điểm thấp để giữ phong độ.`
-      : `Bạn đã hoàn thành ${averageLessonProgress}% chương học và đạt điểm quiz trung bình ${averageQuizScore}/10. Hãy tiếp tục hoàn thành bài còn lại để mở khóa huy hiệu cao nhất.`
+    averageLearningProgress >= 100
+      ? `Bạn đã hoàn thành toàn bộ chương học, bao gồm hoạt động ôn tập và tự đánh giá cuối chương. Điểm quiz trung bình các bài là ${averageQuizScore}/10.`
+      : `Bạn đã hoàn thành ${averageLearningProgress}% tiến trình học tập, bao gồm cả hoạt động ôn tập cuối chương. Điểm quiz trung bình các bài là ${averageQuizScore}/10.`
   const studyData = {
-    averageLessonProgress,
+    averageLessonProgress: averageLearningProgress,
     completedLessons,
     inProgressLessons,
     notStartedLessons,
@@ -14253,7 +14299,7 @@ function App() {
           : activeFeature === 'progress'
             ? {
                 ...activeContent,
-                body: `Hoàn thành ${averageLessonProgress}% chương. Đã hoàn thành ${completedLessons}/${topics.length} bài, đang học ${inProgressLessons} bài, chưa học ${notStartedLessons} bài. Điểm Quiz trung bình: ${averageQuizScore}/10.`,
+                body: `Hoàn thành ${averageLearningProgress}% tiến trình học tập. Đã hoàn thành ${completedLessons}/${topics.length} bài, đang học ${inProgressLessons} bài, chưa học ${notStartedLessons} bài. ${CHAPTER_REVIEW_TITLE}: ${chapterReviewProgress.progress}% (${chapterReviewProgress.quizScore}/10). Điểm Quiz trung bình các bài: ${averageQuizScore}/10.`,
                 details: progressDetails,
               }
           : activeContent
@@ -14533,17 +14579,18 @@ function App() {
             <section className="panel progress-panel">
               <h2>TIẾN TRÌNH HỌC TẬP</h2>
               <div className="progress-body">
-                <div className="progress-ring" style={{ '--progress': `${averageLessonProgress}%` }}>
-                  <span>{`${averageLessonProgress}%`}</span>
+                <div className="progress-ring" style={{ '--progress': `${averageLearningProgress}%` }}>
+                  <span>{`${averageLearningProgress}%`}</span>
                   <small>Hoàn thành</small>
                 </div>
                 <div className="progress-legend">
                   <span><i className="dot dot-green" />Đã hoàn thành: {completedLessons}/{topics.length} bài</span>
                   <span><i className="dot dot-orange" />Đang học: {inProgressLessons} bài</span>
                   <span><i className="dot dot-purple" />Chưa học: {notStartedLessons} bài</span>
+                  <span><i className="dot dot-green" />Ôn tập cuối chương: {chapterReviewProgress.progress}%</span>
                 </div>
               </div>
-              <p className="quiz-average">Điểm Quiz trung bình: <strong>{averageQuizScore}/10</strong></p>
+              <p className="quiz-average">Điểm Quiz trung bình các bài: <strong>{averageQuizScore}/10</strong></p>
               <button className="primary-button" type="button" onClick={() => openFeature('progress')}>
                 <Icon name="bar" />
                 Xem chi tiết tiến trình
