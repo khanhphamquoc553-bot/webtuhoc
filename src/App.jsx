@@ -246,6 +246,7 @@ const lessonBlueprints = [
 
 const formulaCards = [
   { icon: 'bolt', formula: 'I = Δq/Δt', meaning: 'Cường độ dòng điện bằng điện lượng qua tiết diện trong một đơn vị thời gian.', units: 'I: A, q: C, t: s', example: '10 C đi qua trong 5 s thì I = 2 A.' },
+  { icon: 'bolt', formula: 'I = Ne/t', meaning: 'Khi biết số electron đi qua tiết diện dây dẫn trong thời gian t, điện lượng được xác định bởi q = Ne nên: I = Ne/t.', units: 'N: số electron, e: 1,6 × 10⁻¹⁹ C, t: s, I: A', example: '1,25 × 10¹⁹ electron đi qua trong 1 s thì: I = (1,25 × 10¹⁹ × 1,6 × 10⁻¹⁹) / 1 = 2 A.' },
   { icon: 'bolt', formula: 'I = nSev', meaning: 'Dòng điện trong kim loại phụ thuộc mật độ electron, tiết diện và vận tốc trôi.', units: 'n: m⁻³, S: m², e: C, v: m/s', example: 'Dây to hơn hoặc electron trôi nhanh hơn thì I lớn hơn.' },
   { icon: 'ohm', formula: 'R = U/I', meaning: 'Điện trở đo mức cản trở dòng điện của vật dẫn.', units: 'R: Ω, U: V, I: A', example: 'U = 12 V, I = 3 A thì R = 4 Ω.' },
   { icon: 'ohm', formula: 'I = U/R', meaning: 'Định luật Ôm cho đoạn mạch chỉ có điện trở.', units: 'I: A, U: V, R: Ω', example: 'U = 9 V, R = 3 Ω thì I = 3 A.' },
@@ -253,6 +254,7 @@ const formulaCards = [
   { icon: 'battery', formula: 'ξ = A/q', meaning: 'Suất điện động là công của nguồn trên một đơn vị điện tích.', units: 'ξ: V, A: J, q: C', example: 'Nguồn làm công 18 J cho 3 C thì ξ = 6 V.' },
   { icon: 'battery', formula: 'I = ξ/(R+r)', meaning: 'Dòng điện toàn mạch phụ thuộc điện trở ngoài và điện trở trong.', units: 'ξ: V, R,r: Ω, I: A', example: 'ξ = 12 V, R+r = 6 Ω thì I = 2 A.' },
   { icon: 'battery', formula: 'U = ξ − Ir', meaning: 'Hiệu điện thế mạch ngoài giảm khi dòng điện và điện trở trong tăng.', units: 'U,ξ: V, I: A, r: Ω', example: 'ξ = 10 V, I = 2 A, r = 1 Ω thì U = 8 V.' },
+  { icon: 'bulb', formula: 'Q = mcΔt', meaning: 'Nhiệt lượng cần để làm tăng nhiệt độ của một vật. Giải thích: Q là nhiệt lượng vật thu vào; m là khối lượng của vật; c là nhiệt dung riêng của chất làm vật; Δt là độ tăng nhiệt độ. Ghi nhớ: Khối lượng càng lớn hoặc nhiệt độ tăng càng nhiều thì nhiệt lượng cần cung cấp càng lớn.', units: 'Q: J, m: kg, c: J/(kg.K), Δt: °C hoặc K', example: 'Đun nóng 1 kg nước từ 20°C lên 30°C: Q = 1 × 4200 × (30 − 20) = 42000 J.' },
   { icon: 'bulb', formula: 'W = UIt', meaning: 'Điện năng tiêu thụ phụ thuộc hiệu điện thế, dòng điện và thời gian dùng.', units: 'W: J, U: V, I: A, t: s', example: 'Dùng càng lâu thì điện năng càng lớn.' },
   { icon: 'bulb', formula: 'Q = RI²t', meaning: 'Nhiệt lượng tỏa ra trên điện trở theo định luật Jun-Len-xơ.', units: 'Q: J, R: Ω, I: A, t: s', example: 'Dòng điện tăng gấp đôi thì Q tăng 4 lần.' },
   { icon: 'bulb', formula: 'P = UI', meaning: 'Công suất điện cho biết thiết bị tiêu thụ điện nhanh hay chậm.', units: 'P: W, U: V, I: A', example: '220 V và 0,5 A thì P = 110 W.' },
@@ -549,7 +551,7 @@ const featureContent = {
   },
   formulas: {
     title: 'Sổ tay công thức',
-    body: 'Công thức trọng tâm theo Chương IV: I = Δq / Δt, q = I.t, I = Snve, R = U / I, I = U / R, R = ρ.l / S, ξ = A / q, I = ξ / (R + r), U = ξ - Ir, W = UIt, P = W / t = UI, Q = I²Rt, 1 kW.h = 3,6.10^6 J.',
+    body: 'Công thức trọng tâm theo Chương IV: I = Δq / Δt, I = Ne / t, I = Snve, R = U / I, I = U / R, R = ρ.l / S, ξ = A / q, I = ξ / (R + r), U = ξ - Ir, Q = mcΔt, W = UIt, P = W / t = UI, Q = I²Rt, 1 kW.h = 3,6.10^6 J.',
     actions: ['Tạo ví dụ', 'Hỏi AI'],
   },
   guide: {
