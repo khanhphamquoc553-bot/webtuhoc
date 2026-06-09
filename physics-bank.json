@@ -1,7 +1,7 @@
 [
   {
     "id": "IV.1",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Cường độ dòng điện và số electron dịch chuyển",
     "difficulty": 1,
     "question": "Số electron dịch chuyển qua tiết diện thẳng của dây trong thời gian 2 s là 6,25.10^18. Khi đó dòng điện qua dây dẫn có cường độ là\nA. 1 A\nB. 2 A\nC. 1,25 A\nD. 0,5 A",
@@ -19,7 +19,7 @@
   },
   {
     "id": "IV.2",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Điện lượng và cường độ dòng điện",
     "difficulty": 2,
     "question": "Số electron đi qua tiết diện thẳng của một dây dẫn kim loại trong 1 s là 1,25.10^19. Biết rằng dòng điện không đổi, điện lượng đi qua tiết diện đó trong 15 giây là\nA. 10 C\nB. 20 C\nC. 30 C\nD. 40 C",
@@ -35,7 +35,7 @@
   },
   {
     "id": "IV.3",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Điện lượng và cường độ dòng điện",
     "difficulty": 1,
     "question": "Cường độ dòng điện chạy qua tiết diện thẳng của dây dẫn là 1,5 A. Trong khoảng thời gian 3 s thì điện lượng chuyển qua tiết diện dây là\nA. 0,5 C\nB. 2,0 C\nC. 4,5 C\nD. 5,4 C",
@@ -51,7 +51,7 @@
   },
   {
     "id": "IV.4",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Điện lượng trong dòng điện không đổi",
     "difficulty": 2,
     "question": "Cho một dòng điện không đổi chạy qua một dây dẫn, trong 10 s, điện lượng chuyển qua tiết diện thẳng của dây dẫn là 2 C. Sau 60 s điện lượng chuyển qua tiết diện thẳng đó là\nA. 6 C\nB. 12 C\nC. 60 C\nD. 20 C",
@@ -67,7 +67,7 @@
   },
   {
     "id": "IV.5",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Định luật Ohm cho điện trở",
     "difficulty": 1,
     "question": "Cường độ dòng điện chạy qua điện trở R = 5 Ω là 0,5 A. Hiệu điện thế giữa hai đầu điện trở là\nA. 2,5 V\nB. 25 V\nC. 0,5 V\nD. 10 V",
@@ -83,7 +83,7 @@
   },
   {
     "id": "IV.6",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Định luật Ohm và sự phụ thuộc I vào U",
     "difficulty": 2,
     "question": "Đặt một hiệu điện thế U = 12 V vào hai đầu một điện trở, cường độ dòng điện chạy qua điện trở là 2 A. Nếu tăng hiệu điện thế lên hai lần thì cường độ dòng điện có giá trị\nA. 4 A\nB. 2 A\nC. 12 A\nD. 0,24 A",
@@ -101,7 +101,7 @@
   },
   {
     "id": "IV.7",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Định luật Ohm và thay đổi điện trở",
     "difficulty": 3,
     "question": "Đặt vào hai đầu một điện trở R một hiệu điện thế U = 12 V, cường độ dòng điện chạy qua điện trở là 1,5 A. Nếu giữ nguyên hiệu điện thế nhưng muốn cường độ dòng điện chạy qua điện trở giảm đi 0,5 A thì ta phải tăng giá trị điện trở thêm một lượng là\nA. 5,0 Ω\nB. 4,5 Ω\nC. 4,0 Ω\nD. 5,5 Ω",
@@ -121,7 +121,7 @@
   },
   {
     "id": "IV.8",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Định luật Ohm và thay đổi hiệu điện thế",
     "difficulty": 2,
     "question": "Khi đặt hiệu điện thế U = 8 V vào hai đầu một dây dẫn thì dòng điện chạy qua dây có cường độ I = 0,2 A. Nếu tăng hiệu điện thế thêm 4 V thì dòng điện chạy qua dây dẫn khi đó có cường độ là\nA. 0,2 A\nB. 0,3 A\nC. 0,4 A\nD. 0,8 A",
@@ -139,7 +139,7 @@
   },
   {
     "id": "IV.9",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Suất điện động của nguồn điện",
     "difficulty": 1,
     "question": "Công của lực lạ làm di chuyển điện tích 4 C từ cực âm đến cực dương bên trong nguồn điện là 24 J. Suất điện động của nguồn là\nA. 0,16 V\nB. 6 V\nC. 96 V\nD. 0,6 V",
@@ -155,7 +155,7 @@
   },
   {
     "id": "IV.10",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Suất điện động và điện lượng",
     "difficulty": 2,
     "question": "Suất điện động của một nguồn điện là 1,5 V, lực lạ làm di chuyển điện tích thực hiện một công 6 mJ. Lượng điện tích dịch chuyển khi đó là\nA. 15.10^-3 C\nB. 4.10^-3 C\nC. 0,5.10^-3 C\nD. 1,5.10^-3 C",
@@ -172,7 +172,7 @@
   },
   {
     "id": "IV.11",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Công của nguồn điện",
     "difficulty": 1,
     "question": "Một nguồn điện có suất điện động 24 V. Để chuyển một điện lượng 10 C qua nguồn thì lực lạ phải sinh một công là\nA. 100 J\nB. 2,4 J\nC. 24 J\nD. 240 J",
@@ -188,7 +188,7 @@
   },
   {
     "id": "IV.12",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Suất điện động và công của nguồn",
     "difficulty": 2,
     "question": "Một nguồn điện có suất điện động không đổi, để chuyển một điện lượng 5 C thì lực lạ phải sinh một công là 20 mJ. Để chuyển một điện lượng 10 C qua nguồn thì lực lạ phải sinh một công là\nA. 10 mJ\nB. 15 mJ\nC. 20 mJ\nD. 40 mJ",
@@ -205,7 +205,7 @@
   },
   {
     "id": "IV.13",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Thông số acquy và điện lượng",
     "difficulty": 2,
     "question": "Một acquy có ghi thông số 12 V - 20 Ah. Thông số này cho biết\nA. điện lượng cực đại của acquy là 7 200 C\nB. điện trở trong của acquy là 0,16 Ω\nC. dòng điện lớn nhất mà acquy có thể cung cấp là 20 A\nD. năng lượng dự trữ của acquy là 12.10^6 J",
@@ -223,7 +223,7 @@
   },
   {
     "id": "IV.14",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Ý nghĩa công suất điện",
     "difficulty": 1,
     "question": "Công suất điện cho biết\nA. khả năng thực hiện công của dòng điện\nB. năng lượng của dòng điện\nC. lượng điện năng sử dụng trong một đơn vị thời gian\nD. mức độ mạnh - yếu của dòng điện",
@@ -238,7 +238,7 @@
   },
   {
     "id": "IV.15",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Ý nghĩa số oát ghi trên thiết bị điện",
     "difficulty": 1,
     "question": "Trên các thiết bị điện gia dụng thường có ghi 220 V và số oát (W). Số oát này có ý nghĩa gì?\nA. Công suất tiêu thụ điện của dụng cụ khi nó được sử dụng với những hiệu điện thế nhỏ hơn 220 V\nB. Công suất tiêu thụ điện của dụng cụ khi nó được sử dụng với đúng hiệu điện thế 220 V\nC. Công mà dòng điện thực hiện trong một phút khi dụng cụ này được sử dụng với đúng hiệu điện thế 220 V\nD. Điện năng mà dụng cụ tiêu thụ trong một giờ khi nó được sử dụng với đúng hiệu điện thế 220 V",
@@ -253,7 +253,7 @@
   },
   {
     "id": "IV.16",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Công suất định mức",
     "difficulty": 1,
     "question": "Công suất định mức của các dụng cụ điện là\nA. công suất lớn nhất mà dụng cụ đó có thể đạt được\nB. công suất tối thiểu mà dụng cụ đó có thể đạt được\nC. công suất đạt được khi nó hoạt động bình thường\nD. công suất trung bình của dụng cụ đó",
@@ -268,7 +268,7 @@
   },
   {
     "id": "IV.17",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Tốc độ trôi của electron trong kim loại",
     "difficulty": 5,
     "question": "Tính tốc độ dịch chuyển có hướng của electron trong một dây đồng tiết diện thẳng 1 mm^2 có dòng điện 1 A chạy qua. Cho biết khối lượng riêng của đồng ρ = 9.10^3 kg/m^3 và mỗi nguyên tử đồng cho một electron tự do.",
@@ -293,7 +293,7 @@
   },
   {
     "id": "IV.18",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Mật độ electron tự do và tiết diện dây dẫn",
     "difficulty": 5,
     "question": "Bạc có khối lượng riêng 10,5 g/cm^3 và mỗi nguyên tử cho một electron tự do. Dây bạc hình trụ có đường kính bằng bao nhiêu nếu dòng điện chạy trong dây bạc có cường độ I = 1 A, tốc độ dịch chuyển có hướng của các electron tự do là 3,4.10^-5 m/s.",
@@ -314,7 +314,7 @@
   },
   {
     "id": "IV.20",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Công suất tỏa nhiệt và dòng điện",
     "difficulty": 4,
     "question": "Một dây điện trở có thể làm 500 mL nước tăng nhiệt độ thêm 60° trong 5 phút khi hoạt động ở hiệu điện thế 220 V. Biết nhiệt dung riêng của nước là 4180 J/kg.K.\na) Tính công suất tỏa nhiệt của điện trở.\nb) Cường độ dòng điện qua điện trở là bao nhiêu?",
@@ -336,7 +336,7 @@
   },
   {
     "id": "IV.21",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Điện trở tương đương nối tiếp và song song",
     "difficulty": 5,
     "question": "Hai điện trở R1 và R2 mắc nối tiếp thì điện trở tương đương lớn gấp 6,25 lần điện trở tương đương khi mắc song song. Tính tỉ số hai điện trở R1/R2.",
@@ -357,7 +357,7 @@
   },
   {
     "id": "IV.22",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Hiệu suất nguồn điện và dòng điện",
     "difficulty": 3,
     "question": "Cho một nguồn điện có suất điện động ξ và điện trở trong r. Nguồn điện được mắc với một điện trở R tạo thành mạch kín. Vẽ đồ thị phụ thuộc của hiệu suất nguồn điện vào cường độ dòng điện.",
@@ -377,7 +377,7 @@
   },
   {
     "id": "IV.23",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Mạch kín có điện trở trong",
     "difficulty": 3,
     "question": "Một nguồn điện có điện trở trong 0,1 Ω được mắc nối tiếp với điện trở R = 4,8 Ω tạo thành mạch kín. Khi đó hiệu điện thế giữa hai cực của nguồn điện là 12 V. Tính suất điện động của nguồn và cường độ dòng điện chạy trong mạch.",
@@ -394,7 +394,7 @@
   },
   {
     "id": "IV.24",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Mạch kín có vôn kế mắc song song",
     "difficulty": 5,
     "question": "Mạch kín gồm nguồn điện có suất điện động ξ = 24 V, điện trở trong r = 0,5 Ω và hai điện trở R1 = 10 Ω, R2 = 50 Ω mắc nối tiếp. Một vôn kế mắc song song với điện trở R2 chỉ giá trị 16 V. Tìm điện trở của vôn kế.",
@@ -420,7 +420,7 @@
   },
   {
     "id": "IV.25",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Mạch kín với điện trở mắc nối tiếp và song song",
     "difficulty": 5,
     "question": "Hai điện trở R1 = 2 Ω, R2 = 6 Ω mắc vào nguồn điện có suất điện động ξ và điện trở trong r. Khi R1, R2 mắc nối tiếp, cường độ dòng điện trong mạch chính I = 0,5 A. Khi R1, R2 mắc song song, cường độ dòng điện trong mạch chính I' = 1,8 A. Tìm giá trị của suất điện động ξ và điện trở trong r.",
@@ -443,7 +443,7 @@
   },
   {
     "id": "IV.26",
-    "chapter": "Chương IV",
+    "chapter": "Chương 4",
     "topic": "Công suất trên điện trở trong mạch nối tiếp",
     "difficulty": 5,
     "question": "Hai điện trở R1 = 20 Ω và điện trở R2 chưa biết giá trị được mắc nối tiếp với nhau và mắc vào hiệu điện thế U = 220 V thì điện trở R2 tiêu thụ một công suất P2 = 600 W. Tính giá trị điện trở R2 biết rằng dòng điện chạy qua điện trở R2 có giá trị không lớn hơn 5 A.",
