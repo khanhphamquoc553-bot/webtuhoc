@@ -594,7 +594,7 @@ const featureContent = {
 const navItems = [
   { key: 'overview', label: 'Tổng quan chương', icon: 'home' },
   { key: 'lessons', label: 'Bài học', icon: 'document' },
-  { key: 'review', label: 'Ôn tập cuối chương', icon: 'clipboard' },
+  { key: 'review', label: 'Hoạt động ôn tập và tự đánh giá cuối chương', icon: 'clipboard' },
   { key: 'formulas', label: 'Sổ tay công thức', icon: 'notebook' },
 ]
 
