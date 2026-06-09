@@ -13608,6 +13608,10 @@ button {
   line-height: 1.5;
 }
 
+.formula-study-card p {
+  text-transform: none;
+}
+
 .lesson-meta-grid {
   display: grid;
   gap: 8px;
