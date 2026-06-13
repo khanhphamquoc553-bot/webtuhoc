@@ -25,10 +25,6 @@ const REVIEW_STORAGE_KEY = `${STORAGE_KEY}:electric-repair-game`
 const PREVIEW_ALL_LESSON_PARTS = false
 const CHAPTER_REVIEW_PROGRESS_ID = 'chapter-review-self-assessment'
 const CHAPTER_REVIEW_TITLE = 'Hoạt động ôn tập và tự đánh giá cuối chương'
-const DEEPSEEK_API_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY || ''
-const DEEPSEEK_BASE_URL = import.meta.env.VITE_DEEPSEEK_BASE_URL || 'https://api.deepseek.com'
-const DEEPSEEK_MODEL = import.meta.env.VITE_DEEPSEEK_MODEL || 'deepseek-v4-pro'
-const DEEPSEEK_CHAT_ENDPOINT = `${DEEPSEEK_BASE_URL.replace(/\/+$/, '')}/chat/completions`
 
 const topics = [
   {
@@ -1492,10 +1488,14 @@ const requestAiResponse = async ({
   const safeOriginalQuestion = originalQuestion || question
   const hintLevelRule =
     guidanceAttempt <= 1
-      ? 'Gợi ý cấp độ 1: gợi ý nhẹ, chỉ định hướng cách nghĩ hoặc dữ kiện cần chú ý. Không đưa đáp án chuẩn.'
+      ? 'Gợi ý cấp độ 1: chỉ đưa một gợi ý nhỏ bằng câu hỏi dẫn hoặc chỗ cần nhìn lại. Không nêu định nghĩa, công thức, kí hiệu, đơn vị hay đáp án chuẩn.'
       : guidanceAttempt === 2
-        ? 'Gợi ý cấp độ 2: gợi ý rõ hơn, nêu khái niệm/công thức/mối liên hệ cần dùng nhưng vẫn không chốt đáp án.'
-        : 'Gợi ý cấp độ 3: gợi ý sát hơn, chỉ ra bước then chốt hoặc lỗi thường gặp nhưng vẫn không hiển thị đáp án chuẩn.'
+        ? 'Gợi ý cấp độ 2: gợi ý rõ hơn một chút bằng cách nhắc mối liên hệ cần nghĩ tới, nhưng vẫn không viết trọn định nghĩa, công thức, kí hiệu, đơn vị hay đáp án chuẩn.'
+        : 'Gợi ý cấp độ 3: gợi ý sát hơn, chỉ ra bước then chốt hoặc lỗi thường gặp nhưng vẫn không hiển thị đáp án chuẩn; nếu học sinh muốn đáp án, yêu cầu em bấm/hỏi hiện đáp án.'
+  const hintGuardrailRule = `QUY TẮC RIÊNG KHI ĐANG GỢI Ý:
+Không trả lời trực tiếp câu hỏi gốc. Không viết theo mẫu "X là...", "Công thức:", "Kí hiệu:", "Đơn vị:" nếu học sinh đang hỏi đúng các ý đó.
+Với câu hỏi dạng "là gì", "định nghĩa", "kí hiệu", "đơn vị", "công thức", chỉ nhắc học sinh nhìn vào vai trò, đại lượng liên quan hoặc phần bài học cần xem; để trống phần quan trọng cho học sinh tự điền.
+Chỉ viết 1-2 câu ngắn. Kết thúc bằng một câu yêu cầu học sinh tự trả lời thử.`
   const tutorRoleRule = `VAI TRÒ:
 Bạn là AI trợ lí học tập trên website hỗ trợ tự học Vật lí 11.
 
@@ -1534,28 +1534,23 @@ Bắt buộc trình bày đúng 4 mục sau, ngắn gọn:
 - Em cần sửa/bổ sung:
 - Ghi nhớ:
 Nếu học sinh chưa trả lời, mục "Em đã đúng ở" ghi: "Em chưa gửi câu trả lời để đối chiếu."`
-        : `NHIỆM VỤ: Chỉ gợi ý, chưa được đưa đáp án chuẩn hoặc lời giải hoàn chỉnh.
+        : `NHIỆM VỤ: Chỉ gợi ý rất nhẹ, chưa được đưa đáp án chuẩn hoặc lời giải hoàn chỉnh.
 Câu hỏi gốc: "${safeOriginalQuestion}"
 ${studentAnswer ? `Câu trả lời vừa rồi của học sinh: "${studentAnswer}". Hãy dựa vào lỗi đó để gợi ý tiếp.` : ''}
 ${hintLevelRule}
+${hintGuardrailRule}
 Loại câu hỏi nội bộ: ${questionKind}.
-Viết tối đa 3-5 câu, dễ hiểu, kết thúc bằng yêu cầu học sinh tự trả lời lại.`
+Viết tối đa 1-2 câu, dễ hiểu, kết thúc bằng yêu cầu học sinh tự trả lời lại.`
 
-  if (!DEEPSEEK_API_KEY) {
-    throw new Error('Thiếu VITE_DEEPSEEK_API_KEY trong .env.local')
-  }
-
-  const response = await fetch(DEEPSEEK_CHAT_ENDPOINT, {
+  const response = await fetch("/api/ai/chat", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${DEEPSEEK_API_KEY}`,
     },
     body: JSON.stringify({
-      model: DEEPSEEK_MODEL,
       thinking: { type: 'disabled' },
-      temperature: mode === 'assessment' ? 0 : 0.35,
-      max_tokens: mode === 'assessment' ? 150 : 900,
+      temperature: mode === 'assessment' ? 0 : mode === 'hint' ? 0.2 : 0.35,
+      max_tokens: mode === 'assessment' ? 150 : mode === 'hint' ? 220 : 900,
       messages: [
         {
           role: 'system',
